@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import {
     makeCreateUserController,
     makeGetUserByIdController,
+    makeUpdateUserController,
 } from './src/factories/controllers/user.js'
 
 dotenv.config()
@@ -27,6 +28,13 @@ app.post('/api/users', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
+app.patch('/api/users/:userId', async (req, res) => {
+    const updateUserController = makeUpdateUserController()
+
+    const { statusCode, body } = await updateUserController.execute(req)
+
+    res.status(statusCode).json(body)
+})
 app.listen(process.env.PORT, () => {
     console.log(`App listening on port ${process.env.PORT}!`)
 })
