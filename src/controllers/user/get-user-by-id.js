@@ -13,14 +13,14 @@ export class GetUserByIdController {
 
     async execute(httpRequest) {
         try {
-            const idIsValid = checkIfIdIsValid(httpRequest.params.id)
+            const idIsValid = checkIfIdIsValid(httpRequest.params.userId)
 
             if (!idIsValid) {
                 return invalidIdResponse()
             }
 
             const user = await this.getUserByIdUseCase.execute(
-                httpRequest.params.id,
+                httpRequest.params.userId,
             )
 
             if (!user) {
