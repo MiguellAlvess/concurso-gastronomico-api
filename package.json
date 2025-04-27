@@ -18,7 +18,8 @@
         "eslint-config-prettier": "^10.1.2",
         "git-commit-msg-linter": "^5.0.8",
         "husky": "^8.0.3",
-        "lint-staged": "^15.5.1"
+        "lint-staged": "^15.5.1",
+        "prisma": "^6.6.0"
     },
     "dependencies": {
         "dotenv": "^16.5.0",
