@@ -1,7 +1,22 @@
-import { PostgresCreateUserRepository } from '../../repositories/index.js'
-import { CreateUserUseCase } from '../../use-cases/index.js'
-import { CreateUserController } from '../../controllers/index.js'
+import {
+    PostgresCreateUserRepository,
+    PostgresGetUserByIdRepository,
+} from '../../repositories/index.js'
+import { CreateUserUseCase, GetUserByIdUseCase } from '../../use-cases/index.js'
+import {
+    CreateUserController,
+    GetUserByIdController,
+} from '../../controllers/index.js'
 
+export const makeGetUserByIdController = () => {
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
+
+    const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository)
+
+    const getUserByIdController = new GetUserByIdController(getUserByIdUseCase)
+
+    return getUserByIdController
+}
 export const makeCreateUserController = () => {
     const createUserRepository = new PostgresCreateUserRepository()
 
