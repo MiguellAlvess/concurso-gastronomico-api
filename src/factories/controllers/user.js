@@ -1,6 +1,7 @@
 import {
     PostgresCreateUserRepository,
     PostgresGetUserByIdRepository,
+    PostgresGetUserByEmailRepository,
 } from '../../repositories/index.js'
 import { CreateUserUseCase, GetUserByIdUseCase } from '../../use-cases/index.js'
 import {
@@ -18,9 +19,14 @@ export const makeGetUserByIdController = () => {
     return getUserByIdController
 }
 export const makeCreateUserController = () => {
+    const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
+
     const createUserRepository = new PostgresCreateUserRepository()
 
-    const createUserUseCase = new CreateUserUseCase(createUserRepository)
+    const createUserUseCase = new CreateUserUseCase(
+        getUserByEmailRepository,
+        createUserRepository,
+    )
 
     const createUserController = new CreateUserController(createUserUseCase)
 
