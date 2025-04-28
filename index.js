@@ -4,6 +4,7 @@ import {
     makeCreateUserController,
     makeGetUserByIdController,
     makeUpdateUserController,
+    makeDeleteUserController,
 } from './src/factories/controllers/user.js'
 
 dotenv.config()
@@ -32,6 +33,14 @@ app.patch('/api/users/:userId', async (req, res) => {
     const updateUserController = makeUpdateUserController()
 
     const { statusCode, body } = await updateUserController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+app.delete('/api/users/:userId', async (req, res) => {
+    const deleteUserController = makeDeleteUserController()
+
+    const { statusCode, body } = await deleteUserController.execute(req)
 
     res.status(statusCode).json(body)
 })

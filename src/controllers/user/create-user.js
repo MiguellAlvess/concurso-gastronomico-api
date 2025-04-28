@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import { ok, serverError, badRequest } from '../../helpers/index.js'
+import { serverError, badRequest, created } from '../../helpers/index.js'
 import { createUserSchema } from '../../schemas/index.js'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 
@@ -16,7 +16,7 @@ export class CreateUserController {
 
             const createdUser = await this.createUserUseCase.execute(params)
 
-            return ok(createdUser)
+            return created(createdUser)
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
