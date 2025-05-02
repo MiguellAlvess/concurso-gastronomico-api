@@ -5,7 +5,7 @@ import {
     badRequest,
     invalidIdResponse,
     checkIfIdIsValid,
-} from '../../helpers/index.js'
+} from '../helpers/index.js'
 
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 import { updateUserSchema } from '../../schemas/index.js'

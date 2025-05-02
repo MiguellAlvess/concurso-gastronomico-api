@@ -1,7 +1,7 @@
 import { ZodError } from 'zod'
-import { serverError, badRequest, created } from '../../helpers/index.js'
+import { serverError, badRequest, created } from '../helpers/index.js'
 import { createUserSchema } from '../../schemas/index.js'
-import { EmailAlreadyInUseError } from '../../errors/user.js'
+import { EmailAlreadyInUseError } from '../helpers/index.js'
 
 export class CreateUserController {
     constructor(createUserUseCase) {
