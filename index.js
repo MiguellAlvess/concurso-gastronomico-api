@@ -10,6 +10,7 @@ import {
 import {
     makeCreateRestaurantController,
     makeGetRestaurantByIdController,
+    makeUpdateRestaurantController,
 } from './src/factories/controllers/restaurant.js'
 
 dotenv.config()
@@ -65,6 +66,15 @@ app.post('/api/restaurants', async (req, res) => {
 
     res.status(statusCode).json(body)
 })
+
+app.patch('/api/restaurants/:restaurantId', async (req, res) => {
+    const updateRestaurantController = makeUpdateRestaurantController()
+
+    const { statusCode, body } = await updateRestaurantController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
 app.listen(process.env.PORT, () => {
     console.log(`App listening on port ${process.env.PORT}!`)
 })
