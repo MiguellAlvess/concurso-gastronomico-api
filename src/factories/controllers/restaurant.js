@@ -1,9 +1,27 @@
 import {
     PostgresCreateRestaurantRepository,
     PostgresGetRestaurantByCnpjRepository,
+    PostgresGetRestaurantByIdRepository,
 } from '../../repositories/index.js'
-import { CreateRestaurantUseCase } from '../../use-cases/index.js'
-import { CreateRestaurantController } from '../../controllers/index.js'
+import {
+    CreateRestaurantUseCase,
+    GetRestauranteByIdUseCase,
+} from '../../use-cases/index.js'
+import {
+    CreateRestaurantController,
+    GetRestaurantByIdController,
+} from '../../controllers/index.js'
+
+export const makeGetRestaurantByIdController = () => {
+    const getRestaurantByIdRepository =
+        new PostgresGetRestaurantByIdRepository()
+    const getRestaurantByIdUseCase = new GetRestauranteByIdUseCase()
+    const getRestaurantByIdController = new GetRestaurantByIdController(
+        getRestaurantByIdRepository,
+        getRestaurantByIdUseCase,
+    )
+    return getRestaurantByIdController
+}
 
 export const makeCreateRestaurantController = () => {
     const getRestaurantByCnpjRepository =
