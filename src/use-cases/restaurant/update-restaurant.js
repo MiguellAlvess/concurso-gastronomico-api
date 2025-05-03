@@ -2,8 +2,9 @@ import bcrypt from 'bcrypt'
 import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
 export class UpdateRestaurantUseCase {
-    constructor(updateRestaurantRepository) {
-        this.updateRestaurantRepository = updateRestaurantRepository
+    constructor(getRestaurantByCnpjRepository, updateRestaurantRepository) {
+        this.getRestaurantByCnpjRepository = this.updateRestaurantRepository =
+            updateRestaurantRepository
     }
 
     async execute(restaurantId, updateRestaurantParams) {
