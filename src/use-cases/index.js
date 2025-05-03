@@ -4,3 +4,4 @@ export * from './user/update-user.js'
 export * from './user/delete-user.js'
 
 export * from './restaurant/create-restaurant.js'
+export * from './restaurant/get-restaurant-by-id.js'
