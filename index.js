@@ -7,6 +7,8 @@ import {
     makeDeleteUserController,
 } from './src/factories/controllers/user.js'
 
+import { makeCreateRestaurantController } from './src/factories/controllers/restaurant.js'
+
 dotenv.config()
 
 const app = express()
@@ -41,6 +43,14 @@ app.delete('/api/users/:userId', async (req, res) => {
     const deleteUserController = makeDeleteUserController()
 
     const { statusCode, body } = await deleteUserController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+app.post('/api/restaurants', async (req, res) => {
+    const createRestaurantController = makeCreateRestaurantController()
+
+    const { statusCode, body } = await createRestaurantController.execute(req)
 
     res.status(statusCode).json(body)
 })
