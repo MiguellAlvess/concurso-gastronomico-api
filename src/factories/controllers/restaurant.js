@@ -15,9 +15,10 @@ import {
 export const makeGetRestaurantByIdController = () => {
     const getRestaurantByIdRepository =
         new PostgresGetRestaurantByIdRepository()
-    const getRestaurantByIdUseCase = new GetRestaurantByIdUseCase()
-    const getRestaurantByIdController = new GetRestaurantByIdController(
+    const getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(
         getRestaurantByIdRepository,
+    )
+    const getRestaurantByIdController = new GetRestaurantByIdController(
         getRestaurantByIdUseCase,
     )
     return getRestaurantByIdController

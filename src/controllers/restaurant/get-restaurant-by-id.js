@@ -7,8 +7,8 @@ import {
 } from '../helpers/index.js'
 
 export class GetRestaurantByIdController {
-    constructor(getUserByIdUseCase) {
-        this.getUserByIdUseCase = getUserByIdUseCase
+    constructor(getRestaurantByIdUseCase) {
+        this.getRestaurantByIdUseCase = getRestaurantByIdUseCase
     }
 
     async execute(htttpRequest) {
@@ -19,7 +19,7 @@ export class GetRestaurantByIdController {
                 return invalidIdResponse()
             }
 
-            const restaurant = await this.getUserByIdUseCase.execute(
+            const restaurant = await this.getRestaurantByIdUseCase.execute(
                 htttpRequest.params.restaurantId,
             )
 
