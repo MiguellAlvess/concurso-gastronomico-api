@@ -5,7 +5,7 @@ import {
 } from '../../repositories/index.js'
 import {
     CreateRestaurantUseCase,
-    GetRestauranteByIdUseCase,
+    GetRestaurantByIdUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateRestaurantController,
@@ -15,7 +15,7 @@ import {
 export const makeGetRestaurantByIdController = () => {
     const getRestaurantByIdRepository =
         new PostgresGetRestaurantByIdRepository()
-    const getRestaurantByIdUseCase = new GetRestauranteByIdUseCase()
+    const getRestaurantByIdUseCase = new GetRestaurantByIdUseCase()
     const getRestaurantByIdController = new GetRestaurantByIdController(
         getRestaurantByIdRepository,
         getRestaurantByIdUseCase,
