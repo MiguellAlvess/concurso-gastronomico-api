@@ -1,6 +1,7 @@
 import { createRestaurantSchema } from '../../schemas/restaurant.js'
 import { serverError, created, badRequest } from '../helpers/index.js'
 import { ZodError } from 'zod'
+import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
 export class CreateRestaurantController {
     constructor(createRestaurantUseCase) {
@@ -20,6 +21,9 @@ export class CreateRestaurantController {
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
+            }
+            if (error instanceof CnpjAlreadyInUseError) {
+                return badRequest({ message: error.message })
             }
             console.error(error)
             return serverError()
