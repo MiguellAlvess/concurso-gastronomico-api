@@ -7,7 +7,10 @@ import {
     makeDeleteUserController,
 } from './src/factories/controllers/user.js'
 
-import { makeCreateRestaurantController } from './src/factories/controllers/restaurant.js'
+import {
+    makeCreateRestaurantController,
+    makeGetRestaurantByIdController,
+} from './src/factories/controllers/restaurant.js'
 
 dotenv.config()
 
@@ -45,6 +48,14 @@ app.delete('/api/users/:userId', async (req, res) => {
     const { statusCode, body } = await deleteUserController.execute(req)
 
     res.status(statusCode).json(body)
+})
+
+app.get('/api/restaurants/:restaurantId', async (req, res) => {
+    const getRestaurantByIdController = makeGetRestaurantByIdController()
+
+    const { statusCode, body } = await getRestaurantByIdController.execute(req)
+
+    res.status(statusCode).send(body)
 })
 
 app.post('/api/restaurants', async (req, res) => {
