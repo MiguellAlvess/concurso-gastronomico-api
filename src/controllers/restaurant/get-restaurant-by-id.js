@@ -6,7 +6,7 @@ import {
     serverError,
 } from '../helpers/index.js'
 
-export class GetUserByIdController {
+export class GetRestaurantByIdController {
     constructor(getUserByIdUseCase) {
         this.getUserByIdUseCase = getUserByIdUseCase
     }
