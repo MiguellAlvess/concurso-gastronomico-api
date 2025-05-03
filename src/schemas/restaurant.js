@@ -25,3 +25,7 @@ export const createRestaurantSchema = z.object({
             message: 'Password must be at least 6 characters',
         }),
 })
+
+export const updateRestaurantSchema = createRestaurantSchema.partial().strict({
+    message: 'Some provided field is not allowed',
+})
