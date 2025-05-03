@@ -3,16 +3,19 @@ import {
     PostgresGetRestaurantByCnpjRepository,
     PostgresGetRestaurantByIdRepository,
     PostgresUpdateRestaurantRepository,
+    PostgresDeleteRestaurantRepository,
 } from '../../repositories/index.js'
 import {
     CreateRestaurantUseCase,
     GetRestaurantByIdUseCase,
     UpdateRestaurantUseCase,
+    DeleteRestaurantUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateRestaurantController,
     GetRestaurantByIdController,
     UpdateRestaurantController,
+    DeleteRestaurantController,
 } from '../../controllers/index.js'
 
 export const makeGetRestaurantByIdController = () => {
@@ -59,4 +62,17 @@ export const makeUpdateRestaurantController = () => {
     )
 
     return updateRestaurantController
+}
+
+export const makeDeleteRestaurantController = () => {
+    const deleteRestaurantRepository = new PostgresDeleteRestaurantRepository()
+    const deleteRestaurantUseCase = new DeleteRestaurantUseCase(
+        deleteRestaurantRepository,
+    )
+
+    const deleteRestaurantController = new DeleteRestaurantController(
+        deleteRestaurantUseCase,
+    )
+
+    return deleteRestaurantController
 }
