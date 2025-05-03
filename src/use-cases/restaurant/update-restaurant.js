@@ -3,8 +3,8 @@ import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
 export class UpdateRestaurantUseCase {
     constructor(getRestaurantByCnpjRepository, updateRestaurantRepository) {
-        this.getRestaurantByCnpjRepository = this.updateRestaurantRepository =
-            updateRestaurantRepository
+        this.getRestaurantByCnpjRepository = getRestaurantByCnpjRepository
+        this.updateRestaurantRepository = updateRestaurantRepository
     }
 
     async execute(restaurantId, updateRestaurantParams) {
@@ -13,7 +13,10 @@ export class UpdateRestaurantUseCase {
                 await this.getRestaurantByCnpjRepository.execute(
                     updateRestaurantParams.cnpj,
                 )
-            if (restaurantWithProvidedCnpj) {
+            if (
+                restaurantWithProvidedCnpj &&
+                restaurantWithProvidedCnpj.id !== restaurantId
+            ) {
                 throw new CnpjAlreadyInUseError(updateRestaurantParams.cnpj)
             }
         }
