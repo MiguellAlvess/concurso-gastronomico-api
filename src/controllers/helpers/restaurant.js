@@ -1,4 +1,6 @@
-export function validateCNPJ(cnpj) {
+import { notFound } from '../helpers/index.js'
+
+export const validateCNPJ = (cnpj) => {
     cnpj = cnpj.replace(/[^\d]+/g, '')
 
     if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) {
@@ -20,3 +22,8 @@ export function validateCNPJ(cnpj) {
 
     return digits[12] === calcDigit(0) && digits[13] === calcDigit(1)
 }
+
+export const restaurantNotFoundResponse = () =>
+    notFound({
+        message: 'Restaurant not found',
+    })
