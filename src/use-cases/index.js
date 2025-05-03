@@ -5,4 +5,4 @@ export * from './user/delete-user.js'
 
 export * from './restaurant/create-restaurant.js'
 export * from './restaurant/get-restaurant-by-id.js'
-export * from './restaurant/get-restaurant-by-email.js'
+export * from './restaurant/update-restaurant.js'
