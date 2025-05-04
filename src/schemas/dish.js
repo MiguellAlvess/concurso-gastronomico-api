@@ -24,18 +24,21 @@ export const createDishSchema = z.object({
             message: 'Details are required',
         }),
     price: z
-        .number({
+        .string({
             required_error: 'Price is required',
-            invalid_type_error: 'Amount must be a number',
+            invalid_type_error: 'Price must be a string',
         })
-        .min(1, {
-            message: 'Price must be at least R$ 1',
-        })
-        .refine((value) =>
-            validator.isCurrency(value.toFixed(2), {
-                digits_after_decimal: [2],
-                allow_negatives: false,
-                decimal_separator: '.',
-            }),
-        ),
+        .refine(
+            (value) =>
+                validator.isCurrency(value, {
+                    digits_after_decimal: [2],
+                    allow_negatives: false,
+                    decimal_separator: '.',
+                }),
+            {
+                message:
+                    'Price must be a valid currency format (exemple: 12.50)',
+            },
+        )
+        .transform((value) => parseFloat(value)),
 })
