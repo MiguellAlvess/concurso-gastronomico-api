@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import { RestaurantNotFoundError } from '../../errors/restaurant'
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 export class CreateDishUseCase {
     constructor(createDishRepository, getRestaurantByIdRepository) {
@@ -8,7 +8,7 @@ export class CreateDishUseCase {
     }
 
     async execute(createDishParams) {
-        const restaurantId = createDishParams.restaurantId
+        const restaurantId = createDishParams.restaurant_id
 
         const restaurant =
             await this.getRestaurantByIdRepository.execute(restaurantId)
@@ -19,10 +19,10 @@ export class CreateDishUseCase {
 
         const dishId = uuid()
 
-        const dish = {
+        const dish = await this.createDishRepository.execute({
             ...createDishParams,
             id: dishId,
-        }
+        })
 
         return dish
     }
