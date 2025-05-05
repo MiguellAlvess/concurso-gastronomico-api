@@ -9,3 +9,4 @@ export * from './restaurant/update-restaurant.js'
 export * from './restaurant/delete-restaurant.js'
 
 export * from './dish/create-dish.js'
+export * from './dish/get-dishes-by-restaurant-id.js'
