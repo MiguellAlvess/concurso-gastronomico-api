@@ -24,7 +24,7 @@ export class DeleteDishController {
             const deletedDish = await this.deleteDishUseCase.execute(dishId)
 
             if (!deletedDish) {
-                restaurantNotFoundResponse()
+                return restaurantNotFoundResponse()
             }
 
             return ok(deletedDish)
