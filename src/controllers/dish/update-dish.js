@@ -1,0 +1,42 @@
+import {
+    checkIfIdIsValid,
+    serverError,
+    ok,
+    invalidIdResponse,
+    badRequest,
+} from '../helpers/index.js'
+import { updateDishSchema } from '../../schemas/dish.js'
+import { ZodError } from 'zod'
+
+export class UpdateDishController {
+    constructor(updateDishUseCase) {
+        this.updateDishUseCase = updateDishUseCase
+    }
+
+    async execute(httpRequest) {
+        try {
+            const dishIdIsValid = checkIfIdIsValid(httpRequest.params.dishId)
+
+            if (!dishIdIsValid) {
+                return invalidIdResponse()
+            }
+
+            const params = httpRequest.body
+
+            await updateDishSchema.parseAsync(params)
+
+            const updatedDish = await this.updateDishUseCase.execute(
+                httpRequest.params.dishId,
+                params,
+            )
+
+            return ok(updatedDish)
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return badRequest({ message: error.errors[0].message })
+            }
+            console.error(error)
+            return serverError()
+        }
+    }
+}
