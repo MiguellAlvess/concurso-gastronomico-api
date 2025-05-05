@@ -1,11 +1,18 @@
 import {
     PostgresCreateDishRepository,
     PostgresGetRestaurantByIdRepository,
+    PostgresGetDishesByRestaurantIdRepository,
 } from '../../repositories/index.js'
 
-import { CreateDishUseCase } from '../../use-cases/index.js'
+import {
+    CreateDishUseCase,
+    GetDishesByRestaurantIdUseCase,
+} from '../../use-cases/index.js'
 
-import { CreateDishController } from '../../controllers/index.js'
+import {
+    CreateDishController,
+    GetDishesByRestaurantIdController,
+} from '../../controllers/index.js'
 
 export const makeCreateDishController = () => {
     const createDishRepository = new PostgresCreateDishRepository()
@@ -17,4 +24,19 @@ export const makeCreateDishController = () => {
     )
     const createDishController = new CreateDishController(createDishUseCase)
     return createDishController
+}
+
+export const makeGetDishesByRestaurantIdController = () => {
+    const getDishesByRestaurantIdRepository =
+        new PostgresGetDishesByRestaurantIdRepository()
+
+    const getRestaurantByIdRepository =
+        new PostgresGetRestaurantByIdRepository()
+    const getDishesByRestaurantIdUseCase = new GetDishesByRestaurantIdUseCase(
+        getDishesByRestaurantIdRepository,
+        getRestaurantByIdRepository,
+    )
+    const getDishesByRestaurantIdController =
+        new GetDishesByRestaurantIdController(getDishesByRestaurantIdUseCase)
+    return getDishesByRestaurantIdController
 }
