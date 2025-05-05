@@ -14,7 +14,10 @@ import {
     makeDeleteRestaurantController,
 } from './src/factories/controllers/restaurant.js'
 
-import { makeCreateDishController } from './src/factories/controllers/dish.js'
+import {
+    makeCreateDishController,
+    makeGetDishesByRestaurantIdController,
+} from './src/factories/controllers/dish.js'
 
 dotenv.config()
 
@@ -84,6 +87,16 @@ app.delete('/api/restaurants/:restaurantId', async (req, res) => {
     const { statusCode, body } = await deleteRestaurantController.execute(req)
 
     res.status(statusCode).json(body)
+})
+
+app.get('/api/dishes', async (req, res) => {
+    const getDishesByRestaurantIdController =
+        makeGetDishesByRestaurantIdController()
+
+    const { statusCode, body } =
+        await getDishesByRestaurantIdController.execute(req)
+
+    res.status(statusCode).send(body)
 })
 
 app.post('/api/dishes', async (req, res) => {
