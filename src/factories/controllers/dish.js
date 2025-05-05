@@ -3,18 +3,21 @@ import {
     PostgresGetRestaurantByIdRepository,
     PostgresGetDishesByRestaurantIdRepository,
     PostgresUpdateDishRepository,
+    PostgresDeleteDishRepository,
 } from '../../repositories/index.js'
 
 import {
     CreateDishUseCase,
     GetDishesByRestaurantIdUseCase,
     UpdateDishUseCase,
+    DeleteDishUseCase,
 } from '../../use-cases/index.js'
 
 import {
     CreateDishController,
     GetDishesByRestaurantIdController,
     UpdateDishController,
+    DeleteDishController,
 } from '../../controllers/index.js'
 
 export const makeCreateDishController = () => {
@@ -49,4 +52,11 @@ export const makeUpdateDishController = () => {
     const updateDishUseCase = new UpdateDishUseCase(updateDishRepository)
     const updateDishController = new UpdateDishController(updateDishUseCase)
     return updateDishController
+}
+
+export const makeDeleteDishController = () => {
+    const deleteDishRepository = new PostgresDeleteDishRepository()
+    const deleteDishUseCase = new DeleteDishUseCase(deleteDishRepository)
+    const deleteDishController = new DeleteDishController(deleteDishUseCase)
+    return deleteDishController
 }
