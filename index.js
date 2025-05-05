@@ -17,6 +17,7 @@ import {
 import {
     makeCreateDishController,
     makeGetDishesByRestaurantIdController,
+    makeUpdateDishController,
 } from './src/factories/controllers/dish.js'
 
 dotenv.config()
@@ -103,6 +104,14 @@ app.post('/api/dishes', async (req, res) => {
     const createDishController = makeCreateDishController()
 
     const { statusCode, body } = await createDishController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+app.patch('/api/dishes/:dishId', async (req, res) => {
+    const updateDishController = makeUpdateDishController()
+
+    const { statusCode, body } = await updateDishController.execute(req)
 
     res.status(statusCode).json(body)
 })
