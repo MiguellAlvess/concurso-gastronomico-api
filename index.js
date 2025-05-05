@@ -18,6 +18,7 @@ import {
     makeCreateDishController,
     makeGetDishesByRestaurantIdController,
     makeUpdateDishController,
+    makeDeleteDishController,
 } from './src/factories/controllers/dish.js'
 
 dotenv.config()
@@ -112,6 +113,14 @@ app.patch('/api/dishes/:dishId', async (req, res) => {
     const updateDishController = makeUpdateDishController()
 
     const { statusCode, body } = await updateDishController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+app.delete('/api/dishes/:dishId', async (req, res) => {
+    const deleteDishController = makeDeleteDishController()
+
+    const { statusCode, body } = await deleteDishController.execute(req)
 
     res.status(statusCode).json(body)
 })
