@@ -12,3 +12,4 @@ export * from './restaurant/delete-restaurant.js'
 
 export * from './dish/create-dish.js'
 export * from './dish/get-dishes-by-restaurant-id.js'
+export * from './dish/update-dish.js'
