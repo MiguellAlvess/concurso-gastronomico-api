@@ -2,7 +2,7 @@ import { prisma } from '../../../prisma/prisma.js'
 
 export class PostgresUpdateDishRepository {
     async execute(dishId, updateDishParams) {
-        await prisma.dish.update({
+        return await prisma.dish.update({
             where: {
                 id: dishId,
             },
