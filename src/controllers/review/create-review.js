@@ -1,4 +1,4 @@
-import { createReviewSchema } from '../../schemas'
+import { createReviewSchema } from '../../schemas/review.js'
 import { created, serverError, badRequest } from '../helpers/index.js'
 import { ZodError } from 'zod'
 
