@@ -24,6 +24,7 @@ import {
 import {
     makeCreateReviewController,
     makeGetReviewsByUserIdController,
+    makeGetReviewsByDishIdController,
 } from './src/factories/controllers/review.js'
 
 dotenv.config()
@@ -134,6 +135,14 @@ app.get('/api/reviews', async (req, res) => {
     const getReviewsByUserIdController = makeGetReviewsByUserIdController()
 
     const { statusCode, body } = await getReviewsByUserIdController.execute(req)
+
+    res.status(statusCode).send(body)
+})
+
+app.get('/api/reviews', async (req, res) => {
+    const getReviewsByDishIdController = makeGetReviewsByDishIdController()
+
+    const { statusCode, body } = await getReviewsByDishIdController.execute(req)
 
     res.status(statusCode).send(body)
 })
