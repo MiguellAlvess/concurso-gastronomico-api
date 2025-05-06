@@ -16,7 +16,6 @@ export class GetReviewsByUserIdController {
     async execute(httpRequest) {
         try {
             const userId = httpRequest.query.userId
-            console.log(userId)
 
             if (!userId) {
                 requiredFieldIsMissingResponse('userId')
