@@ -16,3 +16,4 @@ export * from './dish/update-dish.js'
 export * from './dish/delete-dish.js'
 
 export * from './review/create-review.js'
+export * from './review/get-reviews-by-user-id.js'
