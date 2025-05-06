@@ -140,7 +140,7 @@ app.delete('/api/dishes/:dishId', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-app.get('/api/reviews', async (req, res) => {
+app.get('/api/reviews/by-user', async (req, res) => {
     const getReviewsByUserIdController = makeGetReviewsByUserIdController()
 
     const { statusCode, body } = await getReviewsByUserIdController.execute(req)
@@ -148,7 +148,7 @@ app.get('/api/reviews', async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-app.get('/api/reviews', async (req, res) => {
+app.get('/api/reviews/by-dish', async (req, res) => {
     const getReviewsByDishIdController = makeGetReviewsByDishIdController()
 
     const { statusCode, body } = await getReviewsByDishIdController.execute(req)
