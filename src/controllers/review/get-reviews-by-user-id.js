@@ -9,13 +9,14 @@ import {
 } from '../helpers/index.js'
 
 export class GetReviewsByUserIdController {
-    construcotr(getReviewsByUserIdUseCase) {
+    constructor(getReviewsByUserIdUseCase) {
         this.getReviewsByUserIdUseCase = getReviewsByUserIdUseCase
     }
 
     async execute(httpRequest) {
         try {
             const userId = httpRequest.query.userId
+            console.log(userId)
 
             if (!userId) {
                 requiredFieldIsMissingResponse('userId')
