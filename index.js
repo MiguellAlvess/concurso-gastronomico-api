@@ -19,6 +19,7 @@ import {
     makeGetDishesByRestaurantIdController,
     makeUpdateDishController,
     makeDeleteDishController,
+    makeGetDishByIdController,
 } from './src/factories/controllers/dish.js'
 
 import {
@@ -95,6 +96,14 @@ app.delete('/api/restaurants/:restaurantId', async (req, res) => {
     const { statusCode, body } = await deleteRestaurantController.execute(req)
 
     res.status(statusCode).json(body)
+})
+
+app.get('/api/dishes', async (req, res) => {
+    const getDishByIdController = makeGetDishByIdController
+
+    const { statusCode, body } = await getDishByIdController.execute(req)
+
+    res.status(statusCode).send(body)
 })
 
 app.get('/api/dishes', async (req, res) => {
