@@ -1,9 +1,16 @@
 import {
     PostgresCreateReviewRepository,
     PostgresGetUserByIdRepository,
+    PostgresGetReviewsByUserIdRepository,
 } from '../../repositories/index.js'
-import { CreateReviewUseCase } from '../../use-cases/index.js'
-import { CreateReviewController } from '../../controllers/index.js'
+import {
+    CreateReviewUseCase,
+    GetReviewsByUserIdUseCase,
+} from '../../use-cases/index.js'
+import {
+    CreateReviewController,
+    GetReviewsByUserIdController,
+} from '../../controllers/index.js'
 
 export const makeCreateReviewController = () => {
     const createReviewRepository = new PostgresCreateReviewRepository()
@@ -16,4 +23,19 @@ export const makeCreateReviewController = () => {
         createReviewUseCase,
     )
     return createReviewController
+}
+
+export const makeGetReviewsByUserIdController = () => {
+    const getReviewsByUserIdRepository =
+        new PostgresGetReviewsByUserIdRepository()
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
+
+    const getReviewsByUserIdUseCase = new GetReviewsByUserIdUseCase(
+        getReviewsByUserIdRepository,
+        getUserByIdRepository,
+    )
+    const getReviewsByUserIdController = new GetReviewsByUserIdController(
+        getReviewsByUserIdUseCase,
+    )
+    return getReviewsByUserIdController
 }
