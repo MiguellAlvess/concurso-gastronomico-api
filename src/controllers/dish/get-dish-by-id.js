@@ -1,7 +1,7 @@
 import {
     invalidIdResponse,
     ok,
-    serverEror,
+    serverError,
     checkIfIdIsValid,
 } from '../helpers/index.js'
 
@@ -25,7 +25,7 @@ export class GetDishByIdController {
             return ok(dish)
         } catch (error) {
             console.error(error)
-            return serverEror()
+            return serverError()
         }
     }
 }
