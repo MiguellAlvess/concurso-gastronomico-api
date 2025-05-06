@@ -1,6 +1,6 @@
 import { UserNotFoundError } from '../../errors/user.js'
 
-export class GetReviewByUserIdRepository {
+export class GetReviewsByUserIdUseCase {
     constructor(getReviewByUserIdRepository, getUserByIdRepository) {
         this.getReviewByUserIdRepository = getReviewByUserIdRepository
         this.getUserByIdRepository = getUserByIdRepository
