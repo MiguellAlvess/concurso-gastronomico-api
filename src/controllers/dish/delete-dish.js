@@ -1,9 +1,9 @@
 import {
-    restaurantNotFoundResponse,
     serverError,
     invalidIdResponse,
     ok,
     checkIfIdIsValid,
+    dishNotFoundResponse,
 } from '../../controllers/helpers/index.js'
 
 export class DeleteDishController {
@@ -24,7 +24,7 @@ export class DeleteDishController {
             const deletedDish = await this.deleteDishUseCase.execute(dishId)
 
             if (!deletedDish) {
-                return restaurantNotFoundResponse()
+                return dishNotFoundResponse()
             }
 
             return ok(deletedDish)
