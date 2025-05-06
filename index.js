@@ -98,8 +98,8 @@ app.delete('/api/restaurants/:restaurantId', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-app.get('/api/dishes', async (req, res) => {
-    const getDishByIdController = makeGetDishByIdController
+app.get('/api/dishes/:dishId', async (req, res) => {
+    const getDishByIdController = makeGetDishByIdController()
 
     const { statusCode, body } = await getDishByIdController.execute(req)
 
