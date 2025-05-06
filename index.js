@@ -21,6 +21,8 @@ import {
     makeDeleteDishController,
 } from './src/factories/controllers/dish.js'
 
+import { makeCreateReviewController } from './src/factories/controllers/review.js'
+
 dotenv.config()
 
 const app = express()
@@ -121,6 +123,14 @@ app.delete('/api/dishes/:dishId', async (req, res) => {
     const deleteDishController = makeDeleteDishController()
 
     const { statusCode, body } = await deleteDishController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+app.post('/api/reviews', async (req, res) => {
+    const createReviewController = makeCreateReviewController()
+
+    const { statusCode, body } = await createReviewController.execute(req)
 
     res.status(statusCode).json(body)
 })
