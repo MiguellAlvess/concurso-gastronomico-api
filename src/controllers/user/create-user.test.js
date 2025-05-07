@@ -2,16 +2,16 @@ import { user } from '../../tests/index.js'
 import { CreateUserController } from './create-user.js'
 
 describe('Create User Controller', () => {
-    class CreateUserRepositoryStub {
+    class CreateUserUseCaseStub {
         async execute() {
             return user
         }
     }
     const makeSut = () => {
-        const createUserRepository = new CreateUserRepositoryStub()
-        const sut = new CreateUserController(createUserRepository)
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const sut = new CreateUserController(createUserUseCase)
 
-        return { sut, createUserRepository }
+        return { sut, createUserUseCase }
     }
 
     const httpRequest = {
@@ -91,5 +91,19 @@ describe('Create User Controller', () => {
 
         // assert
         expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 500 if  if CreateUserUseCase throws', async () => {
+        // arrange
+        const { sut, createUserUseCase } = makeSut()
+        jest.spyOn(createUserUseCase, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        // act
+        const result = await sut.execute(httpRequest)
+
+        // assert
+        expect(result.statusCode).toBe(500)
     })
 })
