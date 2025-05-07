@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { user } from '../../tests/index.js'
 import { GetUserByIdController } from './get-user-by-id'
 
@@ -15,16 +16,17 @@ describe('Get User By Id Controller', () => {
         return { sut, getUserByIdUseCase }
     }
 
+    const baseHttpRequest = {
+        params: {
+            userId: faker.string.uuid(),
+        },
+    }
     it('should return 200 when user is found', async () => {
         // arrange
         const { sut } = makeSut()
 
         // act
-        const response = await sut.execute({
-            params: {
-                userId: user.id,
-            },
-        })
+        const response = await sut.execute(baseHttpRequest)
 
         // assert
         expect(response.statusCode).toBe(200)
@@ -43,5 +45,17 @@ describe('Get User By Id Controller', () => {
 
         // assert
         expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 404 if user is not found', async () => {
+        // arrange
+        const { sut, getUserByIdUseCase } = makeSut()
+        jest.spyOn(getUserByIdUseCase, 'execute').mockResolvedValueOnce(null)
+
+        // act
+        const result = await sut.execute(baseHttpRequest)
+
+        // assert
+        expect(result.statusCode).toBe(404)
     })
 })
