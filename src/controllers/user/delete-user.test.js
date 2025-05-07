@@ -59,4 +59,18 @@ describe('Delete User Controller', () => {
         // assert
         expect(result.statusCode).toBe(404)
     })
+
+    it('should return 500 if DeleteUserUseCase throws', async () => {
+        // arrange
+        const { sut, deleteUserUseCase } = makeSut()
+        jest.spyOn(deleteUserUseCase, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        // act
+        const result = await sut.execute(httpRequest)
+
+        // assert
+        expect(result.statusCode).toBe(500)
+    })
 })
