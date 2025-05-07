@@ -1,6 +1,7 @@
 import { user } from '../../tests/index.js'
 import { CreateUserController } from './create-user.js'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
+import { faker } from '@faker-js/faker'
 
 describe('Create User Controller', () => {
     class CreateUserUseCaseStub {
@@ -94,6 +95,7 @@ describe('Create User Controller', () => {
         // assert
         expect(result.statusCode).toBe(400)
     })
+
     it('should return 400 if password is not provided', async () => {
         // arrange
         const { sut } = makeSut()
@@ -103,6 +105,24 @@ describe('Create User Controller', () => {
             body: {
                 ...httpRequest,
                 password: undefined,
+            },
+        })
+
+        // assert
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if password is invalid', async () => {
+        // arrange
+        const { sut } = makeSut()
+
+        // act
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                password: faker.internet.password({
+                    length: 5,
+                }),
             },
         })
 
