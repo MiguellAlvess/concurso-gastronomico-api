@@ -1,5 +1,6 @@
 import { user } from '../../tests/index.js'
 import { CreateUserController } from './create-user.js'
+import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 describe('Create User Controller', () => {
     class CreateUserUseCaseStub {
@@ -117,5 +118,19 @@ describe('Create User Controller', () => {
 
         // assert
         expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)
+    })
+
+    it('should return 400 if CreateUserUseCase throws EmailIsAlreadyInUseError', async () => {
+        // arrange
+        const { sut, createUserUseCase } = makeSut()
+        jest.spyOn(createUserUseCase, 'execute').mockRejectedValueOnce(
+            new EmailAlreadyInUseError(),
+        )
+
+        // act
+        const result = await sut.execute(httpRequest)
+
+        // assert
+        expect(result.statusCode).toBe(400)
     })
 })
