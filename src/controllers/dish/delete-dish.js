@@ -5,6 +5,7 @@ import {
     checkIfIdIsValid,
     dishNotFoundResponse,
 } from '../../controllers/helpers/index.js'
+import { DishNotFoundError } from '../../errors/dish.js'
 
 export class DeleteDishController {
     constructor(deleteDishUseCase) {
@@ -23,12 +24,11 @@ export class DeleteDishController {
 
             const deletedDish = await this.deleteDishUseCase.execute(dishId)
 
-            if (!deletedDish) {
-                return dishNotFoundResponse()
-            }
-
             return ok(deletedDish)
         } catch (error) {
+            if (error instanceof DishNotFoundError) {
+                return dishNotFoundResponse()
+            }
             console.error(error)
             return serverError()
         }
