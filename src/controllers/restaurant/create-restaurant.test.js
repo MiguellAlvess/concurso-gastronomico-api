@@ -129,4 +129,18 @@ describe('Create Restaurant Controller', () => {
         // assert
         expect(result.statusCode).toBe(400)
     })
+
+    it('should return 500 if CreateRestaurantUseCase throws', async () => {
+        // arrange
+        const { sut, createRestaurantUseCase } = makeSut()
+        jest.spyOn(createRestaurantUseCase, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        // act
+        const result = await sut.execute(httpRequest)
+
+        // assert
+        expect(result.statusCode).toBe(500)
+    })
 })
