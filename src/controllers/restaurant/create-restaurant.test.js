@@ -143,4 +143,16 @@ describe('Create Restaurant Controller', () => {
         // assert
         expect(result.statusCode).toBe(500)
     })
+
+    it('should call CreateRestaurantUseCase with correct params', async () => {
+        // arrange
+        const { sut, createRestaurantUseCase } = makeSut()
+        const executeSpy = jest.spyOn(createRestaurantUseCase, 'execute')
+
+        // act
+        await sut.execute(httpRequest)
+
+        // assert
+        expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)
+    })
 })
