@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { restaurant } from '../../tests/index.js'
 import { CreateRestaurantController } from './create-restaurant'
+import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
 describe('Create Restaurant Controller', () => {
     class CreateRestaurantUseCaseStub {
@@ -110,6 +111,20 @@ describe('Create Restaurant Controller', () => {
                 }),
             },
         })
+
+        // assert
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if CreateRestaurantUseCase throws CnpjIsAlreadyInUseError', async () => {
+        // arrange
+        const { sut, createRestaurantUseCase } = makeSut()
+        jest.spyOn(createRestaurantUseCase, 'execute').mockRejectedValueOnce(
+            new CnpjAlreadyInUseError(),
+        )
+
+        // act
+        const result = await sut.execute(httpRequest)
 
         // assert
         expect(result.statusCode).toBe(400)
