@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { restaurant } from '../../tests/index.js'
 import { CreateRestaurantController } from './create-restaurant'
 
@@ -89,6 +90,24 @@ describe('Create Restaurant Controller', () => {
             body: {
                 ...httpRequest,
                 password: undefined,
+            },
+        })
+
+        // assert
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 when password is invalid', async () => {
+        // arrange
+        const { sut } = makeSut()
+
+        // act
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                password: faker.internet.password({
+                    length: 5,
+                }),
             },
         })
 
