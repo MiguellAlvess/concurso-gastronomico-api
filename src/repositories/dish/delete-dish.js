@@ -1,4 +1,6 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prisma } from '../../../prisma/prisma.js'
+import { DishNotFoundError } from '../../errors/dish.js'
 
 export class PostgresDeleteDishRepository {
     async execute(dishId) {
@@ -9,7 +11,14 @@ export class PostgresDeleteDishRepository {
                 },
             })
         } catch (error) {
-            return null
+            if (error instanceof PrismaClientKnownRequestError) {
+                // P2025 -> An operation failed because it depends on one or more records that were required but not found. {cause}
+                if (error.code === 'P2025') {
+                    throw new DishNotFoundError(dishId)
+                }
+            }
+
+            throw error
         }
     }
 }
