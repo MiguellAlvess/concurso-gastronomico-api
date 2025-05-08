@@ -29,6 +29,7 @@ export class DeleteReviewController {
             if (error instanceof ReviewNotFoundError) {
                 return reviewNotFoundResponse()
             }
+
             console.error(error)
             return serverError()
         }
