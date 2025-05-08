@@ -31,4 +31,20 @@ describe('Create Restaurant Controller', () => {
         // assert
         expect(response.statusCode).toBe(201)
     })
+
+    it('should return 400 if name is not provided', async () => {
+        // arrange
+        const { sut } = makeSut()
+
+        // act
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                name: undefined,
+            },
+        })
+
+        // assert
+        expect(result.statusCode).toBe(400)
+    })
 })
