@@ -1,3 +1,4 @@
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 import {
     checkIfIdIsValid,
     invalidIdResponse,
@@ -24,12 +25,11 @@ export class DeleteRestaurantController {
             const deletedRestaurant =
                 await this.deleteRestaurantUseCase.execute(restaurantId)
 
-            if (!deletedRestaurant) {
-                return restaurantNotFoundResponse()
-            }
-
             return ok(deletedRestaurant)
         } catch (error) {
+            if (error instanceof RestaurantNotFoundError) {
+                return restaurantNotFoundResponse()
+            }
             console.error(error)
             return serverError()
         }
