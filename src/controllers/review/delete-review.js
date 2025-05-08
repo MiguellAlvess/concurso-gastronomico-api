@@ -5,6 +5,7 @@ import {
     checkIfIdIsValid,
     reviewNotFoundResponse,
 } from '../helpers/index.js'
+import { ReviewNotFoundError } from '../../errors/review.js'
 
 export class DeleteReviewController {
     constructor(deleteReviewUseCase) {
@@ -23,12 +24,11 @@ export class DeleteReviewController {
 
             const deletedReview = await this.deleteReviewUseCase.execute(dishId)
 
-            if (!deletedReview) {
-                return reviewNotFoundResponse()
-            }
-
             return ok(deletedReview)
         } catch (error) {
+            if (error instanceof ReviewNotFoundError) {
+                return reviewNotFoundResponse()
+            }
             console.error(error)
             return serverError()
         }
