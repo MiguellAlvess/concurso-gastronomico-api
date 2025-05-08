@@ -32,7 +32,7 @@ describe('Create Restaurant Controller', () => {
         expect(response.statusCode).toBe(201)
     })
 
-    it('should return 400 if name is not provided', async () => {
+    it('should return 400 when name is not provided', async () => {
         // arrange
         const { sut } = makeSut()
 
@@ -48,7 +48,7 @@ describe('Create Restaurant Controller', () => {
         expect(result.statusCode).toBe(400)
     })
 
-    it('should return 400 if cnpj is not provided', async () => {
+    it('should return 400 when cnpj is not provided', async () => {
         // arrange
         const { sut } = makeSut()
 
@@ -57,6 +57,22 @@ describe('Create Restaurant Controller', () => {
             body: {
                 ...httpRequest,
                 cnpj: undefined,
+            },
+        })
+
+        // assert
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 when cnpj is invalid', async () => {
+        // arrange
+        const { sut } = makeSut()
+
+        // act
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                cnpj: 'invalid-cnpj',
             },
         })
 
