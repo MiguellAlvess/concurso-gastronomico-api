@@ -1,10 +1,14 @@
-import bcrypt from 'bcrypt'
 import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
 export class UpdateRestaurantUseCase {
-    constructor(getRestaurantByCnpjRepository, updateRestaurantRepository) {
+    constructor(
+        getRestaurantByCnpjRepository,
+        updateRestaurantRepository,
+        passwordHasherAdapter,
+    ) {
         this.getRestaurantByCnpjRepository = getRestaurantByCnpjRepository
         this.updateRestaurantRepository = updateRestaurantRepository
+        this.passwordHasherAdapter = passwordHasherAdapter
     }
 
     async execute(restaurantId, updateRestaurantParams) {
@@ -26,9 +30,8 @@ export class UpdateRestaurantUseCase {
         }
 
         if (updateRestaurantParams.password) {
-            const hashedPassword = await bcrypt.hash(
+            const hashedPassword = await this.passwordHasherAdapter.execute(
                 updateRestaurantParams.password,
-                10,
             )
 
             restaurant.password = hashedPassword

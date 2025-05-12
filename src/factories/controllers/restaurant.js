@@ -59,10 +59,12 @@ export const makeUpdateRestaurantController = () => {
     const getRestaurantByCnpjRepository =
         new PostgresGetRestaurantByCnpjRepository()
     const updateRestaurantRepository = new PostgresUpdateRestaurantRepository()
+    const passwordHasherAdapter = new PasswordHasherAdapter()
 
     const updateRestaurantUseCase = new UpdateRestaurantUseCase(
         getRestaurantByCnpjRepository,
         updateRestaurantRepository,
+        passwordHasherAdapter,
     )
 
     const updateRestaurantController = new UpdateRestaurantController(
