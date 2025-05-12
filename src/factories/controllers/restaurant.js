@@ -17,6 +17,7 @@ import {
     UpdateRestaurantController,
     DeleteRestaurantController,
 } from '../../controllers/index.js'
+import { PasswordHasherAdapter } from '../../adapters/index.js'
 
 export const makeGetRestaurantByIdController = () => {
     const getRestaurantByIdRepository =
@@ -34,10 +35,12 @@ export const makeCreateRestaurantController = () => {
     const getRestaurantByCnpjRepository =
         new PostgresGetRestaurantByCnpjRepository()
     const createRestaurantRepository = new PostgresCreateRestaurantRepository()
+    const passwordHasherAdapter = new PasswordHasherAdapter()
 
     const createRestaurantUseCase = new CreateRestaurantUseCase(
         getRestaurantByCnpjRepository,
         createRestaurantRepository,
+        passwordHasherAdapter,
     )
 
     const createRestaurantController = new CreateRestaurantController(
