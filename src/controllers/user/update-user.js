@@ -5,9 +5,10 @@ import {
     badRequest,
     invalidIdResponse,
     checkIfIdIsValid,
+    userNotFoundResponse,
 } from '../helpers/index.js'
 
-import { EmailAlreadyInUseError } from '../../errors/user.js'
+import { EmailAlreadyInUseError, UserNotFoundError } from '../../errors/user.js'
 import { updateUserSchema } from '../../schemas/index.js'
 export class UpdateUserController {
     constructor(updateUserUseCase) {
@@ -38,6 +39,11 @@ export class UpdateUserController {
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
             }
+
+            if (error instanceof UserNotFoundError) {
+                return userNotFoundResponse()
+            }
+
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message })
             }
