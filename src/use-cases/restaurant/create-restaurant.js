@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid'
-
 import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
 export class CreateRestaurantUseCase {
@@ -7,10 +5,12 @@ export class CreateRestaurantUseCase {
         getRestaurantByCnpjRepository,
         createRestaurantRepository,
         passwordHasherAdapter,
+        idGeneratorAdapter,
     ) {
         this.getRestaurantByCnpjRepository = getRestaurantByCnpjRepository
         this.createRestaurantRepository = createRestaurantRepository
         this.passwordHasherAdapter = passwordHasherAdapter
+        this.idGeneratorAdapter = idGeneratorAdapter
     }
 
     async execute(createRestaurantParams) {
@@ -21,7 +21,7 @@ export class CreateRestaurantUseCase {
         if (restaurantWithProvidedCnpj) {
             throw new CnpjAlreadyInUseError(createRestaurantParams.cnpj)
         }
-        const restaurantId = uuid()
+        const restaurantId = this.idGeneratorAdapter.execute()
 
         const hashedPassword = await this.passwordHasherAdapter.execute(
             createRestaurantParams.password,
