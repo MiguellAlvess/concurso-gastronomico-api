@@ -18,13 +18,16 @@ import {
     GetReviewsByDishIdController,
     DeleteReviewController,
 } from '../../controllers/index.js'
+import { IdGeneratorAdapter } from '../../adapters/index.js'
 
 export const makeCreateReviewController = () => {
     const createReviewRepository = new PostgresCreateReviewRepository()
     const getUserByIdRepository = new PostgresGetUserByIdRepository()
+    const idGeneratorAdapter = new IdGeneratorAdapter()
     const createReviewUseCase = new CreateReviewUseCase(
         createReviewRepository,
         getUserByIdRepository,
+        idGeneratorAdapter,
     )
     const createReviewController = new CreateReviewController(
         createReviewUseCase,

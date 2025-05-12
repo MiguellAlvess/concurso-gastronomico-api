@@ -1,10 +1,14 @@
 import { UserNotFoundError } from '../../errors/user.js'
-import { v4 as uuid } from 'uuid'
 
 export class CreateReviewUseCase {
-    constructor(createReviewRepository, getUserByIdRepository) {
+    constructor(
+        createReviewRepository,
+        getUserByIdRepository,
+        idGeneratorAdapter,
+    ) {
         this.createReviewRepository = createReviewRepository
         this.getUserByIdRepository = getUserByIdRepository
+        this.idGeneratorAdapter = idGeneratorAdapter
     }
 
     async execute(createReviewParams) {
@@ -16,7 +20,7 @@ export class CreateReviewUseCase {
             throw new UserNotFoundError(userId)
         }
 
-        const reviewId = uuid()
+        const reviewId = this.idGeneratorAdapter.execute()
 
         const review = await this.createReviewRepository.execute({
             ...createReviewParams,
