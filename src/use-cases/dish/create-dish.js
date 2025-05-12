@@ -1,10 +1,14 @@
-import { v4 as uuid } from 'uuid'
 import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 export class CreateDishUseCase {
-    constructor(createDishRepository, getRestaurantByIdRepository) {
+    constructor(
+        createDishRepository,
+        getRestaurantByIdRepository,
+        idGeneratorAdapter,
+    ) {
         this.createDishRepository = createDishRepository
         this.getRestaurantByIdRepository = getRestaurantByIdRepository
+        this.idGeneratorAdapter = idGeneratorAdapter
     }
 
     async execute(createDishParams) {
@@ -17,7 +21,7 @@ export class CreateDishUseCase {
             throw new RestaurantNotFoundError(restaurantId)
         }
 
-        const dishId = uuid()
+        const dishId = this.idGeneratorAdapter.generate()
 
         const dish = await this.createDishRepository.execute({
             ...createDishParams,

@@ -22,14 +22,17 @@ import {
     DeleteDishController,
     GetDishByIdController,
 } from '../../controllers/index.js'
+import { IdGeneratorAdapter } from '../../adapters/index.js'
 
 export const makeCreateDishController = () => {
     const createDishRepository = new PostgresCreateDishRepository()
     const getRestaurantByIdRepository =
         new PostgresGetRestaurantByIdRepository()
+    const idGeneratorAdapter = new IdGeneratorAdapter()
     const createDishUseCase = new CreateDishUseCase(
         createDishRepository,
         getRestaurantByIdRepository,
+        idGeneratorAdapter,
     )
     const createDishController = new CreateDishController(createDishUseCase)
     return createDishController
