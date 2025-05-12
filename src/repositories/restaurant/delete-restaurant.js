@@ -1,5 +1,5 @@
 import { prisma } from '../../../prisma/prisma.js'
-import { RestaurantNotFoundErrort } from '../../errors/restaurant.js'
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 export class PostgresDeleteRestaurantRepository {
     async execute(restaurantId) {
@@ -13,7 +13,7 @@ export class PostgresDeleteRestaurantRepository {
             if (error.name === 'PrismaClientKnownRequestError') {
                 // P2025 -> An operation failed because it depends on one or more records that were required but not found. {cause}
                 if (error.code === 'P2025') {
-                    throw new RestaurantNotFoundErrort(restaurantId)
+                    throw new RestaurantNotFoundError(restaurantId)
                 }
             }
 
