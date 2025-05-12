@@ -21,7 +21,7 @@ export class CreateDishUseCase {
             throw new RestaurantNotFoundError(restaurantId)
         }
 
-        const dishId = this.idGeneratorAdapter.generate()
+        const dishId = this.idGeneratorAdapter.execute()
 
         const dish = await this.createDishRepository.execute({
             ...createDishParams,
