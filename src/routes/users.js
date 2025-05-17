@@ -1,0 +1,41 @@
+import { Router } from 'express'
+import {
+    makeCreateUserController,
+    makeGetUserByIdController,
+    makeUpdateUserController,
+    makeDeleteUserController,
+} from '../factories/controllers/user.js'
+
+export const usersRouter = Router()
+
+usersRouter.get('/api/users/:userId', async (req, res) => {
+    const getUserByIdController = makeGetUserByIdController()
+
+    const { statusCode, body } = await getUserByIdController.execute(req)
+
+    res.status(statusCode).send(body)
+})
+
+usersRouter.post('/api/users', async (req, res) => {
+    const createUserController = makeCreateUserController()
+
+    const { statusCode, body } = await createUserController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+usersRouter.patch('/api/users/:userId', async (req, res) => {
+    const updateUserController = makeUpdateUserController()
+
+    const { statusCode, body } = await updateUserController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+usersRouter.delete('/api/users/:userId', async (req, res) => {
+    const deleteUserController = makeDeleteUserController()
+
+    const { statusCode, body } = await deleteUserController.execute(req)
+
+    res.status(statusCode).json(body)
+})
