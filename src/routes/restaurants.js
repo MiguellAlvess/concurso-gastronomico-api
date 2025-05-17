@@ -5,10 +5,11 @@ import {
     makeUpdateRestaurantController,
     makeDeleteRestaurantController,
 } from '../factories/controllers/restaurant.js'
+import { auth } from '../middlewares/auth.js'
 
 export const restaurantsRouter = Router()
 
-restaurantsRouter.get('/:restaurantId', async (req, res) => {
+restaurantsRouter.get('/:restaurantId', auth, async (req, res) => {
     const getRestaurantByIdController = makeGetRestaurantByIdController()
 
     const { statusCode, body } = await getRestaurantByIdController.execute(req)
@@ -24,7 +25,7 @@ restaurantsRouter.post('/', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.patch('/:restaurantId', async (req, res) => {
+restaurantsRouter.patch('/:restaurantId', auth, async (req, res) => {
     const updateRestaurantController = makeUpdateRestaurantController()
 
     const { statusCode, body } = await updateRestaurantController.execute(req)
@@ -32,7 +33,7 @@ restaurantsRouter.patch('/:restaurantId', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.delete('/:restaurantId', async (req, res) => {
+restaurantsRouter.delete('/:restaurantId', auth, async (req, res) => {
     const deleteRestaurantController = makeDeleteRestaurantController()
 
     const { statusCode, body } = await deleteRestaurantController.execute(req)
