@@ -8,7 +8,7 @@ import {
 
 export const usersRouter = Router()
 
-usersRouter.get('/api/users/:userId', async (req, res) => {
+usersRouter.get('/:userId', async (req, res) => {
     const getUserByIdController = makeGetUserByIdController()
 
     const { statusCode, body } = await getUserByIdController.execute(req)
@@ -16,7 +16,7 @@ usersRouter.get('/api/users/:userId', async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-usersRouter.post('/api/users', async (req, res) => {
+usersRouter.post('/', async (req, res) => {
     const createUserController = makeCreateUserController()
 
     const { statusCode, body } = await createUserController.execute(req)
@@ -24,7 +24,7 @@ usersRouter.post('/api/users', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-usersRouter.patch('/api/users/:userId', async (req, res) => {
+usersRouter.patch('/:userId', async (req, res) => {
     const updateUserController = makeUpdateUserController()
 
     const { statusCode, body } = await updateUserController.execute(req)
@@ -32,7 +32,7 @@ usersRouter.patch('/api/users/:userId', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-usersRouter.delete('/api/users/:userId', async (req, res) => {
+usersRouter.delete('/:userId', async (req, res) => {
     const deleteUserController = makeDeleteUserController()
 
     const { statusCode, body } = await deleteUserController.execute(req)

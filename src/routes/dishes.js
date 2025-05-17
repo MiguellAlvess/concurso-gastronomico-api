@@ -9,7 +9,7 @@ import {
 
 export const dishesRouter = Router()
 
-dishesRouter.get('/api/dishes/:dishId', async (req, res) => {
+dishesRouter.get('/:dishId', async (req, res) => {
     const getDishByIdController = makeGetDishByIdController()
 
     const { statusCode, body } = await getDishByIdController.execute(req)
@@ -17,7 +17,7 @@ dishesRouter.get('/api/dishes/:dishId', async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-dishesRouter.get('/api/dishes', async (req, res) => {
+dishesRouter.get('/', async (req, res) => {
     const getDishesByRestaurantIdController =
         makeGetDishesByRestaurantIdController()
 
@@ -27,7 +27,7 @@ dishesRouter.get('/api/dishes', async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-dishesRouter.post('/api/dishes', async (req, res) => {
+dishesRouter.post('/', async (req, res) => {
     const createDishController = makeCreateDishController()
 
     const { statusCode, body } = await createDishController.execute(req)
@@ -35,7 +35,7 @@ dishesRouter.post('/api/dishes', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-dishesRouter.patch('/api/dishes/:dishId', async (req, res) => {
+dishesRouter.patch('/:dishId', async (req, res) => {
     const updateDishController = makeUpdateDishController()
 
     const { statusCode, body } = await updateDishController.execute(req)
@@ -43,7 +43,7 @@ dishesRouter.patch('/api/dishes/:dishId', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-dishesRouter.delete('/api/dishes/:dishId', async (req, res) => {
+dishesRouter.delete('/:dishId', async (req, res) => {
     const deleteDishController = makeDeleteDishController()
 
     const { statusCode, body } = await deleteDishController.execute(req)

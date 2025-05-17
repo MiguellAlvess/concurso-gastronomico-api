@@ -8,7 +8,7 @@ import {
 
 export const reviewsRouter = Router()
 
-reviewsRouter.get('/api/reviews/by-user', async (req, res) => {
+reviewsRouter.get('/by-user', async (req, res) => {
     const getReviewsByUserIdController = makeGetReviewsByUserIdController()
 
     const { statusCode, body } = await getReviewsByUserIdController.execute(req)
@@ -16,7 +16,7 @@ reviewsRouter.get('/api/reviews/by-user', async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-reviewsRouter.get('/api/reviews/by-dish', async (req, res) => {
+reviewsRouter.get('/by-dish', async (req, res) => {
     const getReviewsByDishIdController = makeGetReviewsByDishIdController()
 
     const { statusCode, body } = await getReviewsByDishIdController.execute(req)
@@ -24,7 +24,7 @@ reviewsRouter.get('/api/reviews/by-dish', async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-reviewsRouter.post('/api/reviews', async (req, res) => {
+reviewsRouter.post('/', async (req, res) => {
     const createReviewController = makeCreateReviewController()
 
     const { statusCode, body } = await createReviewController.execute(req)
@@ -32,7 +32,7 @@ reviewsRouter.post('/api/reviews', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-reviewsRouter.delete('/api/reviews/:reviewId', async (req, res) => {
+reviewsRouter.delete('/:reviewId', async (req, res) => {
     const deleteReviewController = makeDeleteReviewController()
 
     const { statusCode, body } = await deleteReviewController.execute(req)
