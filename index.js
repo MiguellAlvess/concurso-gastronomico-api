@@ -2,14 +2,6 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import {
-    makeCreateDishController,
-    makeGetDishesByRestaurantIdController,
-    makeUpdateDishController,
-    makeDeleteDishController,
-    makeGetDishByIdController,
-} from './src/factories/controllers/dish.js'
-
-import {
     makeCreateReviewController,
     makeGetReviewsByUserIdController,
     makeGetReviewsByDishIdController,
@@ -21,48 +13,6 @@ dotenv.config()
 const app = express()
 
 app.use(express.json())
-
-app.get('/api/dishes/:dishId', async (req, res) => {
-    const getDishByIdController = makeGetDishByIdController()
-
-    const { statusCode, body } = await getDishByIdController.execute(req)
-
-    res.status(statusCode).send(body)
-})
-
-app.get('/api/dishes', async (req, res) => {
-    const getDishesByRestaurantIdController =
-        makeGetDishesByRestaurantIdController()
-
-    const { statusCode, body } =
-        await getDishesByRestaurantIdController.execute(req)
-
-    res.status(statusCode).send(body)
-})
-
-app.post('/api/dishes', async (req, res) => {
-    const createDishController = makeCreateDishController()
-
-    const { statusCode, body } = await createDishController.execute(req)
-
-    res.status(statusCode).json(body)
-})
-
-app.patch('/api/dishes/:dishId', async (req, res) => {
-    const updateDishController = makeUpdateDishController()
-
-    const { statusCode, body } = await updateDishController.execute(req)
-
-    res.status(statusCode).json(body)
-})
-
-app.delete('/api/dishes/:dishId', async (req, res) => {
-    const deleteDishController = makeDeleteDishController()
-
-    const { statusCode, body } = await deleteDishController.execute(req)
-
-    res.status(statusCode).json(body)
-})
 
 app.get('/api/reviews/by-user', async (req, res) => {
     const getReviewsByUserIdController = makeGetReviewsByUserIdController()
