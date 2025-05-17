@@ -2,13 +2,6 @@ import express from 'express'
 import dotenv from 'dotenv'
 
 import {
-    makeCreateRestaurantController,
-    makeGetRestaurantByIdController,
-    makeUpdateRestaurantController,
-    makeDeleteRestaurantController,
-} from './src/factories/controllers/restaurant.js'
-
-import {
     makeCreateDishController,
     makeGetDishesByRestaurantIdController,
     makeUpdateDishController,
@@ -28,38 +21,6 @@ dotenv.config()
 const app = express()
 
 app.use(express.json())
-
-app.get('/api/restaurants/:restaurantId', async (req, res) => {
-    const getRestaurantByIdController = makeGetRestaurantByIdController()
-
-    const { statusCode, body } = await getRestaurantByIdController.execute(req)
-
-    res.status(statusCode).send(body)
-})
-
-app.post('/api/restaurants', async (req, res) => {
-    const createRestaurantController = makeCreateRestaurantController()
-
-    const { statusCode, body } = await createRestaurantController.execute(req)
-
-    res.status(statusCode).json(body)
-})
-
-app.patch('/api/restaurants/:restaurantId', async (req, res) => {
-    const updateRestaurantController = makeUpdateRestaurantController()
-
-    const { statusCode, body } = await updateRestaurantController.execute(req)
-
-    res.status(statusCode).json(body)
-})
-
-app.delete('/api/restaurants/:restaurantId', async (req, res) => {
-    const deleteRestaurantController = makeDeleteRestaurantController()
-
-    const { statusCode, body } = await deleteRestaurantController.execute(req)
-
-    res.status(statusCode).json(body)
-})
 
 app.get('/api/dishes/:dishId', async (req, res) => {
     const getDishByIdController = makeGetDishByIdController()
