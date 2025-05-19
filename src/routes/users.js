@@ -43,7 +43,7 @@ usersRouter.delete('/:userId', auth, async (req, res) => {
 })
 
 usersRouter.post('/login', async (req, res) => {
-    const loginUserController = new makeLoginUserController()
+    const loginUserController = makeLoginUserController()
 
     const { statusCode, body } = await loginUserController.execute(req)
 
