@@ -8,6 +8,11 @@ export const created = (body) => ({
     body,
 })
 
+export const unauthorized = (body) => ({
+    statusCode: 401,
+    body,
+})
+
 export const serverError = () => ({
     statusCode: 500,
     body: {
