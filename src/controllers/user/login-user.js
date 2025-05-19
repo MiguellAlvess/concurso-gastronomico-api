@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import { loginSchema } from '../../schemas/index.js'
+import { loginUserSchema } from '../../schemas/index.js'
 import {
     serverError,
     ok,
@@ -19,7 +19,7 @@ export class LoginUserController {
         try {
             const params = httpRequest.body
 
-            await loginSchema.parseAsync(params)
+            await loginUserSchema.parseAsync(params)
 
             const user = await this.loginUserUseCase.execute(
                 params.email,
