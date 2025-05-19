@@ -2,6 +2,7 @@ export * from './user/create-user.js'
 export * from './user/get-user-by-id.js'
 export * from './user/update-user.js'
 export * from './user/delete-user.js'
+export * from './user/login-user.js'
 
 export * from './restaurant/create-restaurant.js'
 export * from './restaurant/get-restaurant-by-id.js'
