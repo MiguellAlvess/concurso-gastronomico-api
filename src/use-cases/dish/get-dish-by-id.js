@@ -4,7 +4,7 @@ export class GetDishByIdUseCase {
     }
 
     async execute(dishId) {
-        const dish = await this.getDishByIdUseCase.execute(dishId)
+        const dish = await this.getDishByIdRepository.execute(dishId)
 
         return dish
     }
