@@ -18,7 +18,7 @@ export class GetReviewsByUserIdController {
             const userId = httpRequest.query.userId
 
             if (!userId) {
-                requiredFieldIsMissingResponse('userId')
+                return requiredFieldIsMissingResponse('userId')
             }
 
             const userIdIsValid = checkIfIdIsValid(userId)
