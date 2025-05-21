@@ -46,6 +46,3 @@ export const createDishSchema = z.object({
 export const updateDishSchema = createDishSchema
     .omit({ restaurant_id: true })
     .partial()
-    .strict({
-        message: 'Some provided field is not allowed',
-    })

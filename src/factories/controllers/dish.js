@@ -62,7 +62,11 @@ export const makeGetDishesByRestaurantIdController = () => {
 
 export const makeUpdateDishController = () => {
     const updateDishRepository = new PostgresUpdateDishRepository()
-    const updateDishUseCase = new UpdateDishUseCase(updateDishRepository)
+    const getDishByIdRepository = new PostgresGetDishByIdRepository()
+    const updateDishUseCase = new UpdateDishUseCase(
+        updateDishRepository,
+        getDishByIdRepository,
+    )
     const updateDishController = new UpdateDishController(updateDishUseCase)
     return updateDishController
 }

@@ -5,10 +5,12 @@ import {
     invalidIdResponse,
     badRequest,
     dishNotFoundResponse,
+    forbiddenResponse,
 } from '../helpers/index.js'
 import { updateDishSchema } from '../../schemas/dish.js'
 import { ZodError } from 'zod'
 import { DishNotFoundError } from '../../errors/dish.js'
+import { ForbiddenError } from '../../errors/errors.js'
 
 export class UpdateDishController {
     constructor(updateDishUseCase) {
@@ -36,6 +38,9 @@ export class UpdateDishController {
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
+            }
+            if (error instanceof ForbiddenError) {
+                return forbiddenResponse()
             }
             if (error instanceof DishNotFoundError) {
                 return dishNotFoundResponse()
