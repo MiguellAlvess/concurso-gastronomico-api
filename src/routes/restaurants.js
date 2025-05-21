@@ -10,10 +10,15 @@ import { auth } from '../middlewares/auth.js'
 
 export const restaurantsRouter = Router()
 
-restaurantsRouter.get('/:restaurantId', auth, async (req, res) => {
+restaurantsRouter.get('/', auth, async (req, res) => {
     const getRestaurantByIdController = makeGetRestaurantByIdController()
 
-    const { statusCode, body } = await getRestaurantByIdController.execute(req)
+    const { statusCode, body } = await getRestaurantByIdController.execute({
+        ...req,
+        params: {
+            restaurantId: req.restaurantId,
+        },
+    })
 
     res.status(statusCode).send(body)
 })
@@ -26,18 +31,28 @@ restaurantsRouter.post('/', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.patch('/:restaurantId', auth, async (req, res) => {
+restaurantsRouter.patch('/', auth, async (req, res) => {
     const updateRestaurantController = makeUpdateRestaurantController()
 
-    const { statusCode, body } = await updateRestaurantController.execute(req)
+    const { statusCode, body } = await updateRestaurantController.execute({
+        ...req,
+        params: {
+            restaurantId: req.restaurantId,
+        },
+    })
 
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.delete('/:restaurantId', auth, async (req, res) => {
+restaurantsRouter.delete('/', auth, async (req, res) => {
     const deleteRestaurantController = makeDeleteRestaurantController()
 
-    const { statusCode, body } = await deleteRestaurantController.execute(req)
+    const { statusCode, body } = await deleteRestaurantController.execute({
+        ...req,
+        params: {
+            restaurantId: req.restaurantId,
+        },
+    })
 
     res.status(statusCode).json(body)
 })
