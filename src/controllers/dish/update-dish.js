@@ -9,8 +9,7 @@ import {
 } from '../helpers/index.js'
 import { updateDishSchema } from '../../schemas/dish.js'
 import { ZodError } from 'zod'
-import { DishNotFoundError } from '../../errors/dish.js'
-import { ForbiddenError } from '../../errors/errors.js'
+import { DishNotFoundError, ForbiddenError } from '../../errors/index.js'
 
 export class UpdateDishController {
     constructor(updateDishUseCase) {
