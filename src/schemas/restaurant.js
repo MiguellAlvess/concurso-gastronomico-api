@@ -29,3 +29,20 @@ export const createRestaurantSchema = z.object({
 export const updateRestaurantSchema = createRestaurantSchema.partial().strict({
     message: 'Some provided field is not allowed',
 })
+
+export const loginRestaurantSchema = z.object({
+    cnpj: z
+        .string({ required_error: 'CNPJ é obrigatório' })
+        .trim()
+        .refine((cnpj) => validateCNPJ(cnpj), {
+            message: 'CNPJ invalid',
+        }),
+    password: z
+        .string({
+            required_error: 'Password is required',
+        })
+        .trim()
+        .min(6, {
+            message: 'Password must be at least 6 characters',
+        }),
+})
