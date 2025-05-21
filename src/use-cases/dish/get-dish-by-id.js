@@ -1,11 +1,11 @@
 export class GetDishByIdUseCase {
-    constructor(getDishByIdUseCase) {
-        this.getDishByIdUseCase = getDishByIdUseCase
+    constructor(getDishByIdRepository) {
+        this.getDishByIdRepository = getDishByIdRepository
     }
 
     async execute(dishId) {
-        const user = await this.getDishByIdUseCase.execute(dishId)
+        const dish = await this.getDishByIdUseCase.execute(dishId)
 
-        return user
+        return dish
     }
 }
