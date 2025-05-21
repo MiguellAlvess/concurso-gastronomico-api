@@ -1,5 +1,5 @@
 import validator from 'validator'
-import { badRequest, unauthorized } from './http.js'
+import { badRequest, forbidden, unauthorized } from './http.js'
 
 export const checkIfIdIsValid = (id) => validator.isUUID(id)
 
@@ -16,4 +16,9 @@ export const requiredFieldIsMissingResponse = (field) =>
 export const unauthorizedResponse = () =>
     unauthorized({
         message: 'Unauthorized',
+    })
+
+export const forbiddenResponse = () =>
+    forbidden({
+        message: 'Forbidden',
     })
