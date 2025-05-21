@@ -4,8 +4,9 @@ import {
     ok,
     checkIfIdIsValid,
     dishNotFoundResponse,
+    forbiddenResponse,
 } from '../../controllers/helpers/index.js'
-import { DishNotFoundError } from '../../errors/dish.js'
+import { DishNotFoundError, ForbiddenError } from '../../errors/index.js'
 
 export class DeleteDishController {
     constructor(deleteDishUseCase) {
@@ -15,21 +16,32 @@ export class DeleteDishController {
     async execute(httpRequest) {
         try {
             const dishId = httpRequest.params.dishId
+            const restaurantId = httpRequest.restaurantId
 
             const dishIdIsValid = checkIfIdIsValid(dishId)
+            const restaurantIdIsValid = checkIfIdIsValid(restaurantId)
 
-            if (!dishIdIsValid) {
+            if (!dishIdIsValid || !restaurantIdIsValid) {
                 return invalidIdResponse()
             }
 
-            const deletedDish = await this.deleteDishUseCase.execute(dishId)
+            const deletedDish = await this.deleteDishUseCase.execute(
+                dishId,
+                restaurantId,
+            )
 
             return ok(deletedDish)
         } catch (error) {
+            console.error(error)
             if (error instanceof DishNotFoundError) {
                 return dishNotFoundResponse()
             }
-            console.error(error)
+            if (error instanceof ForbiddenError) {
+                return forbiddenResponse()
+            }
+            if (error instanceof DishNotFoundError) {
+                return dishNotFoundResponse()
+            }
             return serverError()
         }
     }

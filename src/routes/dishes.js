@@ -67,10 +67,7 @@ dishesRouter.delete('/:dishId', auth, async (req, res) => {
 
     const { statusCode, body } = await deleteDishController.execute({
         ...req,
-        params: {
-            dishId: req.dishId,
-            restaurant_id: req.restaurantId,
-        },
+        restaurantId: req.restaurantId,
     })
 
     res.status(statusCode).json(body)

@@ -73,7 +73,11 @@ export const makeUpdateDishController = () => {
 
 export const makeDeleteDishController = () => {
     const deleteDishRepository = new PostgresDeleteDishRepository()
-    const deleteDishUseCase = new DeleteDishUseCase(deleteDishRepository)
+    const getDishByIdRepository = new PostgresGetDishByIdRepository()
+    const deleteDishUseCase = new DeleteDishUseCase(
+        deleteDishRepository,
+        getDishByIdRepository,
+    )
     const deleteDishController = new DeleteDishController(deleteDishUseCase)
     return deleteDishController
 }
