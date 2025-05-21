@@ -4,8 +4,9 @@ import {
     invalidIdResponse,
     checkIfIdIsValid,
     reviewNotFoundResponse,
+    forbiddenResponse,
 } from '../helpers/index.js'
-import { ReviewNotFoundError } from '../../errors/review.js'
+import { ReviewNotFoundError, ForbiddenError } from '../../errors/index.js'
 
 export class DeleteReviewController {
     constructor(deleteReviewUseCase) {
@@ -14,23 +15,30 @@ export class DeleteReviewController {
 
     async execute(httpRequest) {
         try {
-            const dishId = httpRequest.params.reviewId
+            const reviewId = httpRequest.params.reviewId
+            const userId = httpRequest.userId
 
-            const reviewIdIsValid = checkIfIdIsValid(dishId)
+            const reviewIdIsValid = checkIfIdIsValid(reviewId)
 
             if (!reviewIdIsValid) {
                 return invalidIdResponse()
             }
 
-            const deletedReview = await this.deleteReviewUseCase.execute(dishId)
+            const deletedReview = await this.deleteReviewUseCase.execute(
+                reviewId,
+                userId,
+            )
 
             return ok(deletedReview)
         } catch (error) {
+            console.error(error)
             if (error instanceof ReviewNotFoundError) {
                 return reviewNotFoundResponse()
             }
+            if (error instanceof ForbiddenError) {
+                return forbiddenResponse()
+            }
 
-            console.error(error)
             return serverError()
         }
     }

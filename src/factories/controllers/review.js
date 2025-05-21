@@ -5,6 +5,7 @@ import {
     PostgresGetDishByIdRepository,
     PostgresGetReviewsByDishIdRepository,
     PostgresDeleteReviewRepository,
+    PostgresGetReviewByIdRepository,
 } from '../../repositories/index.js'
 import {
     CreateReviewUseCase,
@@ -67,7 +68,11 @@ export const makeGetReviewsByDishIdController = () => {
 
 export const makeDeleteReviewController = () => {
     const deleteReviewRepository = new PostgresDeleteReviewRepository()
-    const deleteReviewUseCase = new DeleteReviewUseCase(deleteReviewRepository)
+    const getReviewByIdRepository = new PostgresGetReviewByIdRepository()
+    const deleteReviewUseCase = new DeleteReviewUseCase(
+        deleteReviewRepository,
+        getReviewByIdRepository,
+    )
     const deleteReviewController = new DeleteReviewController(
         deleteReviewUseCase,
     )
