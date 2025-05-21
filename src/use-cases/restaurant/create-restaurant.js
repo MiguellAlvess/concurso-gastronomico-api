@@ -6,11 +6,13 @@ export class CreateRestaurantUseCase {
         createRestaurantRepository,
         passwordHasherAdapter,
         idGeneratorAdapter,
+        tokensGeneratorRestaurantAdapter,
     ) {
         this.getRestaurantByCnpjRepository = getRestaurantByCnpjRepository
         this.createRestaurantRepository = createRestaurantRepository
         this.passwordHasherAdapter = passwordHasherAdapter
         this.idGeneratorAdapter = idGeneratorAdapter
+        this.tokensGeneratorRestaurantAdapter = tokensGeneratorRestaurantAdapter
     }
 
     async execute(createRestaurantParams) {
@@ -35,6 +37,11 @@ export class CreateRestaurantUseCase {
         const createdRestaurant =
             await this.createRestaurantRepository.execute(restaurant)
 
-        return createdRestaurant
+        return {
+            ...createdRestaurant,
+            tokens: this.tokensGeneratorRestaurantAdapter.execute(
+                createdRestaurant.id,
+            ),
+        }
     }
 }
