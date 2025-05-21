@@ -23,7 +23,13 @@ dishesRouter.get('/', auth, async (req, res) => {
         makeGetDishesByRestaurantIdController()
 
     const { statusCode, body } =
-        await getDishesByRestaurantIdController.execute(req)
+        await getDishesByRestaurantIdController.execute({
+            ...req,
+            query: {
+                ...req.query,
+                restaurantId: req.restaurantId,
+            },
+        })
 
     res.status(statusCode).send(body)
 })
@@ -31,7 +37,13 @@ dishesRouter.get('/', auth, async (req, res) => {
 dishesRouter.post('/', auth, async (req, res) => {
     const createDishController = makeCreateDishController()
 
-    const { statusCode, body } = await createDishController.execute(req)
+    const { statusCode, body } = await createDishController.execute({
+        ...req,
+        body: {
+            ...req.body,
+            restaurant_id: req.restaurantId,
+        },
+    })
 
     res.status(statusCode).json(body)
 })
@@ -39,7 +51,13 @@ dishesRouter.post('/', auth, async (req, res) => {
 dishesRouter.patch('/:dishId', auth, async (req, res) => {
     const updateDishController = makeUpdateDishController()
 
-    const { statusCode, body } = await updateDishController.execute(req)
+    const { statusCode, body } = await updateDishController.execute({
+        ...req,
+        body: {
+            ...req.body,
+            restaurant_id: req.restaurantId,
+        },
+    })
 
     res.status(statusCode).json(body)
 })
@@ -47,7 +65,13 @@ dishesRouter.patch('/:dishId', auth, async (req, res) => {
 dishesRouter.delete('/:dishId', auth, async (req, res) => {
     const deleteDishController = makeDeleteDishController()
 
-    const { statusCode, body } = await deleteDishController.execute(req)
+    const { statusCode, body } = await deleteDishController.execute({
+        ...req,
+        params: {
+            dishId: req.dishId,
+            restaurant_id: req.restaurantId,
+        },
+    })
 
     res.status(statusCode).json(body)
 })
