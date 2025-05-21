@@ -13,7 +13,10 @@ export const dishesRouter = Router()
 dishesRouter.get('/:dishId', auth, async (req, res) => {
     const getDishByIdController = makeGetDishByIdController()
 
-    const { statusCode, body } = await getDishByIdController.execute(req)
+    const { statusCode, body } = await getDishByIdController.execute({
+        ...req,
+        restaurantId: req.restaurantId,
+    })
 
     res.status(statusCode).send(body)
 })
