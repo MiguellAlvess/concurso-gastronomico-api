@@ -44,11 +44,14 @@ export const makeCreateUserController = () => {
 
     const idGeneratorAdapter = new IdGeneratorAdapter()
 
+    const tokensGeneratorUserAdapter = new TokensGeneratorUserAdapter()
+
     const createUserUseCase = new CreateUserUseCase(
         getUserByEmailRepository,
         createUserRepository,
         passwordHasherAdapter,
         idGeneratorAdapter,
+        tokensGeneratorUserAdapter,
     )
 
     const createUserController = new CreateUserController(createUserUseCase)
