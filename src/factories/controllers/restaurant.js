@@ -10,16 +10,20 @@ import {
     GetRestaurantByIdUseCase,
     UpdateRestaurantUseCase,
     DeleteRestaurantUseCase,
+    LoginRestaurantUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateRestaurantController,
     GetRestaurantByIdController,
     UpdateRestaurantController,
     DeleteRestaurantController,
+    LoginRestaurantController,
 } from '../../controllers/index.js'
 import {
     PasswordHasherAdapter,
     IdGeneratorAdapter,
+    PasswordComparatorAdapter,
+    TokensGeneratorRestaurantAdapter,
 } from '../../adapters/index.js'
 
 export const makeGetRestaurantByIdController = () => {
@@ -85,4 +89,24 @@ export const makeDeleteRestaurantController = () => {
     )
 
     return deleteRestaurantController
+}
+
+export const makeLoginRestaurantController = () => {
+    const getRestaurantByCnpjRepository =
+        new PostgresGetRestaurantByCnpjRepository()
+    const passwordComparatorAdpater = new PasswordComparatorAdapter()
+    const tokensGeneratatorRestaurantAdapter =
+        new TokensGeneratorRestaurantAdapter()
+
+    const loginRestaurantUseCase = new LoginRestaurantUseCase(
+        getRestaurantByCnpjRepository,
+        passwordComparatorAdpater,
+        tokensGeneratatorRestaurantAdapter,
+    )
+
+    const loginRestaurantController = new LoginRestaurantController(
+        loginRestaurantUseCase,
+    )
+
+    return loginRestaurantController
 }
