@@ -44,12 +44,15 @@ export const makeCreateRestaurantController = () => {
     const createRestaurantRepository = new PostgresCreateRestaurantRepository()
     const passwordHasherAdapter = new PasswordHasherAdapter()
     const idGeneratorAdapter = new IdGeneratorAdapter()
+    const tokensGeneratorRestaurantAdapter =
+        new TokensGeneratorRestaurantAdapter()
 
     const createRestaurantUseCase = new CreateRestaurantUseCase(
         getRestaurantByCnpjRepository,
         createRestaurantRepository,
         passwordHasherAdapter,
         idGeneratorAdapter,
+        tokensGeneratorRestaurantAdapter,
     )
 
     const createRestaurantController = new CreateRestaurantController(
