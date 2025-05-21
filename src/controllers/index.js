@@ -8,6 +8,7 @@ export * from './restaurant/create-restaurant.js'
 export * from './restaurant/get-restaurant-by-id.js'
 export * from './restaurant/update-restaurant.js'
 export * from './restaurant/delete-restaurant.js'
+export * from './restaurant/login-restaurant.js'
 
 export * from './dish/create-dish.js'
 export * from './dish/get-dish-by-id.js'
