@@ -1,4 +1,5 @@
 import { restaurant } from '../../tests/index.js'
+import { RestaurantNotFoundError } from '../../errors/index.js'
 import { DeleteRestaurantController } from './delete-restaurant.js'
 import { faker } from '@faker-js/faker'
 
@@ -23,28 +24,33 @@ describe('Delete Restaurant Controller', () => {
     }
 
     it('should return 200 when deleting a restaurant successfully', async () => {
-        // arrange
         const { sut } = makeSut()
 
-        // act
         const response = await sut.execute(httpRequest)
 
-        // assert
         expect(response.statusCode).toBe(200)
     })
 
     it('should return 400 when id provided is not valid', async () => {
-        // arrange
         const { sut } = makeSut()
 
-        // act
         const result = await sut.execute({
             params: {
                 restaurantId: 'invalid-id',
             },
         })
 
-        // assert
         expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 404 when restaurant is not found', async () => {
+        const { sut, deleteRestaurantUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(deleteRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new RestaurantNotFoundError())
+
+        const result = await sut.execute(httpRequest)
+
+        expect(result.statusCode).toBe(404)
     })
 })
