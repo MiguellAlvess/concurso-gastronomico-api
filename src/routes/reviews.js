@@ -9,7 +9,7 @@ import { auth } from '../middlewares/auth.js'
 
 export const reviewsRouter = Router()
 
-reviewsRouter.get('/by-user', auth, async (req, res) => {
+reviewsRouter.get('/me', auth, async (req, res) => {
     const getReviewsByUserIdController = makeGetReviewsByUserIdController()
 
     const { statusCode, body } = await getReviewsByUserIdController.execute({
