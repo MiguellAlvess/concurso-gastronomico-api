@@ -12,3 +12,13 @@ services:
             - 5432:5432
         volumes:
             - ./.postgres-data:/var/lib/postgresql/data
+
+    postgres-test:
+        image: postgres
+        container_name: concurso-gastronomico-postgres-test
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: concurso-gastronomico
+        ports:
+            - 5433:5432
