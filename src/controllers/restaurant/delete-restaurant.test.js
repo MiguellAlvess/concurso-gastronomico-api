@@ -32,4 +32,19 @@ describe('Delete Restaurant Controller', () => {
         // assert
         expect(response.statusCode).toBe(200)
     })
+
+    it('should return 400 when id provided is not valid', async () => {
+        // arrange
+        const { sut } = makeSut()
+
+        // act
+        const result = await sut.execute({
+            params: {
+                restaurantId: 'invalid-id',
+            },
+        })
+
+        // assert
+        expect(result.statusCode).toBe(400)
+    })
 })
