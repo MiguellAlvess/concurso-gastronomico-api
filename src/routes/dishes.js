@@ -21,7 +21,7 @@ dishesRouter.get('/:dishId', auth, async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-dishesRouter.get('/', auth, async (req, res) => {
+dishesRouter.get('/me', auth, async (req, res) => {
     const getDishesByRestaurantIdController =
         makeGetDishesByRestaurantIdController()
 
@@ -51,7 +51,7 @@ dishesRouter.post('/', auth, async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-dishesRouter.patch('/:dishId', auth, async (req, res) => {
+dishesRouter.patch('/me/:dishId', auth, async (req, res) => {
     const updateDishController = makeUpdateDishController()
 
     const { statusCode, body } = await updateDishController.execute({
@@ -65,7 +65,7 @@ dishesRouter.patch('/:dishId', auth, async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-dishesRouter.delete('/:dishId', auth, async (req, res) => {
+dishesRouter.delete('/me/:dishId', auth, async (req, res) => {
     const deleteDishController = makeDeleteDishController()
 
     const { statusCode, body } = await deleteDishController.execute({
