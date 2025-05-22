@@ -11,6 +11,7 @@ import {
     UpdateRestaurantUseCase,
     DeleteRestaurantUseCase,
     LoginRestaurantUseCase,
+    RefreshTokenRestaurantUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateRestaurantController,
@@ -18,12 +19,14 @@ import {
     UpdateRestaurantController,
     DeleteRestaurantController,
     LoginRestaurantController,
+    RefreshTokenRestaurantController,
 } from '../../controllers/index.js'
 import {
     PasswordHasherAdapter,
     IdGeneratorAdapter,
     PasswordComparatorAdapter,
     TokensGeneratorRestaurantAdapter,
+    TokenVerifierAdpater,
 } from '../../adapters/index.js'
 
 export const makeGetRestaurantByIdController = () => {
@@ -112,4 +115,21 @@ export const makeLoginRestaurantController = () => {
     )
 
     return loginRestaurantController
+}
+
+export const makeRefreshTokenRestaurantController = () => {
+    const tokensGeneratatorRestaurantAdapter =
+        new TokensGeneratorRestaurantAdapter()
+
+    const tokenVerifierAdapter = new TokenVerifierAdpater()
+
+    const refreshTokenRestaurantUseCase = new RefreshTokenRestaurantUseCase(
+        tokensGeneratatorRestaurantAdapter,
+        tokenVerifierAdapter,
+    )
+
+    const refreshTokenRestaurantController =
+        new RefreshTokenRestaurantController(refreshTokenRestaurantUseCase)
+
+    return refreshTokenRestaurantController
 }
