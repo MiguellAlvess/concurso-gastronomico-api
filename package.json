@@ -4,8 +4,8 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "test": "dotenv -e .env.test -- jest --passWithNoTests --silent",
-        "test:watch": "npm run test -- --watch",
+        "test": "dotenv -e .env.test -- node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests --silent --runInBand --detectOpenHandles --forceExit",
+        "test:watch": "npm run test -- --watch --runInBand",
         "test:coverage": "npm run test -- --coverage",
         "postinstall": "husky && prisma generate",
         "start:dev": "node --watch index.js",

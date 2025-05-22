@@ -9,13 +9,13 @@ const config = {
 
     coverageProvider: 'v8',
 
-    watchPathIgnorePatterns: ['<rootDir>/.postgres-data'],
+    collectCoverageFrom: ['src/**/*.js'],
 
     globalSetup: '<rootDir>/jest.global-setup.js',
 
     setupFilesAfterEnv: ['<rootDir>/jest.setup-after-env.js'],
 
-    collectCoverageFrom: ['src/**/*.js'],
+    watchPathIgnorePatterns: ['.postgres-data'],
 }
 
 export default config

@@ -119,9 +119,9 @@ describe('Create Restaurant Controller', () => {
     it('should return 400 if CreateRestaurantUseCase throws CnpjIsAlreadyInUseError', async () => {
         // arrange
         const { sut, createRestaurantUseCase } = makeSut()
-        jest.spyOn(createRestaurantUseCase, 'execute').mockRejectedValueOnce(
-            new CnpjAlreadyInUseError(),
-        )
+        import.meta.jest
+            .spyOn(createRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new CnpjAlreadyInUseError())
 
         // act
         const result = await sut.execute(httpRequest)
@@ -133,9 +133,9 @@ describe('Create Restaurant Controller', () => {
     it('should return 500 if CreateRestaurantUseCase throws', async () => {
         // arrange
         const { sut, createRestaurantUseCase } = makeSut()
-        jest.spyOn(createRestaurantUseCase, 'execute').mockRejectedValueOnce(
-            new Error(),
-        )
+        import.meta.jest
+            .spyOn(createRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
 
         // act
         const result = await sut.execute(httpRequest)
@@ -147,7 +147,10 @@ describe('Create Restaurant Controller', () => {
     it('should call CreateRestaurantUseCase with correct params', async () => {
         // arrange
         const { sut, createRestaurantUseCase } = makeSut()
-        const executeSpy = jest.spyOn(createRestaurantUseCase, 'execute')
+        const executeSpy = import.meta.jest.spyOn(
+            createRestaurantUseCase,
+            'execute',
+        )
 
         // act
         await sut.execute(httpRequest)
