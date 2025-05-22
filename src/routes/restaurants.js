@@ -11,7 +11,7 @@ import { auth } from '../middlewares/auth.js'
 
 export const restaurantsRouter = Router()
 
-restaurantsRouter.get('/', auth, async (req, res) => {
+restaurantsRouter.get('/me', auth, async (req, res) => {
     const getRestaurantByIdController = makeGetRestaurantByIdController()
 
     const { statusCode, body } = await getRestaurantByIdController.execute({
@@ -32,7 +32,7 @@ restaurantsRouter.post('/', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.patch('/', auth, async (req, res) => {
+restaurantsRouter.patch('/me', auth, async (req, res) => {
     const updateRestaurantController = makeUpdateRestaurantController()
 
     const { statusCode, body } = await updateRestaurantController.execute({
@@ -45,7 +45,7 @@ restaurantsRouter.patch('/', auth, async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.delete('/', auth, async (req, res) => {
+restaurantsRouter.delete('/me', auth, async (req, res) => {
     const deleteRestaurantController = makeDeleteRestaurantController()
 
     const { statusCode, body } = await deleteRestaurantController.execute({
@@ -58,7 +58,7 @@ restaurantsRouter.delete('/', auth, async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.post('/login', async (req, res) => {
+restaurantsRouter.post('/auth/login', async (req, res) => {
     const loginRestaurantController = makeLoginRestaurantController()
 
     const { statusCode, body } = await loginRestaurantController.execute(req)
@@ -66,7 +66,7 @@ restaurantsRouter.post('/login', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.post('/refresh-token', async (req, res) => {
+restaurantsRouter.post('/auth/refresh-token', async (req, res) => {
     const refreshTokenRestaurantController =
         makeRefreshTokenRestaurantController()
 
