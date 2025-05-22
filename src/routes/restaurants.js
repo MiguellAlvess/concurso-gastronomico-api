@@ -5,6 +5,7 @@ import {
     makeUpdateRestaurantController,
     makeDeleteRestaurantController,
     makeLoginRestaurantController,
+    makeRefreshTokenRestaurantController,
 } from '../factories/controllers/restaurant.js'
 import { auth } from '../middlewares/auth.js'
 
@@ -61,6 +62,16 @@ restaurantsRouter.post('/login', async (req, res) => {
     const loginRestaurantController = makeLoginRestaurantController()
 
     const { statusCode, body } = await loginRestaurantController.execute(req)
+
+    res.status(statusCode).json(body)
+})
+
+restaurantsRouter.post('/refresh-token', async (req, res) => {
+    const refreshTokenRestaurantController =
+        makeRefreshTokenRestaurantController()
+
+    const { statusCode, body } =
+        await refreshTokenRestaurantController.execute(req)
 
     res.status(statusCode).json(body)
 })
