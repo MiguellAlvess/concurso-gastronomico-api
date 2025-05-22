@@ -53,4 +53,15 @@ describe('Delete Restaurant Controller', () => {
 
         expect(result.statusCode).toBe(404)
     })
+
+    it('shoul return 500 when DeleteRestaurantUseCase throws', async () => {
+        const { sut, deleteRestaurantUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(deleteRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = await sut.execute(httpRequest)
+
+        expect(result.statusCode).toBe(500)
+    })
 })
