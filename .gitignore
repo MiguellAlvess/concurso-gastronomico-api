@@ -1,7 +1,12 @@
+# Dependencies
 node_modules
 
+# Environment variables
 .env
+.env.test
 
+# Postgres volume
 .postgres-data
 
+# Tests
 coverage
