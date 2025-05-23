@@ -1,4 +1,4 @@
-import { badRequest, notFound } from './http.js'
+import { badRequest, forbidden, notFound } from './http.js'
 
 export const emailIsAlreadyInUseResponse = () =>
     badRequest({
@@ -8,4 +8,9 @@ export const emailIsAlreadyInUseResponse = () =>
 export const userNotFoundResponse = () =>
     notFound({
         message: 'User not found',
+    })
+
+export const reviewAlreadyExistsResponse = () =>
+    forbidden({
+        message: 'You have already reviewed this dish',
     })

@@ -11,3 +11,10 @@ export class UserNotFoundError extends Error {
         this.name = 'UserNotFoundError'
     }
 }
+
+export class ReviewAlreadyExistsError extends Error {
+    constructor() {
+        super(`You have already reviewed this dish`)
+        this.name = 'ReviewAlreadyExistsError'
+    }
+}
