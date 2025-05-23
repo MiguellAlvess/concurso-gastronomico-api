@@ -13,8 +13,12 @@ export class GetDishReviewsUseCase {
             throw new DishNotFoundError(dishId)
         }
 
-        const reviews = await this.getDishReviewsRepository.execute(dishId)
+        const { reviews, averageRating } =
+            await this.getDishReviewsRepository.execute(dishId)
 
-        return reviews
+        return {
+            reviews,
+            averageRating,
+        }
     }
 }
