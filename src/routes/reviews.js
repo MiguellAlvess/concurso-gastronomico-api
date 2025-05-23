@@ -1,27 +1,12 @@
 import { Router } from 'express'
 import {
     makeCreateReviewController,
-    makeGetReviewsByUserIdController,
     makeGetReviewsByDishIdController,
     makeDeleteReviewController,
 } from '../factories/controllers/review.js'
 import { auth } from '../middlewares/auth.js'
 
 export const reviewsRouter = Router()
-
-reviewsRouter.get('/me', auth, async (req, res) => {
-    const getReviewsByUserIdController = makeGetReviewsByUserIdController()
-
-    const { statusCode, body } = await getReviewsByUserIdController.execute({
-        ...req,
-        query: {
-            ...req.query,
-            userId: req.userId,
-        },
-    })
-
-    res.status(statusCode).send(body)
-})
 
 reviewsRouter.get('/by-dish', auth, async (req, res) => {
     const getReviewsByDishIdController = makeGetReviewsByDishIdController()

@@ -4,6 +4,7 @@ export * from './user/update-user.js'
 export * from './user/delete-user.js'
 export * from './user/login-user.js'
 export * from './user/refresh-token.js'
+export * from './user/get-user-reviews.js'
 
 export * from './restaurant/create-restaurant.js'
 export * from './restaurant/get-restaurant-by-id.js'

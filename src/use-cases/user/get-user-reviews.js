@@ -1,8 +1,8 @@
 import { UserNotFoundError } from '../../errors/user.js'
 
-export class GetReviewsByUserIdUseCase {
-    constructor(getReviewByUserIdRepository, getUserByIdRepository) {
-        this.getReviewByUserIdRepository = getReviewByUserIdRepository
+export class GetUserReviewsUseCase {
+    constructor(getUserReviewsRepository, getUserByIdRepository) {
+        this.getUserReviewsRepository = getUserReviewsRepository
         this.getUserByIdRepository = getUserByIdRepository
     }
 
@@ -13,7 +13,7 @@ export class GetReviewsByUserIdUseCase {
             throw new UserNotFoundError(userId)
         }
 
-        const reviews = await this.getReviewByUserIdRepository.execute(userId)
+        const reviews = await this.getUserReviewsRepository.execute(userId)
 
         return reviews
     }

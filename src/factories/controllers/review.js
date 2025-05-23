@@ -1,7 +1,6 @@
 import {
     PostgresCreateReviewRepository,
     PostgresGetUserByIdRepository,
-    PostgresGetReviewsByUserIdRepository,
     PostgresGetDishByIdRepository,
     PostgresGetReviewsByDishIdRepository,
     PostgresDeleteReviewRepository,
@@ -9,13 +8,11 @@ import {
 } from '../../repositories/index.js'
 import {
     CreateReviewUseCase,
-    GetReviewsByUserIdUseCase,
     GetReviewsByDishIdUseCase,
     DeleteReviewUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateReviewController,
-    GetReviewsByUserIdController,
     GetReviewsByDishIdController,
     DeleteReviewController,
 } from '../../controllers/index.js'
@@ -34,21 +31,6 @@ export const makeCreateReviewController = () => {
         createReviewUseCase,
     )
     return createReviewController
-}
-
-export const makeGetReviewsByUserIdController = () => {
-    const getReviewsByUserIdRepository =
-        new PostgresGetReviewsByUserIdRepository()
-    const getUserByIdRepository = new PostgresGetUserByIdRepository()
-
-    const getReviewsByUserIdUseCase = new GetReviewsByUserIdUseCase(
-        getReviewsByUserIdRepository,
-        getUserByIdRepository,
-    )
-    const getReviewsByUserIdController = new GetReviewsByUserIdController(
-        getReviewsByUserIdUseCase,
-    )
-    return getReviewsByUserIdController
 }
 
 export const makeGetReviewsByDishIdController = () => {

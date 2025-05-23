@@ -6,6 +6,7 @@ import {
     makeDeleteUserController,
     makeLoginUserController,
     makeRefreshTokenUserController,
+    makeGetUserReviewsController,
 } from '../factories/controllers/user.js'
 import { auth } from '../middlewares/auth.js'
 
@@ -17,6 +18,20 @@ usersRouter.get('/me', auth, async (req, res) => {
     const { statusCode, body } = await getUserByIdController.execute({
         ...req,
         params: { userId: req.userId },
+    })
+
+    res.status(statusCode).send(body)
+})
+
+usersRouter.get('/me/reviews', auth, async (req, res) => {
+    const getUserReviewsController = makeGetUserReviewsController()
+
+    const { statusCode, body } = await getUserReviewsController.execute({
+        ...req,
+        query: {
+            ...req.query,
+            userId: req.userId,
+        },
     })
 
     res.status(statusCode).send(body)

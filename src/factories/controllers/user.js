@@ -4,6 +4,7 @@ import {
     PostgresGetUserByEmailRepository,
     PostgresUpdateUserRepository,
     PostgresDeleteUserRepository,
+    PostgresGetUserReviewsRepository,
 } from '../../repositories/index.js'
 import {
     CreateUserUseCase,
@@ -12,6 +13,7 @@ import {
     DeleteUserUseCase,
     LoginUserUseCase,
     RefreshTokenUserUseCase,
+    GetUserReviewsUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateUserController,
@@ -20,6 +22,7 @@ import {
     DeleteUserController,
     LoginUserController,
     RefreshTokenUserController,
+    GetUserReviewsController,
 } from '../../controllers/index.js'
 import {
     IdGeneratorAdapter,
@@ -122,4 +125,20 @@ export const makeRefreshTokenUserController = () => {
     )
 
     return refreshTokenUserController
+}
+
+export const makeGetUserReviewsController = () => {
+    const getUserReviewsRepository = new PostgresGetUserReviewsRepository()
+    const getUserByIdRepository = new PostgresGetUserByIdRepository()
+
+    const getUserReviewsUseCase = new GetUserReviewsUseCase(
+        getUserReviewsRepository,
+        getUserByIdRepository,
+    )
+
+    const getUserReviewsController = new GetUserReviewsController(
+        getUserReviewsUseCase,
+    )
+
+    return getUserReviewsController
 }

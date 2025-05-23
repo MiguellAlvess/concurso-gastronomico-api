@@ -8,9 +8,9 @@ import {
     checkIfIdIsValid,
 } from '../helpers/index.js'
 
-export class GetReviewsByUserIdController {
-    constructor(getReviewsByUserIdUseCase) {
-        this.getReviewsByUserIdUseCase = getReviewsByUserIdUseCase
+export class GetUserReviewsController {
+    constructor(getUserReviewsUseCase) {
+        this.getUserReviewsUseCase = getUserReviewsUseCase
     }
 
     async execute(httpRequest) {
@@ -27,7 +27,7 @@ export class GetReviewsByUserIdController {
                 return invalidIdResponse()
             }
 
-            const reviews = await this.getReviewsByUserIdUseCase.execute(userId)
+            const reviews = await this.getUserReviewsUseCase.execute(userId)
 
             return ok(reviews)
         } catch (error) {
