@@ -5,10 +5,24 @@ import {
     makeUpdateDishController,
     makeDeleteDishController,
     makeGetDishByIdController,
+    makeGetDishReviewsController,
 } from '../factories/controllers/dish.js'
 import { auth } from '../middlewares/auth.js'
 
 export const dishesRouter = Router()
+
+dishesRouter.get('/reviews', auth, async (req, res) => {
+    const getDishReviewsController = makeGetDishReviewsController()
+
+    const { statusCode, body } = await getDishReviewsController.execute({
+        ...req,
+        query: {
+            ...req.query,
+        },
+    })
+
+    res.status(statusCode).send(body)
+})
 
 dishesRouter.get('/:dishId', auth, async (req, res) => {
     const getDishByIdController = makeGetDishByIdController()

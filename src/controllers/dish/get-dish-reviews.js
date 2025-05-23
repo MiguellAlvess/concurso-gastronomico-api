@@ -8,9 +8,9 @@ import {
 } from '../helpers/index.js'
 import { DishNotFoundError } from '../../errors/dish.js'
 
-export class GetReviewsByDishIdController {
-    constructor(getReviewsByDishIdUseCase) {
-        this.getReviewsByDishIdUseCase = getReviewsByDishIdUseCase
+export class GetDishReviewsController {
+    constructor(getDishReviewsUseCase) {
+        this.getDishReviewsUseCase = getDishReviewsUseCase
     }
 
     async execute(httpRequest) {
@@ -27,7 +27,7 @@ export class GetReviewsByDishIdController {
                 return invalidIdResponse()
             }
 
-            const reviews = await this.getReviewsByDishIdUseCase.execute(dishId)
+            const reviews = await this.getDishReviewsUseCase.execute(dishId)
 
             return ok(reviews)
         } catch (error) {

@@ -1,8 +1,8 @@
 import { DishNotFoundError } from '../../errors/dish.js'
 
-export class GetReviewsByDishIdUseCase {
-    constructor(getReviewsByDishIdRepository, getDishByIdRepository) {
-        this.getReviewsByDishIdRepository = getReviewsByDishIdRepository
+export class GetDishReviewsUseCase {
+    constructor(getDishReviewsRepository, getDishByIdRepository) {
+        this.getDishReviewsRepository = getDishReviewsRepository
         this.getDishByIdRepository = getDishByIdRepository
     }
 
@@ -13,7 +13,7 @@ export class GetReviewsByDishIdUseCase {
             throw new DishNotFoundError(dishId)
         }
 
-        const reviews = await this.getReviewsByDishIdRepository.execute(dishId)
+        const reviews = await this.getDishReviewsRepository.execute(dishId)
 
         return reviews
     }

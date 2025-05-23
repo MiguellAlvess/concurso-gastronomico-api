@@ -1,19 +1,15 @@
 import {
     PostgresCreateReviewRepository,
     PostgresGetUserByIdRepository,
-    PostgresGetDishByIdRepository,
-    PostgresGetReviewsByDishIdRepository,
     PostgresDeleteReviewRepository,
     PostgresGetReviewByIdRepository,
 } from '../../repositories/index.js'
 import {
     CreateReviewUseCase,
-    GetReviewsByDishIdUseCase,
     DeleteReviewUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateReviewController,
-    GetReviewsByDishIdController,
     DeleteReviewController,
 } from '../../controllers/index.js'
 import { IdGeneratorAdapter } from '../../adapters/index.js'
@@ -31,21 +27,6 @@ export const makeCreateReviewController = () => {
         createReviewUseCase,
     )
     return createReviewController
-}
-
-export const makeGetReviewsByDishIdController = () => {
-    const getReviewsByDishIdRepository =
-        new PostgresGetReviewsByDishIdRepository()
-    const getDishByIdRepository = new PostgresGetDishByIdRepository()
-
-    const getReviewsByDishIdUseCase = new GetReviewsByDishIdUseCase(
-        getReviewsByDishIdRepository,
-        getDishByIdRepository,
-    )
-    const getReviewsByDishIdController = new GetReviewsByDishIdController(
-        getReviewsByDishIdUseCase,
-    )
-    return getReviewsByDishIdController
 }
 
 export const makeDeleteReviewController = () => {

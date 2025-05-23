@@ -1,6 +1,6 @@
 import { prisma } from '../../../prisma/prisma.js'
 
-export class PostgresGetReviewsByDishIdRepository {
+export class PostgresGetDishReviewsRepository {
     async execute(dishId) {
         return await prisma.review.findMany({
             where: {
