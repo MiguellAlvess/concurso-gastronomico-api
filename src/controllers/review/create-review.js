@@ -1,5 +1,17 @@
+import { DishNotFoundError } from '../../errors/dish.js'
+import {
+    ReviewAlreadyExistsError,
+    UserNotFoundError,
+} from '../../errors/user.js'
 import { createReviewSchema } from '../../schemas/review.js'
-import { created, serverError, badRequest } from '../helpers/index.js'
+import {
+    created,
+    serverError,
+    badRequest,
+    reviewAlreadyExistsResponse,
+    userNotFoundResponse,
+    dishNotFoundResponse,
+} from '../helpers/index.js'
 import { ZodError } from 'zod'
 
 export class CreateReviewController {
@@ -19,6 +31,15 @@ export class CreateReviewController {
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
+            }
+            if (error instanceof UserNotFoundError) {
+                return userNotFoundResponse()
+            }
+            if (error instanceof DishNotFoundError) {
+                return dishNotFoundResponse()
+            }
+            if (error instanceof ReviewAlreadyExistsError) {
+                return reviewAlreadyExistsResponse()
             }
             console.error(error)
             return serverError()
