@@ -5,6 +5,7 @@ import {
     invalidIdResponse,
     ok,
     restaurantNotFoundResponse,
+    conflict,
 } from '../helpers/index.js'
 import { ZodError } from 'zod'
 import {
@@ -44,7 +45,7 @@ export class UpdateRestaurantController {
                 return restaurantNotFoundResponse()
             }
             if (error instanceof CnpjAlreadyInUseError) {
-                return badRequest({ message: error.message })
+                return conflict({ message: error.message })
             }
             console.error(error)
             return serverError()

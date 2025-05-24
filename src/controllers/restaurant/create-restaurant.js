@@ -1,5 +1,5 @@
 import { createRestaurantSchema } from '../../schemas/restaurant.js'
-import { serverError, created, badRequest } from '../helpers/index.js'
+import { serverError, created, badRequest, conflict } from '../helpers/index.js'
 import { ZodError } from 'zod'
 import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
 
@@ -23,7 +23,7 @@ export class CreateRestaurantController {
                 return badRequest({ message: error.errors[0].message })
             }
             if (error instanceof CnpjAlreadyInUseError) {
-                return badRequest({ message: error.message })
+                return conflict({ message: error.message })
             }
             console.error(error)
             return serverError()
