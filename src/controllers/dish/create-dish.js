@@ -1,5 +1,16 @@
-import { serverError, created, badRequest } from '../helpers/index.js'
+import {
+    serverError,
+    created,
+    badRequest,
+    imageIsRequiredResponse,
+    unsupportedMediaTypeResponse,
+    restaurantNotFoundResponse,
+} from '../helpers/index.js'
 import { createDishSchema } from '../../schemas/dish.js'
+import {
+    RestaurantNotFoundError,
+    UnsupportedFileTypeError,
+} from '../../errors/index.js'
 import { ZodError } from 'zod'
 
 export class CreateDishController {
@@ -8,9 +19,19 @@ export class CreateDishController {
     }
     async execute(httpRequest) {
         try {
-            const params = httpRequest.body
+            if (!httpRequest.file) {
+                return imageIsRequiredResponse()
+            }
 
-            await createDishSchema.parseAsync(params)
+            const params = {
+                ...httpRequest.body,
+                imageFilename: httpRequest.file.filename,
+            }
+
+            await createDishSchema.parseAsync({
+                ...params,
+                image_url: params.imageFilename,
+            })
 
             const dish = await this.createDishUseCase.execute(params)
 
@@ -18,6 +39,12 @@ export class CreateDishController {
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
+            }
+            if (error instanceof UnsupportedFileTypeError) {
+                return unsupportedMediaTypeResponse()
+            }
+            if (error instanceof RestaurantNotFoundError) {
+                return restaurantNotFoundResponse()
             }
             console.error(error)
             return serverError()

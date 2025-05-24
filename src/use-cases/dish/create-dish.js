@@ -23,10 +23,15 @@ export class CreateDishUseCase {
 
         const dishId = this.idGeneratorAdapter.execute()
 
-        const dish = await this.createDishRepository.execute({
+        const dishData = {
             ...createDishParams,
             id: dishId,
-        })
+            image_url: createDishParams.imageFilename,
+        }
+
+        delete dishData.imageFilename
+
+        const dish = await this.createDishRepository.execute(dishData)
 
         return dish
     }
