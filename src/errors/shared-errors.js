@@ -25,3 +25,10 @@ export class ImageIsRequiredError extends Error {
         this.name = 'ImageIsRequiredError'
     }
 }
+
+export class UnsupportedFileTypeError extends Error {
+    constructor() {
+        super('Unsupported file type')
+        this.name = 'UnsupportedFileTypeError'
+    }
+}
