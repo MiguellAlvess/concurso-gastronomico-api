@@ -1,5 +1,10 @@
 import validator from 'validator'
-import { badRequest, forbidden, unauthorized } from './http.js'
+import {
+    badRequest,
+    forbidden,
+    unauthorized,
+    unsupportedMediaType,
+} from './http.js'
 
 export const checkIfIdIsValid = (id) => validator.isUUID(id)
 
@@ -26,4 +31,9 @@ export const forbiddenResponse = () =>
 export const imageIsRequiredResponse = () =>
     badRequest({
         message: 'Image is required',
+    })
+
+export const unsupportedMediaTypeResponse = () =>
+    unsupportedMediaType({
+        message: 'Unsupported media type',
     })

@@ -23,6 +23,11 @@ export const conflict = (body) => ({
     body,
 })
 
+export const unsupportedMediaType = (body) => ({
+    statusCode: 415,
+    body,
+})
+
 export const serverError = () => ({
     statusCode: 500,
     body: {
