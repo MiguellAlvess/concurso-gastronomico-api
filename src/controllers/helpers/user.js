@@ -1,7 +1,7 @@
-import { badRequest, forbidden, notFound } from './http.js'
+import { conflict, forbidden, notFound } from './http.js'
 
 export const emailIsAlreadyInUseResponse = () =>
-    badRequest({
+    conflict({
         message: 'Invalid e-mail. Please provide a valid one',
     })
 
