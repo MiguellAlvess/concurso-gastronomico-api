@@ -29,6 +29,11 @@ export class UpdateRestaurantUseCase {
             ...updateRestaurantParams,
         }
 
+        if (updateRestaurantParams.imageFilename) {
+            restaurant.image_url = updateRestaurantParams.imageFilename
+            delete restaurant.imageFilename
+        }
+
         if (updateRestaurantParams.password) {
             const hashedPassword = await this.passwordHasherAdapter.execute(
                 updateRestaurantParams.password,

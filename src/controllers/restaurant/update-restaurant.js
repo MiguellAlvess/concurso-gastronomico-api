@@ -5,13 +5,15 @@ import {
     invalidIdResponse,
     ok,
     restaurantNotFoundResponse,
+    unsupportedMediaTypeResponse,
     conflict,
 } from '../helpers/index.js'
 import { ZodError } from 'zod'
 import {
     CnpjAlreadyInUseError,
     RestaurantNotFoundError,
-} from '../../errors/restaurant.js'
+    UnsupportedFileTypeError,
+} from '../../errors/index.js'
 import { updateRestaurantSchema } from '../../schemas/restaurant.js'
 
 export class UpdateRestaurantController {
@@ -29,7 +31,13 @@ export class UpdateRestaurantController {
                 return invalidIdResponse()
             }
 
-            const params = httpRequest.body
+            const params = {
+                ...httpRequest.body,
+            }
+
+            if (httpRequest.file) {
+                params.imageFilename = httpRequest.file.filename
+            }
 
             await updateRestaurantSchema.parseAsync(params)
 
@@ -43,6 +51,9 @@ export class UpdateRestaurantController {
             }
             if (error instanceof RestaurantNotFoundError) {
                 return restaurantNotFoundResponse()
+            }
+            if (error instanceof UnsupportedFileTypeError) {
+                return unsupportedMediaTypeResponse()
             }
             if (error instanceof CnpjAlreadyInUseError) {
                 return conflict({ message: error.message })
