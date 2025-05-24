@@ -7,7 +7,7 @@ import {
     makeLoginRestaurantController,
     makeRefreshTokenRestaurantController,
 } from '../factories/controllers/restaurant.js'
-import { auth } from '../middlewares/auth.js'
+import { auth, imageUpload } from '../middlewares/index.js'
 
 export const restaurantsRouter = Router()
 
@@ -24,7 +24,7 @@ restaurantsRouter.get('/me', auth, async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-restaurantsRouter.post('/', async (req, res) => {
+restaurantsRouter.post('/', imageUpload, async (req, res) => {
     const createRestaurantController = makeCreateRestaurantController()
 
     const { statusCode, body } = await createRestaurantController.execute(req)
@@ -32,7 +32,7 @@ restaurantsRouter.post('/', async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-restaurantsRouter.patch('/me', auth, async (req, res) => {
+restaurantsRouter.patch('/me', imageUpload, auth, async (req, res) => {
     const updateRestaurantController = makeUpdateRestaurantController()
 
     const { statusCode, body } = await updateRestaurantController.execute({
