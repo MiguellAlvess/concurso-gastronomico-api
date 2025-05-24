@@ -18,3 +18,10 @@ export class UnauthorizedError extends Error {
         this.name = 'UnauthorizedError'
     }
 }
+
+export class ImageIsRequiredError extends Error {
+    constructor() {
+        super('Image is required')
+        this.name = 'ImageIsRequiredError'
+    }
+}

@@ -22,3 +22,8 @@ export const forbiddenResponse = () =>
     forbidden({
         message: 'Forbidden',
     })
+
+export const imageIsRequiredResponse = () =>
+    badRequest({
+        message: 'Image is required',
+    })
