@@ -29,7 +29,10 @@ export class CreateRestaurantController {
                 imageFilename: httpRequest.file.filename,
             }
 
-            await createRestaurantSchema.parseAsync(params)
+            await createRestaurantSchema.parseAsync({
+                ...params,
+                image_url: params.imageFilename,
+            })
 
             const createdRestaurant =
                 await this.createRestaurantUseCase.execute(params)
