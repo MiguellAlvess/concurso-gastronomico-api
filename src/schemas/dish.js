@@ -41,14 +41,7 @@ export const createDishSchema = z.object({
             },
         )
         .transform((value) => parseFloat(value)),
-    image_url: z
-        .string({
-            required_error: 'Image url is required',
-        })
-        .trim()
-        .min(1, {
-            message: 'Image url is required',
-        }),
+    image_url: z.string().min(1, 'Image is required'),
 })
 
 export const updateDishSchema = createDishSchema
