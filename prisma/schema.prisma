@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-
 }
 
 datasource db {
@@ -9,38 +8,40 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  first_name String @db.VarChar(50)
-  last_name String @db.VarChar(50)
-  email String @db.VarChar(100) @unique
-  password String @db.VarChar(100)
-  reviews Review[]
+  id         String   @id @default(uuid())
+  first_name String   @db.VarChar(50)
+  last_name  String   @db.VarChar(50)
+  email      String   @unique @db.VarChar(100)
+  password   String   @db.VarChar(100)
+  reviews    Review[]
 }
 
 model Restaurant {
-  id String @id @default(uuid())
-  cnpj String @db.VarChar(50) @unique
-  name String @db.VarChar(100)
-  password String @db.VarChar(100)
-  dishes Dish[]
+  id        String @id @default(uuid())
+  cnpj      String @unique @db.VarChar(50)
+  name      String @db.VarChar(100)
+  password  String @db.VarChar(100)
+  image_url String 
+  dishes    Dish[]
 }
 
 model Dish {
-  id String @id @default(uuid())
-  name String @db.VarChar(100)
-  details String @db.VarChar(255)
-  price Decimal @db.Decimal(5, 2)
+  id            String     @id @default(uuid())
+  name          String     @db.VarChar(100)
+  details       String     @db.VarChar(255)
+  price         Decimal    @db.Decimal(5, 2)
   restaurant_id String
-  restaurant Restaurant @relation(fields: [restaurant_id], references: [id])
-  reviews Review[]
+  image_url     String     
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  reviews       Review[]
 }
 
 model Review {
-  id String @id @default(uuid())
+  id      String  @id @default(uuid())
   user_id String
   dish_id String
-  rating Int
+  rating  Int
   comment String? @db.VarChar(500)
-  user User @relation(fields: [user_id], references: [id])
-  dish Dish @relation(fields: [dish_id], references: [id])
+  user    User    @relation(fields: [user_id], references: [id])
+  dish    Dish    @relation(fields: [dish_id], references: [id])
 }
