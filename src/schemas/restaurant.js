@@ -24,14 +24,7 @@ export const createRestaurantSchema = z.object({
         .min(6, {
             message: 'Password must be at least 6 characters',
         }),
-    image_url: z
-        .string({
-            required_error: 'Image url is required',
-        })
-        .trim()
-        .min(1, {
-            message: 'Image url is required',
-        }),
+    imageFilename: z.string().min(1, 'Image is required'),
 })
 
 export const updateRestaurantSchema = createRestaurantSchema.partial().strict({
