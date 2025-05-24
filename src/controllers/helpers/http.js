@@ -18,6 +18,11 @@ export const forbidden = (body) => ({
     body,
 })
 
+export const conflict = (body) => ({
+    statusCode: 409,
+    body,
+})
+
 export const serverError = () => ({
     statusCode: 500,
     body: {
