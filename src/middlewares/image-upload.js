@@ -1,4 +1,5 @@
 import multer from 'multer'
+import { v4 as uuidv4 } from 'uuid'
 import path from 'path'
 import { UnsupportedFileTypeError } from '../errors/index.js'
 
@@ -7,8 +8,9 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-        cb(null, uniqueSuffix + path.extname(file.originalname))
+        const fileId = uuidv4()
+        const extension = path.extname(file.originalname)
+        cb(null, `${fileId}${extension}`)
     },
 })
 
