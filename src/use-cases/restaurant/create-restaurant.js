@@ -1,4 +1,7 @@
-import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
+import {
+    CnpjAlreadyInUseError,
+    ImageIsRequiredError,
+} from '../../errors/index.js'
 
 export class CreateRestaurantUseCase {
     constructor(
@@ -16,22 +19,31 @@ export class CreateRestaurantUseCase {
     }
 
     async execute(createRestaurantParams) {
-        const restaurantWithProvidedCnpj =
-            await this.getRestaurantByCnpjRepository.execute(
-                createRestaurantParams.cnpj,
-            )
-        if (restaurantWithProvidedCnpj) {
-            throw new CnpjAlreadyInUseError(createRestaurantParams.cnpj)
-        }
-        const restaurantId = this.idGeneratorAdapter.execute()
+        const { imageFilename, cnpj, name, password } = createRestaurantParams
 
-        const hashedPassword = await this.passwordHasherAdapter.execute(
-            createRestaurantParams.password,
-        )
+        if (!imageFilename) {
+            throw new ImageIsRequiredError()
+        }
+
+        const restaurantWithProvidedCnpj =
+            await this.getRestaurantByCnpjRepository.execute(cnpj)
+
+        if (restaurantWithProvidedCnpj) {
+            throw new CnpjAlreadyInUseError(cnpj)
+        }
+
+        const restaurantId = this.idGeneratorAdapter.execute()
+        const hashedPassword =
+            await this.passwordHasherAdapter.execute(password)
+
+        const imageUrl = `/uploads/${imageFilename}`
+
         const restaurant = {
-            ...createRestaurantParams,
             id: restaurantId,
+            cnpj,
+            name,
             password: hashedPassword,
+            image_url: imageUrl,
         }
 
         const createdRestaurant =

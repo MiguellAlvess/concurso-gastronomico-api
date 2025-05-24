@@ -1,7 +1,17 @@
 import { createRestaurantSchema } from '../../schemas/restaurant.js'
-import { serverError, created, badRequest, conflict } from '../helpers/index.js'
+import {
+    serverError,
+    created,
+    badRequest,
+    conflict,
+    imageIsRequiredResponse,
+    unsupportedMediaTypeResponse,
+} from '../helpers/index.js'
 import { ZodError } from 'zod'
-import { CnpjAlreadyInUseError } from '../../errors/restaurant.js'
+import {
+    CnpjAlreadyInUseError,
+    UnsupportedFileTypeError,
+} from '../../errors/index.js'
 
 export class CreateRestaurantController {
     constructor(createRestaurantUseCase) {
@@ -10,7 +20,14 @@ export class CreateRestaurantController {
 
     async execute(httpRequest) {
         try {
-            const params = httpRequest.body
+            if (!httpRequest.file) {
+                return imageIsRequiredResponse()
+            }
+
+            const params = {
+                ...httpRequest.body,
+                imageFilename: httpRequest.file.filename,
+            }
 
             await createRestaurantSchema.parseAsync(params)
 
@@ -19,6 +36,9 @@ export class CreateRestaurantController {
 
             return created(createdRestaurant)
         } catch (error) {
+            if (error instanceof UnsupportedFileTypeError) {
+                return unsupportedMediaTypeResponse()
+            }
             if (error instanceof ZodError) {
                 return badRequest({ message: error.errors[0].message })
             }
