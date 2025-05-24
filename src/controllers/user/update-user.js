@@ -6,6 +6,7 @@ import {
     invalidIdResponse,
     checkIfIdIsValid,
     userNotFoundResponse,
+    conflict,
 } from '../helpers/index.js'
 
 import { EmailAlreadyInUseError, UserNotFoundError } from '../../errors/user.js'
@@ -45,7 +46,7 @@ export class UpdateUserController {
             }
 
             if (error instanceof EmailAlreadyInUseError) {
-                return badRequest({ message: error.message })
+                return conflict({ message: error.message })
             }
             console.log(error)
             return serverError()

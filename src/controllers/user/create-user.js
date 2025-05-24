@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import { serverError, badRequest, created } from '../helpers/index.js'
+import { serverError, badRequest, created, conflict } from '../helpers/index.js'
 import { createUserSchema } from '../../schemas/index.js'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 
@@ -22,7 +22,7 @@ export class CreateUserController {
                 return badRequest({ message: error.errors[0].message })
             }
             if (error instanceof EmailAlreadyInUseError) {
-                return badRequest({ message: error.message })
+                return conflict({ message: error.message })
             }
             console.error(error)
             return serverError()
