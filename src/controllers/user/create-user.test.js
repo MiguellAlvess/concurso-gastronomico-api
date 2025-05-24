@@ -167,6 +167,6 @@ describe('Create User Controller', () => {
         const result = await sut.execute(httpRequest)
 
         // assert
-        expect(result.statusCode).toBe(400)
+        expect(result.statusCode).toBe(409)
     })
 })

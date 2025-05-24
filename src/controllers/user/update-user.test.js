@@ -123,7 +123,7 @@ describe('Update User Controller', () => {
         const result = await sut.execute(httpRequest)
 
         // assert
-        expect(result.statusCode).toBe(400)
+        expect(result.statusCode).toBe(409)
     })
 
     it('should return 500 if UpdateUserUseCase throws', async () => {
