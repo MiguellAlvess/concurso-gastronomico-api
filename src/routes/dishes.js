@@ -65,7 +65,7 @@ dishesRouter.post('/', imageUpload, auth, async (req, res) => {
     res.status(statusCode).json(body)
 })
 
-dishesRouter.patch('/me/:dishId', auth, async (req, res) => {
+dishesRouter.patch('/me/:dishId', imageUpload, auth, async (req, res) => {
     const updateDishController = makeUpdateDishController()
 
     const { statusCode, body } = await updateDishController.execute({
