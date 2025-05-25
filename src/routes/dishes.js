@@ -6,6 +6,7 @@ import {
     makeDeleteDishController,
     makeGetDishByIdController,
     makeGetDishReviewsController,
+    makegetAllDishesController,
 } from '../factories/controllers/dish.js'
 import { auth, imageUpload } from '../middlewares/index.js'
 
@@ -31,6 +32,14 @@ dishesRouter.get('/:dishId', auth, async (req, res) => {
         ...req,
         restaurantId: req.restaurantId,
     })
+
+    res.status(statusCode).send(body)
+})
+
+dishesRouter.get('/', auth, async (req, res) => {
+    const getAllDishesController = makegetAllDishesController()
+
+    const { statusCode, body } = await getAllDishesController.execute(req)
 
     res.status(statusCode).send(body)
 })
