@@ -17,6 +17,7 @@ export * from './dish/get-dishes-by-restaurant-id.js'
 export * from './dish/update-dish.js'
 export * from './dish/delete-dish.js'
 export * from './dish/get-dish-reviews.js'
+export * from './dish/get-all-dishes.js'
 
 export * from './review/create-review.js'
 export * from './review/delete-review.js'
