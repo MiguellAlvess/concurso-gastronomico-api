@@ -243,6 +243,279 @@
                     }
                 }
             }
+        },
+        "/api/restaurants": {
+            "post": {
+                "summary": "Create a new restaurant",
+                "tags": ["Restaurants"],
+                "consumes": ["multipart/form-data"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "cnpj",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file",
+                        "description": "Image file for the restaurant"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Restaurant created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantWithToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "415": {
+                        "description": "Unsupported media type",
+                        "schema": {
+                            "$ref": "#/definitions/UnsupportedFileTypeErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Cnpj already in use",
+                        "schema": {
+                            "$ref": "#/definitions/CnpjAlreadyInUseErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/restaurants/me": {
+            "get": {
+                "summary": "Get authenticated restaurant",
+                "tags": ["Restaurants"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurant found",
+                        "schema": {
+                            "$ref": "#/definitions/Restaurant"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete authenticated restaurant",
+                "tags": ["Restaurants"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurant deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantNotFoundResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Update authenticated restaurant",
+                "tags": ["Restaurants"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "type": "string"
+                    },
+                    {
+                        "name": "cnpj",
+                        "in": "formData",
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "type": "file",
+                        "description": "Image file for the restaurant"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Restaurant created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantWithToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "415": {
+                        "description": "Unsupported media type",
+                        "schema": {
+                            "$ref": "#/definitions/UnsupportedFileTypeErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantNotFoundResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Cnpj already in use",
+                        "schema": {
+                            "$ref": "#/definitions/CnpjAlreadyInUseErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/restaurants/auth/login": {
+            "post": {
+                "summary": "Login restaurant",
+                "tags": ["Restaurants"],
+                "parameters": [
+                    {
+                        "name": "restaurant",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginRestaurantParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Restaurant logged in successfully",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantWithToken"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/UnauthorizedErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/restaurants/auth/refresh-token": {
+            "post": {
+                "summary": "Refresh User Token",
+                "tags": ["Restaurants"],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RefreshTokenParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tokens generated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Tokens"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/UnauthorizedErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
 
@@ -378,6 +651,79 @@
                 }
             }
         },
+        "Restaurant": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Restaurante"
+                },
+                "cnpj": {
+                    "type": "string",
+                    "example": "00.000.000/0000-00"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "https://example.com/image.jpg"
+                }
+            }
+        },
+        "RestaurantWithToken": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Restaurant"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "tokens": {
+                            "type": "object",
+                            "properties": {
+                                "accessToken": {
+                                    "type": "string",
+                                    "example": "ozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc0NzY5MjMwMX0.Fm3u2j9Omtc-rvfVJcef5Gu7CRKiAcXLV0DXEgGWLzk"
+                                },
+                                "refreshToken": {
+                                    "type": "string",
+                                    "example": "ozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc1MDI4MzQwMX0.ZYu8ZfmfmqzyTs4bTvnA4x5DAISPUoURdCoKlFQMCU0"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "LoginRestaurantParams": {
+            "type": "object",
+            "required": ["cnpj", "password"],
+            "properties": {
+                "cnpj": {
+                    "type": "string",
+                    "example": "00.000.000/0000-00"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "RestaurantNotFoundResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Restaurant not found"
+                }
+            }
+        },
         "UserNotFoundResponse": {
             "type": "object",
             "properties": {
@@ -420,6 +766,24 @@
                 "message": {
                     "type": "string",
                     "example": "The provided <email> is already in use"
+                }
+            }
+        },
+        "UnsupportedFileTypeErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Unsupported file type"
+                }
+            }
+        },
+        "CnpjAlreadyInUseErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "The provided <cnpj> is already in use"
                 }
             }
         }
