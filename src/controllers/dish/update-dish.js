@@ -6,10 +6,15 @@ import {
     badRequest,
     dishNotFoundResponse,
     forbiddenResponse,
+    unsupportedMediaTypeResponse,
 } from '../helpers/index.js'
 import { updateDishSchema } from '../../schemas/dish.js'
 import { ZodError } from 'zod'
-import { DishNotFoundError, ForbiddenError } from '../../errors/index.js'
+import {
+    DishNotFoundError,
+    ForbiddenError,
+    UnsupportedFileTypeError,
+} from '../../errors/index.js'
 
 export class UpdateDishController {
     constructor(updateDishUseCase) {
@@ -24,7 +29,13 @@ export class UpdateDishController {
                 return invalidIdResponse()
             }
 
-            const params = httpRequest.body
+            const params = {
+                ...httpRequest.body,
+            }
+
+            if (httpRequest.file) {
+                params.imageFilename = httpRequest.file.filename
+            }
 
             await updateDishSchema.parseAsync(params)
 
@@ -40,6 +51,9 @@ export class UpdateDishController {
             }
             if (error instanceof ForbiddenError) {
                 return forbiddenResponse()
+            }
+            if (error instanceof UnsupportedFileTypeError) {
+                return unsupportedMediaTypeResponse()
             }
             if (error instanceof DishNotFoundError) {
                 return dishNotFoundResponse()

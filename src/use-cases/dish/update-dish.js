@@ -1,4 +1,4 @@
-import { ForbiddenError } from '../../errors/index.js'
+import { DishNotFoundError, ForbiddenError } from '../../errors/index.js'
 
 export class UpdateDishUseCase {
     constructor(updateDishRepository, getDishByIdRepository) {
@@ -6,15 +6,25 @@ export class UpdateDishUseCase {
         this.getDishByIdRepository = getDishByIdRepository
     }
 
-    async execute(dishId, params) {
+    async execute(dishId, updateDishParams) {
         const dish = await this.getDishByIdRepository.execute(dishId)
 
-        if (dish.restaurant_id !== params.restaurant_id) {
+        if (dish.restaurant_id !== updateDishParams.restaurant_id) {
             throw new ForbiddenError()
         }
+
+        if (!dish) {
+            throw new DishNotFoundError(dishId)
+        }
+
+        if (updateDishParams.imageFilename) {
+            updateDishParams.image_url = updateDishParams.imageFilename
+            delete updateDishParams.imageFilename
+        }
+
         const updatedDish = await this.updateDishRepository.execute(
             dishId,
-            params,
+            updateDishParams,
         )
 
         return updatedDish
