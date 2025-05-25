@@ -3,25 +3,26 @@ import { v4 as uuidv4 } from 'uuid'
 import path from 'path'
 import { UnsupportedFileTypeError } from '../errors/index.js'
 
+const uploadDir = 'uploads/'
+const maxFileSizeBytes = 5 * 1024 * 1024 // 5MB
+const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+
+const getDestination = (req, file, cb) => {
+    cb(null, uploadDir)
+}
+
+const generateFilename = (req, file, cb) => {
+    const uniqueId = uuidv4()
+    const extension = path.extname(file.originalname)
+    cb(null, `${uniqueId}${extension}`)
+}
+
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/')
-    },
-    filename: (req, file, cb) => {
-        const fileId = uuidv4()
-        const extension = path.extname(file.originalname)
-        cb(null, `${fileId}${extension}`)
-    },
+    destination: getDestination,
+    filename: generateFilename,
 })
 
 const fileFilter = (req, file, cb) => {
-    const allowedMimeTypes = [
-        'image/jpeg',
-        'image/png',
-        'image/jpg',
-        'image/webp',
-    ]
-
     if (allowedMimeTypes.includes(file.mimetype)) {
         cb(null, true)
     } else {
@@ -33,14 +34,14 @@ const upload = multer({
     storage,
     fileFilter,
     limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB
+        fileSize: maxFileSizeBytes,
     },
 })
 
 export const imageUpload = (req, res, next) => {
     const uploadSingle = upload.single('image')
 
-    uploadSingle(req, res, function (err) {
+    uploadSingle(req, res, (err) => {
         if (err) {
             if (err instanceof multer.MulterError) {
                 return res.status(400).json({ message: err.message })
