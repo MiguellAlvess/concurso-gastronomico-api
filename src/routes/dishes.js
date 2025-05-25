@@ -60,7 +60,7 @@ dishesRouter.get('/me', auth, async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-dishesRouter.post('/', imageUpload, auth, async (req, res) => {
+dishesRouter.post('/me', imageUpload, auth, async (req, res) => {
     const createDishController = makeCreateDishController()
 
     const { statusCode, body } = await createDishController.execute({
