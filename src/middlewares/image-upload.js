@@ -41,8 +41,16 @@ export const imageUpload = (req, res, next) => {
     const uploadSingle = upload.single('image')
 
     uploadSingle(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(400).send({ message: err.message })
+        if (err) {
+            if (err instanceof multer.MulterError) {
+                return res.status(400).json({ message: err.message })
+            }
+            if (err instanceof UnsupportedFileTypeError) {
+                return res
+                    .status(415)
+                    .json({ message: 'File type not supported' })
+            }
+            return res.status(500).json({ message: 'Internal server error' })
         }
         next()
     })
