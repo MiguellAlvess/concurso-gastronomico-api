@@ -7,7 +7,7 @@ import {
     makeGetDishByIdController,
     makeGetDishReviewsController,
 } from '../factories/controllers/dish.js'
-import { auth } from '../middlewares/auth.js'
+import { auth, imageUpload } from '../middlewares/index.js'
 
 export const dishesRouter = Router()
 
@@ -51,7 +51,7 @@ dishesRouter.get('/me', auth, async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-dishesRouter.post('/', auth, async (req, res) => {
+dishesRouter.post('/', imageUpload, auth, async (req, res) => {
     const createDishController = makeCreateDishController()
 
     const { statusCode, body } = await createDishController.execute({
