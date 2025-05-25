@@ -25,25 +25,6 @@ dishesRouter.get('/reviews', auth, async (req, res) => {
     res.status(statusCode).send(body)
 })
 
-dishesRouter.get('/:dishId', auth, async (req, res) => {
-    const getDishByIdController = makeGetDishByIdController()
-
-    const { statusCode, body } = await getDishByIdController.execute({
-        ...req,
-        restaurantId: req.restaurantId,
-    })
-
-    res.status(statusCode).send(body)
-})
-
-dishesRouter.get('/', auth, async (req, res) => {
-    const getAllDishesController = makegetAllDishesController()
-
-    const { statusCode, body } = await getAllDishesController.execute(req)
-
-    res.status(statusCode).send(body)
-})
-
 dishesRouter.get('/me', auth, async (req, res) => {
     const getDishesByRestaurantIdController =
         makeGetDishesByRestaurantIdController()
@@ -97,4 +78,23 @@ dishesRouter.delete('/me/:dishId', auth, async (req, res) => {
     })
 
     res.status(statusCode).json(body)
+})
+
+dishesRouter.get('/:dishId', auth, async (req, res) => {
+    const getDishByIdController = makeGetDishByIdController()
+
+    const { statusCode, body } = await getDishByIdController.execute({
+        ...req,
+        restaurantId: req.restaurantId,
+    })
+
+    res.status(statusCode).send(body)
+})
+
+dishesRouter.get('/', auth, async (req, res) => {
+    const getAllDishesController = makegetAllDishesController()
+
+    const { statusCode, body } = await getAllDishesController.execute(req)
+
+    res.status(statusCode).send(body)
 })
