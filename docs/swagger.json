@@ -1,5 +1,5 @@
 {
-    "swagger": 2.0,
+    "swagger": "2.0",
     "info": {
         "title": "Concurso Gastronomico API",
         "description": "API feita para um Concurso Gastronômico",
@@ -17,5 +17,411 @@
         {
             "BearerAuth": []
         }
-    ]
+    ],
+    "paths": {
+        "/api/users": {
+            "post": {
+                "summary": "Create a new user",
+                "tags": ["Users"],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateUserParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Email already in use",
+                        "schema": {
+                            "$ref": "#/definitions/EmailAlreadyInUseErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/me": {
+            "get": {
+                "summary": "Get authenticated user",
+                "tags": ["Users"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/UserNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete authenticated user",
+                "tags": ["Users"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/UserNotFoundResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/UserNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Update authenticated user",
+                "tags": ["Users"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateUserParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/UserNotFoundResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Email already in use",
+                        "schema": {
+                            "$ref": "#/definitions/EmailAlreadyInUseErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/auth/login": {
+            "post": {
+                "summary": "Login user",
+                "tags": ["Users"],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginUserParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User logged in successfully",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithToken"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/UnauthorizedErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/auth/refresh-token": {
+            "post": {
+                "summary": "Refresh User Token",
+                "tags": ["Users"],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RefreshTokenParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tokens generated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Tokens"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/UnauthorizedErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "first_name": {
+                    "type": "string",
+                    "example": "Miguel"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Alves"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "miguelteste@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "UserWithToken": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/User"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "tokens": {
+                            "type": "object",
+                            "properties": {
+                                "accessToken": {
+                                    "type": "string",
+                                    "example": "ozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc0NzY5MjMwMX0.Fm3u2j9Omtc-rvfVJcef5Gu7CRKiAcXLV0DXEgGWLzk"
+                                },
+                                "refreshToken": {
+                                    "type": "string",
+                                    "example": "ozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc1MDI4MzQwMX0.ZYu8ZfmfmqzyTs4bTvnA4x5DAISPUoURdCoKlFQMCU0"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "CreateUserParams": {
+            "type": "object",
+            "required": ["first_name", "last_name", "email", "password"],
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "example": "Miguel"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Alves"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "miguelteste@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "UpdateUserParams": {
+            "type": "object",
+            "required": ["first_name", "last_name", "email", "password"],
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "example": "Miguel"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Alves"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "miguelteste@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "LoginUserParams": {
+            "type": "object",
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "miguelteste@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "RefreshTokenParams": {
+            "type": "object",
+            "properties": {
+                "refreshToken": {
+                    "type": "string",
+                    "example": "ozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc0NzY5MjMwMX0.Fm3u2j9Omtc-rvfVJcef5Gu7CRKiAcXLV0DXEgGWLzk",
+                    "required": true
+                }
+            }
+        },
+        "Tokens": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "ozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc0NzY5MjMwMX0.Fm3u2j9Omtc-rvfVJcef5Gu7CRKiAcXLV0DXEgGWLzk"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eozJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZWY5NmU2YS0wNGM5LTQ3YzUtYjIyZS0wMTFiZjI5YzQxN2QiLCJpYXQiOjE3NDc2OTE0MDEsImV4cCI6MTc1MDI4MzQwMX0.ZYu8ZfmfmqzyTs4bTvnA4x5DAISPUoURdCoKlFQMCU0"
+                }
+            }
+        },
+        "UserNotFoundResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "User not found"
+                }
+            }
+        },
+        "UnauthorizedErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Unauthorized"
+                }
+            }
+        },
+        "InvalidParamErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "The <param> is invalid"
+                }
+            }
+        },
+        "InternalServerErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Internal server error"
+                }
+            }
+        },
+        "EmailAlreadyInUseErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "The provided <email> is already in use"
+                }
+            }
+        }
+    }
 }
