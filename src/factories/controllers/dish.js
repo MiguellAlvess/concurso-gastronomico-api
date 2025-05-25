@@ -6,6 +6,7 @@ import {
     PostgresDeleteDishRepository,
     PostgresGetDishByIdRepository,
     PostgresGetDishReviewsRepository,
+    PostgresGetAllDishesRepository,
 } from '../../repositories/index.js'
 
 import {
@@ -15,6 +16,7 @@ import {
     DeleteDishUseCase,
     GetDishByIdUseCase,
     GetDishReviewsUseCase,
+    GetAllDishesUseCase,
 } from '../../use-cases/index.js'
 
 import {
@@ -24,6 +26,7 @@ import {
     DeleteDishController,
     GetDishByIdController,
     GetDishReviewsController,
+    GetAllDishesController,
 } from '../../controllers/index.js'
 import { IdGeneratorAdapter } from '../../adapters/index.js'
 
@@ -97,4 +100,15 @@ export const makeGetDishReviewsController = () => {
         getDishReviewsUseCase,
     )
     return getDishReviewsController
+}
+
+export const makegetAllDishesController = () => {
+    const getAllDishesRepository = new PostgresGetAllDishesRepository()
+    const getAllDishesUseCase = new GetAllDishesUseCase(getAllDishesRepository)
+
+    const getAllDishesController = new GetAllDishesController(
+        getAllDishesUseCase,
+    )
+
+    return getAllDishesController
 }
