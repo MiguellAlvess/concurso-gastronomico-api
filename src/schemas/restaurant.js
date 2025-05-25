@@ -27,9 +27,7 @@ export const createRestaurantSchema = z.object({
     image_url: z.string().min(1, 'Image is required'),
 })
 
-export const updateRestaurantSchema = createRestaurantSchema.partial().strict({
-    message: 'Some provided field is not allowed',
-})
+export const updateRestaurantSchema = createRestaurantSchema.partial()
 
 export const loginRestaurantSchema = z.object({
     cnpj: z
