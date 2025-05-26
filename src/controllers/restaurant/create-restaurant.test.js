@@ -159,6 +159,9 @@ describe('Create Restaurant Controller', () => {
         await sut.execute(httpRequest)
 
         // assert
-        expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)
+        expect(executeSpy).toHaveBeenCalledWith({
+            ...httpRequest.body,
+            imageFilename: httpRequest.file.filename,
+        })
     })
 })
