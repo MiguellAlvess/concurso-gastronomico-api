@@ -6,7 +6,7 @@ import {
     checkIfIdIsValid,
     restaurantNotFoundResponse,
 } from '../helpers/index.js'
-import { RestaurantNotFoundError } from '../../errors/restaurant.js '
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 export class GetDishesByRestaurantIdController {
     constructor(getDishesByRestaurantIdUseCase) {
