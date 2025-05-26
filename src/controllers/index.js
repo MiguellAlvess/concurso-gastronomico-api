@@ -12,6 +12,7 @@ export * from './restaurant/update-restaurant.js'
 export * from './restaurant/delete-restaurant.js'
 export * from './restaurant/login-restaurant.js'
 export * from './restaurant/refresh-token.js'
+export * from './restaurant/get-all-restaurants.js'
 
 export * from './dish/create-dish.js'
 export * from './dish/get-dish-by-id.js'
