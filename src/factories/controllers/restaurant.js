@@ -4,6 +4,7 @@ import {
     PostgresGetRestaurantByIdRepository,
     PostgresUpdateRestaurantRepository,
     PostgresDeleteRestaurantRepository,
+    PostgresGetAllRestaurantsRepository,
 } from '../../repositories/index.js'
 import {
     CreateRestaurantUseCase,
@@ -12,6 +13,7 @@ import {
     DeleteRestaurantUseCase,
     LoginRestaurantUseCase,
     RefreshTokenRestaurantUseCase,
+    GetAllRestaurantsUseCase,
 } from '../../use-cases/index.js'
 import {
     CreateRestaurantController,
@@ -20,6 +22,7 @@ import {
     DeleteRestaurantController,
     LoginRestaurantController,
     RefreshTokenRestaurantController,
+    GetAllRestaurantsController,
 } from '../../controllers/index.js'
 import {
     PasswordHasherAdapter,
@@ -132,4 +135,17 @@ export const makeRefreshTokenRestaurantController = () => {
         new RefreshTokenRestaurantController(refreshTokenRestaurantUseCase)
 
     return refreshTokenRestaurantController
+}
+
+export const makeGetAllRestaurantsController = () => {
+    const getAllRestaurantsRepository =
+        new PostgresGetAllRestaurantsRepository()
+    const getAllRestaurantsUseCase = new GetAllRestaurantsUseCase(
+        getAllRestaurantsRepository,
+    )
+    const getAllRestaurantsController = new GetAllRestaurantsController(
+        getAllRestaurantsUseCase,
+    )
+
+    return getAllRestaurantsController
 }
