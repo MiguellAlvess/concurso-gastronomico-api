@@ -245,6 +245,29 @@
             }
         },
         "/api/restaurants": {
+            "get": {
+                "summary": "Get all restaurants",
+                "tags": ["Restaurants"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurants found successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Restaurants"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "summary": "Create a new restaurant",
                 "tags": ["Restaurants"],
