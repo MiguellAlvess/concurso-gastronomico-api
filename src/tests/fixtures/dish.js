@@ -6,5 +6,9 @@ export const dish = {
     details: faker.commerce.productDescription().slice(0, 255),
     price: Number(faker.finance.amount()),
     restaurant_id: faker.string.uuid(),
-    image_url: faker.image.urlLoremFlickr(),
+    image_url: 'imagetest.png',
+    file: {
+        filename: 'imagetest.png',
+        mimetype: 'image/png',
+    },
 }
