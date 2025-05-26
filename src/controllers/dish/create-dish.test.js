@@ -37,4 +37,17 @@ describe('Create Dish Controller', () => {
 
         expect(response.statusCode).toBe(201)
     })
+
+    it('should return 400 when name is not provided', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                name: undefined,
+            },
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
 })
