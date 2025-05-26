@@ -55,4 +55,19 @@ describe('Get Dish Reviews Controller', () => {
 
         expect(result.statusCode).toBe(404)
     })
+
+    it('should return 500 when GetDishReviewsUseCase throws', async () => {
+        const { sut, getDishReviewsUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getDishReviewsUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = await sut.execute({
+            query: {
+                dishId: faker.string.uuid(),
+            },
+        })
+
+        expect(result.statusCode).toBe(500)
+    })
 })
