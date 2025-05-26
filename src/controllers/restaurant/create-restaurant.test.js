@@ -18,9 +18,12 @@ describe('Create Restaurant Controller', () => {
     }
     const httpRequest = {
         body: {
-            ...restaurant,
+            name: restaurant.name,
+            cnpj: restaurant.cnpj,
+            password: restaurant.password,
             id: undefined,
         },
+        file: restaurant.file,
     }
 
     it('should return 201 when creating a restaurant successfully', async () => {
