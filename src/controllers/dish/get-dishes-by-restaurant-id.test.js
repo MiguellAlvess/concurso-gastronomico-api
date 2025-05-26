@@ -30,4 +30,15 @@ describe('Get Dishes By Restaurant Id Controller', () => {
 
         expect(response.statusCode).toBe(200)
     })
+
+    it('should return 400 if restaurant id is not valid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            query: {
+                restaurantId: 'invalid-id',
+            },
+        })
+        expect(result.statusCode).toBe(400)
+    })
 })
