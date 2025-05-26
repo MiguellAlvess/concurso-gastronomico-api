@@ -828,6 +828,100 @@
                     }
                 }
             }
+        },
+        "/api/reviews/me/dishes/{dishId}": {
+            "post": {
+                "summary": "Create a new review for the authenticated user",
+                "tags": ["Reviews"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "dishId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the dish"
+                    },
+                    {
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateReviewParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Review created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Review"
+                        }
+                    },
+                    "404": {
+                        "description": "Dish not found",
+                        "schema": {
+                            "$ref": "#/definitions/DishNotFoundResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reviews/me/{reviewId}": {
+            "delete": {
+                "summary": "Delete a review for the authenticated user",
+                "tags": ["Reviews"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "reviewId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the review"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Review deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Review"
+                        }
+                    },
+                    "404": {
+                        "description": "Review not found",
+                        "schema": {
+                            "$ref": "#/definitions/ReviewNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
 
@@ -1080,6 +1174,28 @@
                     "type": "string",
                     "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
                 },
+                "rating": {
+                    "type": "number",
+                    "example": 5
+                },
+                "comment": {
+                    "type": "string",
+                    "example": "Comentário"
+                }
+            }
+        },
+        "ReviewNotFoundResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Review not found"
+                }
+            }
+        },
+        "CreateReviewParams": {
+            "type": "object",
+            "properties": {
                 "rating": {
                     "type": "number",
                     "example": 5
