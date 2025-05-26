@@ -8,13 +8,6 @@ export const createReviewSchema = z.object({
         .uuid({
             message: 'User id must be a valid uuid',
         }),
-    dish_id: z
-        .string({
-            required_error: 'Dish id is required',
-        })
-        .uuid({
-            message: 'Dish id must be a valid uuid',
-        }),
     rating: z
         .number({
             required_error: 'Rating is required',

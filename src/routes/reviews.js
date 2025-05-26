@@ -7,7 +7,7 @@ import { auth } from '../middlewares/auth.js'
 
 export const reviewsRouter = Router()
 
-reviewsRouter.post('/', auth, async (req, res) => {
+reviewsRouter.post('/me/dishes/:dishId', auth, async (req, res) => {
     const createReviewController = makeCreateReviewController()
 
     const { statusCode, body } = await createReviewController.execute({
@@ -15,13 +15,14 @@ reviewsRouter.post('/', auth, async (req, res) => {
         body: {
             ...req.body,
             user_id: req.userId,
+            dish_id: req.params.dishId,
         },
     })
 
     res.status(statusCode).json(body)
 })
 
-reviewsRouter.delete('/:reviewId', auth, async (req, res) => {
+reviewsRouter.delete('/me/:reviewId', auth, async (req, res) => {
     const deleteReviewController = makeDeleteReviewController()
 
     const { statusCode, body } = await deleteReviewController.execute({

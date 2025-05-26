@@ -21,11 +21,19 @@ export class CreateReviewController {
 
     async execute(httpRequest) {
         try {
-            const params = httpRequest.body
+            const dishId = httpRequest.params.dishId
+
+            const params = {
+                ...httpRequest.body,
+                user_id: httpRequest.userId,
+            }
 
             await createReviewSchema.parseAsync(params)
 
-            const review = await this.createReviewUseCase.execute(params)
+            const review = await this.createReviewUseCase.execute({
+                ...params,
+                dish_id: dishId,
+            })
 
             return created(review)
         } catch (error) {
