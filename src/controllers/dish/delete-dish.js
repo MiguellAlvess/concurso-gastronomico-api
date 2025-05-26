@@ -39,9 +39,6 @@ export class DeleteDishController {
             if (error instanceof ForbiddenError) {
                 return forbiddenResponse()
             }
-            if (error instanceof DishNotFoundError) {
-                return dishNotFoundResponse()
-            }
             return serverError()
         }
     }
