@@ -6,6 +6,7 @@ import {
     makeDeleteRestaurantController,
     makeLoginRestaurantController,
     makeRefreshTokenRestaurantController,
+    makeGetAllRestaurantsController,
 } from '../factories/controllers/restaurant.js'
 import { auth, imageUpload } from '../middlewares/index.js'
 
@@ -20,6 +21,14 @@ restaurantsRouter.get('/me', auth, async (req, res) => {
             restaurantId: req.restaurantId,
         },
     })
+
+    res.status(statusCode).send(body)
+})
+
+restaurantsRouter.get('/', auth, async (req, res) => {
+    const getAllRestaurantsController = makeGetAllRestaurantsController()
+
+    const { statusCode, body } = await getAllRestaurantsController.execute(req)
 
     res.status(statusCode).send(body)
 })
