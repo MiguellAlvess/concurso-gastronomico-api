@@ -89,4 +89,15 @@ describe('Create Dish Controller', () => {
 
         expect(result.statusCode).toBe(400)
     })
+
+    it('should return 500 when CreateDishUseCase throws', async () => {
+        const { sut, createDishUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(createDishUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = await sut.execute(httpRequest)
+
+        expect(result.statusCode).toBe(500)
+    })
 })
