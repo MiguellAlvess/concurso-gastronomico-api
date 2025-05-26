@@ -54,4 +54,18 @@ describe('Get Dish By Id Controller', () => {
 
         expect(result.statusCode).toBe(500)
     })
+
+    it('should call GetDishByIdUseCase with correct params', async () => {
+        const { sut, getDishByIdUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(getDishByIdUseCase, 'execute')
+        const dishId = faker.string.uuid()
+
+        await sut.execute({
+            params: {
+                dishId,
+            },
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(dishId)
+    })
 })
