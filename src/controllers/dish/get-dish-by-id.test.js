@@ -39,4 +39,19 @@ describe('Get Dish By Id Controller', () => {
 
         expect(result.statusCode).toBe(400)
     })
+
+    it('should return 500 if GetDishByIdUseCase throws', async () => {
+        const { sut, getDishByIdUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getDishByIdUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = await sut.execute({
+            params: {
+                dishId: faker.string.uuid(),
+            },
+        })
+
+        expect(result.statusCode).toBe(500)
+    })
 })
