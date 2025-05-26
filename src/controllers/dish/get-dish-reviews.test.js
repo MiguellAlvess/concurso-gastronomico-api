@@ -1,12 +1,12 @@
 import { GetDishReviewsController } from './get-dish-reviews.js'
 import { review } from '../../tests/index.js'
-import { faker, it } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import { DishNotFoundError } from '../../errors/dish.js'
 
 describe('Get Dish Reviews Controller', () => {
     class GetDishReviewsUseCaseStub {
         async execute() {
-            return review
+            return { reviews: [review], averageRating: 4.5 }
         }
     }
 
@@ -69,5 +69,22 @@ describe('Get Dish Reviews Controller', () => {
         })
 
         expect(result.statusCode).toBe(500)
+    })
+
+    it('should call GetDishReviewsUseCase with correct params', async () => {
+        const { sut, getDishReviewsUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(
+            getDishReviewsUseCase,
+            'execute',
+        )
+        const dishId = faker.string.uuid()
+
+        await sut.execute({
+            query: {
+                dishId,
+            },
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(dishId)
     })
 })
