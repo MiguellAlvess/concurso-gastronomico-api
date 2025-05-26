@@ -483,7 +483,7 @@
         },
         "/api/restaurants/auth/refresh-token": {
             "post": {
-                "summary": "Refresh User Token",
+                "summary": "Refresh Restaurant Token",
                 "tags": ["Restaurants"],
                 "parameters": [
                     {
@@ -506,6 +506,318 @@
                         "description": "Invalid token",
                         "schema": {
                             "$ref": "#/definitions/UnauthorizedErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dishes": {
+            "get": {
+                "summary": "Get all dishes",
+                "tags": ["Dishes"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dishes found",
+                        "type": "array",
+                        "schema": {
+                            "$ref": "#/definitions/Dish"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dishes/me": {
+            "post": {
+                "summary": "Create a new dish for the authenticated restaurant",
+                "tags": ["Dishes"],
+                "consumes": ["multipart/form-data"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "details",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file",
+                        "description": "Image file for the dish"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Restaurant created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Dish"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "415": {
+                        "description": "Unsupported media type",
+                        "schema": {
+                            "$ref": "#/definitions/UnsupportedFileTypeErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get dishes from the authenticated restaurant",
+                "tags": ["Dishes"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dishes found",
+                        "schema": {
+                            "$ref": "#/definitions/Dish"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "$ref": "#/definitions/RestaurantNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dishes/me/{dishId}": {
+            "patch": {
+                "summary": "Update a dish for the authenticated restaurant",
+                "tags": ["Dishes"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "dishId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the dish that will be updated"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "type": "string"
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "type": "number"
+                    },
+                    {
+                        "name": "details",
+                        "in": "formData",
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "type": "file",
+                        "description": "Image file for the dish"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dish updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Dish"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidParamErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Dish not found",
+                        "schema": {
+                            "$ref": "#/definitions/DishNotFoundResponse"
+                        }
+                    },
+                    "415": {
+                        "description": "Unsupported media type",
+                        "schema": {
+                            "$ref": "#/definitions/UnsupportedFileTypeErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a dish for the authenticated restaurant",
+                "tags": ["Dishes"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "dishId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the dish that will be deleted"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dish deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Dish"
+                        }
+                    },
+                    "404": {
+                        "description": "Dish not found",
+                        "schema": {
+                            "$ref": "#/definitions/DishNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dishes/{dishId}": {
+            "get": {
+                "summary": "Get dish by ID",
+                "tags": ["Dishes"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "dishId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the dish"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dish found",
+                        "schema": {
+                            "$ref": "#/definitions/Dish"
+                        }
+                    },
+                    "404": {
+                        "description": "Dish not found",
+                        "schema": {
+                            "$ref": "#/definitions/DishNotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dishes/reviews": {
+            "get": {
+                "summary": "Get all dish reviews",
+                "tags": ["Dishes"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "dishId",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the dish"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dish reviews found",
+                        "type": "array",
+                        "schema": {
+                            "$ref": "#/definitions/Review"
+                        }
+                    },
+                    "404": {
+                        "description": "Dish not found",
+                        "schema": {
+                            "$ref": "#/definitions/DishNotFoundResponse"
                         }
                     },
                     "500": {
@@ -712,6 +1024,69 @@
                 "password": {
                     "type": "string",
                     "example": "password"
+                }
+            }
+        },
+        "Dish": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "restaurant_id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Prato"
+                },
+                "details": {
+                    "type": "string",
+                    "example": "Descrição do prato"
+                },
+                "price": {
+                    "type": "number",
+                    "example": 10.99
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "https://example.com/image.jpg"
+                }
+            }
+        },
+        "DishNotFoundResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Dish not found"
+                }
+            }
+        },
+        "Review": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "user_id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "dish_id": {
+                    "type": "string",
+                    "example": "32021a5f-cbf8-4b55-a686-46f5a3c31da4"
+                },
+                "rating": {
+                    "type": "number",
+                    "example": 5
+                },
+                "comment": {
+                    "type": "string",
+                    "example": "Comentário"
                 }
             }
         },
