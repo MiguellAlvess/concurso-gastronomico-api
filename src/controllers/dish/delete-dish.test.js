@@ -70,4 +70,20 @@ describe('Delete Dish Controller', () => {
 
         expect(result.statusCode).toBe(404)
     })
+
+    it('should return 500 if DeleteDishUseCase throws', async () => {
+        const { sut, deleteDishUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(deleteDishUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = await sut.execute({
+            params: {
+                dishId: faker.string.uuid(),
+            },
+            restaurantId: faker.string.uuid(),
+        })
+
+        expect(result.statusCode).toBe(500)
+    })
 })
