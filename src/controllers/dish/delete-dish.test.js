@@ -40,4 +40,17 @@ describe('Delete Dish Controller', () => {
 
         expect(result.statusCode).toBe(400)
     })
+
+    it('should return 400 if restaurnt id is not valid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            params: {
+                dishId: faker.string.uuid(),
+            },
+            restaurantId: 'invalid-id',
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
 })
