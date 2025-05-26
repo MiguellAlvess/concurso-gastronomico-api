@@ -27,4 +27,16 @@ describe('Get Dish Reviews Controller', () => {
 
         expect(response.statusCode).toBe(200)
     })
+
+    it('should return 400 when dish id is not valid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            query: {
+                dishId: 'invalid-id',
+            },
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
 })
