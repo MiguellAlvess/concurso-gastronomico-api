@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { dish } from '../../tests/index.js'
 import { DeleteDishController } from './delete-dish.js'
+import { DishNotFoundError } from '../../errors/dish.js'
 
 describe('Delete Dish Controller', () => {
     class DeleteDishUseCaseStub {
@@ -52,5 +53,21 @@ describe('Delete Dish Controller', () => {
         })
 
         expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 404 if dish is not found', async () => {
+        const { sut, deleteDishUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(deleteDishUseCase, 'execute')
+            .mockRejectedValueOnce(new DishNotFoundError())
+
+        const result = await sut.execute({
+            params: {
+                dishId: faker.string.uuid(),
+            },
+            restaurantId: faker.string.uuid(),
+        })
+
+        expect(result.statusCode).toBe(404)
     })
 })
