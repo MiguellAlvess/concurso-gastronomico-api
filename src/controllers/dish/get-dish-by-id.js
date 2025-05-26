@@ -3,7 +3,9 @@ import {
     ok,
     serverError,
     checkIfIdIsValid,
+    dishNotFoundResponse,
 } from '../helpers/index.js'
+import { DishNotFoundError } from '../../errors/index.js'
 
 export class GetDishByIdController {
     constructor(getDishByIdUseCase) {
@@ -25,6 +27,9 @@ export class GetDishByIdController {
             return ok(dish)
         } catch (error) {
             console.error(error)
+            if (error instanceof DishNotFoundError) {
+                return dishNotFoundResponse()
+            }
             return serverError()
         }
     }
