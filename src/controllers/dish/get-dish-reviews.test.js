@@ -1,6 +1,7 @@
 import { GetDishReviewsController } from './get-dish-reviews.js'
 import { review } from '../../tests/index.js'
-import { faker } from '@faker-js/faker'
+import { faker, it } from '@faker-js/faker'
+import { DishNotFoundError } from '../../errors/dish.js'
 
 describe('Get Dish Reviews Controller', () => {
     class GetDishReviewsUseCaseStub {
@@ -38,5 +39,20 @@ describe('Get Dish Reviews Controller', () => {
         })
 
         expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 404 when dish is not found', async () => {
+        const { sut, getDishReviewsUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getDishReviewsUseCase, 'execute')
+            .mockRejectedValueOnce(new DishNotFoundError())
+
+        const result = await sut.execute({
+            query: {
+                dishId: faker.string.uuid(),
+            },
+        })
+
+        expect(result.statusCode).toBe(404)
     })
 })
