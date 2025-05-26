@@ -100,4 +100,16 @@ describe('Create Dish Controller', () => {
 
         expect(result.statusCode).toBe(500)
     })
+
+    it('should call CreateDishUseCase with correct params', async () => {
+        const { sut, createDishUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(createDishUseCase, 'execute')
+
+        await sut.execute(httpRequest)
+
+        expect(executeSpy).toHaveBeenCalledWith({
+            ...httpRequest.body,
+            imageFilename: httpRequest.file.filename,
+        })
+    })
 })
