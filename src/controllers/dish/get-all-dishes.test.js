@@ -21,4 +21,15 @@ describe('Get All Dishes Controller', () => {
 
         expect(response.statusCode).toBe(200)
     })
+
+    it('should return 500 if GetAllDishesUseCase throws', async () => {
+        const { sut, getAllDishesUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getAllDishesUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = await sut.execute()
+
+        expect(result.statusCode).toBe(500)
+    })
 })
