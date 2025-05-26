@@ -86,4 +86,20 @@ describe('Delete Dish Controller', () => {
 
         expect(result.statusCode).toBe(500)
     })
+
+    it('should call DeleteDishUseCase with correct params', async () => {
+        const { sut, deleteDishUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(deleteDishUseCase, 'execute')
+        const dishId = faker.string.uuid()
+        const restaurantId = faker.string.uuid()
+
+        await sut.execute({
+            params: {
+                dishId,
+            },
+            restaurantId,
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(dishId, restaurantId)
+    })
 })
