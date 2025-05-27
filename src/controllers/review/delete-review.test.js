@@ -55,4 +55,19 @@ describe('Delete Review Controller', () => {
 
         expect(response.statusCode).toBe(404)
     })
+
+    it('shoul return 500 if DeleteReviewUseCase throws', async () => {
+        const { sut, deleteReviewUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(deleteReviewUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute({
+            params: {
+                reviewId: faker.string.uuid(),
+            },
+        })
+
+        expect(response.statusCode).toBe(500)
+    })
 })
