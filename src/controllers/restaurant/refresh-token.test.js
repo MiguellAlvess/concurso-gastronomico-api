@@ -41,4 +41,19 @@ describe('Refresh Token User Controller', () => {
 
         expect(response.statusCode).toBe(400)
     })
+
+    it('should return 500 when RefreshTokenUserUseCase throws', async () => {
+        const { sut, refreshTokenRestaurantUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(refreshTokenRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute({
+            body: {
+                refreshToken: 'any_refresh_token',
+            },
+        })
+
+        expect(response.statusCode).toBe(500)
+    })
 })
