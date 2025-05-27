@@ -70,4 +70,21 @@ describe('Get User Reviews Controller', () => {
 
         expect(response.statusCode).toBe(500)
     })
+
+    it('should call GetUserReviewsUseCase with correct params', async () => {
+        const { sut, getUserReviewsUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(
+            getUserReviewsUseCase,
+            'execute',
+        )
+        const userId = faker.string.uuid()
+
+        await sut.execute({
+            query: {
+                userId,
+            },
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(userId)
+    })
 })
