@@ -1,6 +1,7 @@
 import { UpdateRestaurantController } from './update-restaurant.js'
 import { restaurant } from '../../tests/index.js'
 import { RestaurantNotFoundError } from '../../errors/index.js'
+import { faker } from '@faker-js/faker'
 
 describe('Update Restaurant Controller', () => {
     class UpdateRestaurantUseCaseStub {
@@ -67,5 +68,29 @@ describe('Update Restaurant Controller', () => {
         const response = await sut.execute(httpRequest)
 
         expect(response.statusCode).toBe(500)
+    })
+
+    it('should call UpdateRestaurantUseCase with correct params', async () => {
+        const { sut, updateRestaurantUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(
+            updateRestaurantUseCase,
+            'execute',
+        )
+        const restaurantId = faker.string.uuid()
+
+        await sut.execute({
+            params: {
+                restaurantId,
+            },
+            body: {
+                name: restaurant.name,
+            },
+            file: restaurant.file,
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(restaurantId, {
+            name: restaurant.name,
+            imageFilename: restaurant.file.filename,
+        })
     })
 })
