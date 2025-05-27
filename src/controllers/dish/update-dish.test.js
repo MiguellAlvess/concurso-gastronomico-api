@@ -1,6 +1,7 @@
 import { UpdateDishController } from './update-dish.js'
 import { dish } from '../../tests/index.js'
 import { faker } from '@faker-js/faker'
+import { DishNotFoundError } from '../../errors/dish.js'
 
 describe('Update Dish Controller', () => {
     class UpdateDishUseCaseStub {
@@ -38,7 +39,7 @@ describe('Update Dish Controller', () => {
     it('should return 400 if dish id is not valid', async () => {
         const { sut } = makeSut()
 
-        const result = await sut.execute({
+        const response = await sut.execute({
             params: {
                 dishId: 'invalid-id',
             },
@@ -50,6 +51,17 @@ describe('Update Dish Controller', () => {
             file: dish.file,
         })
 
-        expect(result.statusCode).toBe(400)
+        expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 404 if dish is not found', async () => {
+        const { sut, updateDishUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(updateDishUseCase, 'execute')
+            .mockRejectedValueOnce(new DishNotFoundError())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(404)
     })
 })
