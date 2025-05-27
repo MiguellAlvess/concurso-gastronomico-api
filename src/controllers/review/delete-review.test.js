@@ -70,4 +70,23 @@ describe('Delete Review Controller', () => {
 
         expect(response.statusCode).toBe(500)
     })
+
+    it('should call DeleteReviewUseCase with correct params', async () => {
+        const { sut, deleteReviewUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(
+            deleteReviewUseCase,
+            'execute',
+        )
+        const reviewId = faker.string.uuid()
+        const userId = faker.string.uuid()
+
+        await sut.execute({
+            params: {
+                reviewId,
+            },
+            userId,
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(reviewId, userId)
+    })
 })
