@@ -37,4 +37,18 @@ describe('Create Review Controller', () => {
         expect(response.statusCode).toBe(201)
         expect(response.body).toEqual(review)
     })
+
+    it('should return 400 when rating is not provided', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            ...httpRequest,
+            body: {
+                ...httpRequest.body,
+                rating: undefined,
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
 })
