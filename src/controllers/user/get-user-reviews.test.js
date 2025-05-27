@@ -55,4 +55,19 @@ describe('Get User Reviews Controller', () => {
 
         expect(response.statusCode).toBe(404)
     })
+
+    it('should return 500 when GetUserReviewsUseCase throws', async () => {
+        const { sut, getUserReviewsUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getUserReviewsUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute({
+            query: {
+                userId: faker.string.uuid(),
+            },
+        })
+
+        expect(response.statusCode).toBe(500)
+    })
 })
