@@ -27,4 +27,16 @@ describe('Get User Reviews Controller', () => {
 
         expect(response.statusCode).toBe(200)
     })
+
+    it('should return 400 when user id is invalid', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            query: {
+                userId: 'invalid_id',
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
 })
