@@ -70,4 +70,21 @@ describe('Get Restaurant By Id Controller', () => {
 
         expect(response.statusCode).toBe(500)
     })
+
+    it('should call GetRestaurantByIdUseCase with correct params', async () => {
+        const { sut, getRestaurantByIdUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(
+            getRestaurantByIdUseCase,
+            'execute',
+        )
+        const restaurantId = faker.string.uuid()
+
+        await sut.execute({
+            params: {
+                restaurantId,
+            },
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(restaurantId)
+    })
 })
