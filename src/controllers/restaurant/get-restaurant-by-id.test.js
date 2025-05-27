@@ -55,4 +55,19 @@ describe('Get Restaurant By Id Controller', () => {
 
         expect(response.statusCode).toBe(404)
     })
+
+    it('should return 500 if GetRestaurantByIdUseCase throws', async () => {
+        const { sut, getRestaurantByIdUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByIdUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute({
+            params: {
+                restaurantId: faker.string.uuid(),
+            },
+        })
+
+        expect(response.statusCode).toBe(500)
+    })
 })
