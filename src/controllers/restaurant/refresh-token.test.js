@@ -29,4 +29,16 @@ describe('Refresh Token User Controller', () => {
 
         expect(response.statusCode).toBe(200)
     })
+
+    it('should return 400 if refresh token is not valid', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            body: {
+                refreshToken: 0,
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
 })
