@@ -51,4 +51,18 @@ describe('Create Review Controller', () => {
 
         expect(response.statusCode).toBe(400)
     })
+
+    it('should return 400 when comment is not provided', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            ...httpRequest,
+            body: {
+                ...httpRequest.body,
+                comment: undefined,
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
 })
