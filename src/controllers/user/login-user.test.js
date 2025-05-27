@@ -1,6 +1,6 @@
 import { LoginUserController } from './login-user.js'
 import { user } from '../../tests/index.js'
-import { UserNotFoundError } from '../../errors/index.js'
+import { InvalidPasswordError, UserNotFoundError } from '../../errors/index.js'
 
 describe('Login User Controller', () => {
     class LoginUserUseCaseStub {
@@ -47,5 +47,27 @@ describe('Login User Controller', () => {
         const response = await sut.execute(httpRequest)
 
         expect(response.statusCode).toBe(404)
+    })
+
+    it('should return 401 if password is not valid', async () => {
+        const { sut, loginUserUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(loginUserUseCase, 'execute')
+            .mockRejectedValueOnce(new InvalidPasswordError())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(401)
+    })
+
+    it('should return 500 if LoginUserUseCase throws', async () => {
+        const { sut, loginUserUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(loginUserUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(500)
     })
 })
