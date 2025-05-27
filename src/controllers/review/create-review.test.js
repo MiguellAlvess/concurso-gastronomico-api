@@ -1,5 +1,6 @@
 import { CreateReviewController } from './create-review.js'
 import { review } from '../../tests/index.js'
+import { DishNotFoundError } from '../../errors/dish.js'
 
 describe('Create Review Controller', () => {
     class CreateReviewUseCaseStub {
@@ -64,5 +65,16 @@ describe('Create Review Controller', () => {
         })
 
         expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 404 when dish is not found', async () => {
+        const { sut, createReviewUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(createReviewUseCase, 'execute')
+            .mockRejectedValue(new DishNotFoundError())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(404)
     })
 })
