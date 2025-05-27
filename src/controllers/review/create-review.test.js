@@ -100,4 +100,20 @@ describe('Create Review Controller', () => {
 
         expect(result.statusCode).toBe(500)
     })
+
+    it('should call CreateReviewUseCase with correct params', async () => {
+        const { sut, createReviewUseCase } = makeSut()
+        const executeSpy = import.meta.jest.spyOn(
+            createReviewUseCase,
+            'execute',
+        )
+
+        await sut.execute(httpRequest)
+
+        expect(executeSpy).toHaveBeenCalledWith({
+            ...httpRequest.body,
+            user_id: httpRequest.userId,
+            dish_id: httpRequest.params.dishId,
+        })
+    })
 })
