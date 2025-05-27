@@ -1,5 +1,6 @@
 import { UpdateRestaurantController } from './update-restaurant.js'
 import { restaurant } from '../../tests/index.js'
+import { RestaurantNotFoundError } from '../../errors/index.js'
 
 describe('Update Restaurant Controller', () => {
     class UpdateRestaurantUseCaseStub {
@@ -44,5 +45,16 @@ describe('Update Restaurant Controller', () => {
         })
 
         expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 404 if restaurant is not found', async () => {
+        const { sut, updateRestaurantUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(updateRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new RestaurantNotFoundError())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(404)
     })
 })
