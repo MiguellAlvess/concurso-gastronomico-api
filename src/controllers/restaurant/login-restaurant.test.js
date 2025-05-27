@@ -1,5 +1,6 @@
 import { LoginRestaurantController } from './login-restaurant.js'
 import { restaurant } from '../../tests/index.js'
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 describe('Login Restaurant Controller', () => {
     class LoginRestaurantUseCaseStub {
@@ -36,5 +37,16 @@ describe('Login Restaurant Controller', () => {
         expect(response.statusCode).toBe(200)
         expect(response.body.tokens.accessToken).toBe('any_acess_token')
         expect(response.body.tokens.refreshToken).toBe('any_refresh_token')
+    })
+
+    it('should return 404 if restaurant is not found', async () => {
+        const { sut, loginRestaurantUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(loginRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new RestaurantNotFoundError())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(404)
     })
 })
