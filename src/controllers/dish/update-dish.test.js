@@ -64,4 +64,15 @@ describe('Update Dish Controller', () => {
 
         expect(response.statusCode).toBe(404)
     })
+
+    it('should return 500 if UpdateDishUseCase throws', async () => {
+        const { sut, updateDishUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(updateDishUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(500)
+    })
 })
