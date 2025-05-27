@@ -5,6 +5,7 @@ import {
     restaurantNotFoundResponse,
     serverError,
 } from '../helpers/index.js'
+import { RestaurantNotFoundError } from '../../errors/index.js'
 
 export class GetRestaurantByIdController {
     constructor(getRestaurantByIdUseCase) {
@@ -23,13 +24,12 @@ export class GetRestaurantByIdController {
                 htttpRequest.params.restaurantId,
             )
 
-            if (!restaurant) {
-                return restaurantNotFoundResponse()
-            }
-
             return ok(restaurant)
         } catch (error) {
             console.error(error)
+            if (error instanceof RestaurantNotFoundError) {
+                return restaurantNotFoundResponse()
+            }
             return serverError()
         }
     }
