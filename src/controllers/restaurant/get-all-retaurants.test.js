@@ -21,4 +21,15 @@ describe('Get All Restaurants Controller', () => {
 
         expect(response.statusCode).toBe(200)
     })
+
+    it('shoul return 500 if GetAllRestaurantsUseCase throws', async () => {
+        const { sut, getAllRestaurantsUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getAllRestaurantsUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute()
+
+        expect(response.statusCode).toBe(500)
+    })
 })
