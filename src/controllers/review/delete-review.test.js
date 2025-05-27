@@ -1,6 +1,7 @@
 import { DeleteReviewController } from './delete-review.js'
 import { review } from '../../tests/index.js'
 import { faker } from '@faker-js/faker'
+import { ReviewNotFoundError } from '../../errors/index.js'
 
 describe('Delete Review Controller', () => {
     class DeleteReviewUseCaseStub {
@@ -31,12 +32,27 @@ describe('Delete Review Controller', () => {
     it('should return 400 if review id is not valid', async () => {
         const { sut } = makeSut()
 
-        const result = await sut.execute({
+        const response = await sut.execute({
             params: {
                 reviewId: 'invalid-id',
             },
         })
 
-        expect(result.statusCode).toBe(400)
+        expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 404 if review is not found', async () => {
+        const { sut, deleteReviewUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(deleteReviewUseCase, 'execute')
+            .mockRejectedValueOnce(new ReviewNotFoundError())
+
+        const response = await sut.execute({
+            params: {
+                reviewId: faker.string.uuid(),
+            },
+        })
+
+        expect(response.statusCode).toBe(404)
     })
 })
