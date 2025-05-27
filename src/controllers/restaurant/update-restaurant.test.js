@@ -57,4 +57,15 @@ describe('Update Restaurant Controller', () => {
 
         expect(response.statusCode).toBe(404)
     })
+
+    it('should return 500 if UpdateRestaurantUseCase throws', async () => {
+        const { sut, updateRestaurantUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(updateRestaurantUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(500)
+    })
 })
