@@ -20,7 +20,6 @@ describe('Update Dish Controller', () => {
             dishId: faker.string.uuid(),
         },
         body: {
-            id: faker.string.uuid(),
             name: dish.name,
             image_url: dish.image_url,
             restaurant_id: dish.restaurant_id,
@@ -34,5 +33,23 @@ describe('Update Dish Controller', () => {
         const response = await sut.execute(httpRequest)
 
         expect(response.statusCode).toBe(200)
+    })
+
+    it('should return 400 if dish id is not valid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            params: {
+                dishId: 'invalid-id',
+            },
+            body: {
+                name: dish.name,
+                image_url: dish.image_url,
+                restaurant_id: dish.restaurant_id,
+            },
+            file: dish.file,
+        })
+
+        expect(result.statusCode).toBe(400)
     })
 })
