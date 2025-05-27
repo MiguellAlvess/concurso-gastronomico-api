@@ -1,6 +1,7 @@
 import { CreateReviewController } from './create-review.js'
 import { review } from '../../tests/index.js'
 import { DishNotFoundError } from '../../errors/dish.js'
+import { UserNotFoundError } from '../../errors/user.js'
 
 describe('Create Review Controller', () => {
     class CreateReviewUseCaseStub {
@@ -72,6 +73,17 @@ describe('Create Review Controller', () => {
         import.meta.jest
             .spyOn(createReviewUseCase, 'execute')
             .mockRejectedValue(new DishNotFoundError())
+
+        const response = await sut.execute(httpRequest)
+
+        expect(response.statusCode).toBe(404)
+    })
+
+    it('should return 404 when user is not found', async () => {
+        const { sut, createReviewUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(createReviewUseCase, 'execute')
+            .mockRejectedValue(new UserNotFoundError())
 
         const response = await sut.execute(httpRequest)
 
