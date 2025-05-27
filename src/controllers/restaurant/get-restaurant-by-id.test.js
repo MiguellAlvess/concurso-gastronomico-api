@@ -1,6 +1,7 @@
 import { GetRestaurantByIdController } from './get-restaurant-by-id.js'
 import { restaurant } from '../../tests/index.js'
 import { faker } from '@faker-js/faker'
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 describe('Get Restaurant By Id Controller', () => {
     class GetRestaurantByIdUseCaseStub {
@@ -38,5 +39,20 @@ describe('Get Restaurant By Id Controller', () => {
         })
 
         expect(response.statusCode).toBe(400)
+    })
+
+    it('shoud return 404 if restaurant is not found', async () => {
+        const { sut, getRestaurantByIdUseCase } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByIdUseCase, 'execute')
+            .mockRejectedValueOnce(new RestaurantNotFoundError())
+
+        const response = await sut.execute({
+            params: {
+                restaurantId: faker.string.uuid(),
+            },
+        })
+
+        expect(response.statusCode).toBe(404)
     })
 })
