@@ -120,4 +120,17 @@ describe('Update User Use Case', () => {
             password: 'hashed_password',
         })
     })
+
+    it('should throw if UpdateUserRepository throws', async () => {
+        const { sut, updateUserRepository } = makeSut()
+        import.meta.jest
+            .spyOn(updateUserRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = sut.execute(faker.string.uuid(), {
+            firt_name: faker.person.firstName(),
+        })
+
+        await expect(result).rejects.toThrow()
+    })
 })
