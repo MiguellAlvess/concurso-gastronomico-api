@@ -1,5 +1,6 @@
 import { CreateUserUseCase } from './create-user.js'
 import { user } from '../../tests/index.js'
+import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 describe('Create User Use Case', () => {
     class GetUserByEmailRepositoryStub {
@@ -65,5 +66,18 @@ describe('Create User Use Case', () => {
         expect(createdUser).toBeTruthy()
         expect(createdUser.tokens.acessToken).toBeDefined()
         expect(createdUser.tokens.refreshToken).toBeDefined()
+    })
+
+    it('should trow an EmailAlreadyInUseError if GetUserByEmailRepository returns a user', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserByEmailRepository, 'execute')
+            .mockResolvedValueOnce(user)
+
+        const promise = sut.execute(user)
+
+        await expect(promise).rejects.toThrow(
+            new EmailAlreadyInUseError(user.email),
+        )
     })
 })
