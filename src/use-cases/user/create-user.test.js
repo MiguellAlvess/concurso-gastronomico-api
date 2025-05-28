@@ -68,7 +68,7 @@ describe('Create User Use Case', () => {
         expect(createdUser.tokens.refreshToken).toBeDefined()
     })
 
-    it('should trow an EmailAlreadyInUseError if GetUserByEmailRepository returns a user', async () => {
+    it('should throw an EmailAlreadyInUseError if GetUserByEmailRepository returns a user', async () => {
         const { sut, getUserByEmailRepository } = makeSut()
         import.meta.jest
             .spyOn(getUserByEmailRepository, 'execute')
@@ -127,6 +127,17 @@ describe('Create User Use Case', () => {
         const { sut, createUserRepository } = makeSut()
         import.meta.jest
             .spyOn(createUserRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user)
+
+        await expect(promise).rejects.toThrow()
+    })
+
+    it('should throw if GetUserByEmailRepository throws', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserByEmailRepository, 'execute')
             .mockRejectedValueOnce(new Error())
 
         const promise = sut.execute(user)
