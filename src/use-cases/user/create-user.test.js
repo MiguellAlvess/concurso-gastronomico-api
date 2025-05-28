@@ -122,4 +122,15 @@ describe('Create User Use Case', () => {
             password: 'hashed_password',
         })
     })
+
+    it('should trow if CreateUserRepository throws', async () => {
+        const { sut, createUserRepository } = makeSut()
+        import.meta.jest
+            .spyOn(createUserRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
