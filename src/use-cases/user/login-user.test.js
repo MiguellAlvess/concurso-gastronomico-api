@@ -60,4 +60,15 @@ describe('Login User Use Case', () => {
 
         await expect(promise).rejects.toThrow(new UserNotFoundError())
     })
+
+    it('should throw InvalidPasswordError if password is invalid', async () => {
+        const { sut, passwordComparatorAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(passwordComparatorAdapter, 'execute')
+            .mockReturnValueOnce(false)
+
+        const promise = sut.execute(user.email, user.password)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
