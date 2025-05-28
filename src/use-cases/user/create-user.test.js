@@ -15,7 +15,7 @@ describe('Create User Use Case', () => {
     }
 
     class PasswordHasherAdapterStub {
-        async execute() {
+        execute() {
             return 'hashed_password'
         }
     }
@@ -149,7 +149,22 @@ describe('Create User Use Case', () => {
         const { sut, passwordHasherAdapter } = makeSut()
         import.meta.jest
             .spyOn(passwordHasherAdapter, 'execute')
-            .mockRejectedValueOnce(new Error())
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const promise = sut.execute(user)
+
+        await expect(promise).rejects.toThrow()
+    })
+
+    it('should throw if IdGeneratorAdapter throws', async () => {
+        const { sut, idGeneratorAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(idGeneratorAdapter, 'execute')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
 
         const promise = sut.execute(user)
 
