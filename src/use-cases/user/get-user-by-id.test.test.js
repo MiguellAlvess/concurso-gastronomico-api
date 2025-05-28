@@ -25,4 +25,17 @@ describe('Get User By Id Use Case', () => {
 
         expect(getUser).toEqual(user)
     })
+
+    it('shoul call GetUserByIdRepository with correct params', async () => {
+        const { sut, getUserByIdRepository } = makeSut()
+        const getUserByIdRepositorySpy = import.meta.jest.spyOn(
+            getUserByIdRepository,
+            'execute',
+        )
+        const userId = faker.string.uuid()
+
+        await sut.execute(userId)
+
+        expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(userId)
+    })
 })
