@@ -5,7 +5,7 @@ import { user } from '../../tests/index.js'
 describe('Update User Use Case', () => {
     class GetUserByEmailRepositoryStub {
         async execute() {
-            return true
+            return null
         }
     }
 
@@ -39,14 +39,30 @@ describe('Update User Use Case', () => {
         }
     }
 
-    it('should update user successfully', async () => {
+    it('should update user successfully (whithout email and password)', async () => {
         const { sut } = makeSut()
 
-        const updatedUser = await sut.execute(faker.string.uuid(), {
+        const result = await sut.execute(faker.string.uuid(), {
             first_name: faker.person.firstName(),
             last_name: faker.person.lastName(),
         })
 
-        expect(updatedUser).toEqual(user)
+        expect(result).toEqual(user)
+    })
+
+    it('should update user successfully (with email)', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        const getUserByEmailRepositorySpy = import.meta.jest.spyOn(
+            getUserByEmailRepository,
+            'execute',
+        )
+        const email = faker.internet.email()
+
+        const result = await sut.execute(faker.string.uuid(), {
+            email,
+        })
+
+        expect(getUserByEmailRepositorySpy).toHaveBeenCalledWith(email)
+        expect(result).toEqual(user)
     })
 })
