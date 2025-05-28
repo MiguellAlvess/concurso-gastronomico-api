@@ -150,4 +150,17 @@ describe('Update User Use Case', () => {
 
         await expect(result).rejects.toThrow(new Error())
     })
+
+    it('should throw if GetUserByEmailRepository throws', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserByEmailRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = sut.execute(faker.string.uuid(), {
+            email: faker.internet.email(),
+        })
+
+        await expect(result).rejects.toThrow(new Error())
+    })
 })
