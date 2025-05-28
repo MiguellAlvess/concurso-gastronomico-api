@@ -24,6 +24,19 @@ describe('Delete User Use Case', () => {
         expect(deletedUser).toBeTruthy()
     })
 
+    it('should call DeleteUserRepository with correct params', async () => {
+        const { sut, deleteUserRepository } = makeSut()
+        const deleteUserRepositorySpy = import.meta.jest.spyOn(
+            deleteUserRepository,
+            'execute',
+        )
+        const userId = faker.string.uuid()
+
+        await sut.execute(userId)
+
+        expect(deleteUserRepositorySpy).toHaveBeenCalledWith(userId)
+    })
+
     it('should throw if DeleteUserRepository', async () => {
         const { sut, deleteUserRepository } = makeSut()
         import.meta.jest
