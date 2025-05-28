@@ -32,4 +32,17 @@ describe('Get User Reviews Use Case', () => {
 
         expect(getUserReviews).toEqual(review)
     })
+
+    it('should call GetUserReviewsRepository with correct params', async () => {
+        const { sut, getUserReviewsRepository } = makeSut()
+        const getUserReviewsRepositorySpy = import.meta.jest.spyOn(
+            getUserReviewsRepository,
+            'execute',
+        )
+        const userId = faker.string.uuid()
+
+        await sut.execute(userId)
+
+        expect(getUserReviewsRepositorySpy).toHaveBeenCalledWith(userId)
+    })
 })
