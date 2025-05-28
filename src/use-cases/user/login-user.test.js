@@ -1,5 +1,6 @@
 import { LoginUserUseCase } from './login-user.js'
 import { user } from '../../tests/index.js'
+import { UserNotFoundError } from '../../errors/index.js'
 
 describe('Login User Use Case', () => {
     class GetUserByEmailRepositoryStub {
@@ -47,5 +48,16 @@ describe('Login User Use Case', () => {
         const result = await sut.execute(user.email, user.password)
 
         expect(result.tokens.acessToken).toBe('any_token')
+    })
+
+    it('should throw UserNotFoundError if user is not found', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserByEmailRepository, 'execute')
+            .mockResolvedValueOnce(null)
+
+        const promise = sut.execute(user.email, user.password)
+
+        await expect(promise).rejects.toThrow(new UserNotFoundError())
     })
 })
