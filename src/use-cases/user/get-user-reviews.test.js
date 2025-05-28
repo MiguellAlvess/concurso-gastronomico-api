@@ -58,4 +58,15 @@ describe('Get User Reviews Use Case', () => {
 
         expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(userId)
     })
+
+    it('should throw if GetUserReviewsRepository throws', async () => {
+        const { sut, getUserReviewsRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserReviewsRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(faker.string.uuid())
+
+        await expect(promise).rejects.toThrow()
+    })
 })
