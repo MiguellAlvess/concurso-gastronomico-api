@@ -45,4 +45,17 @@ describe('Get User Reviews Use Case', () => {
 
         expect(getUserReviewsRepositorySpy).toHaveBeenCalledWith(userId)
     })
+
+    it('should call GetUserByIdRepository with correct params', async () => {
+        const { sut, getUserByIdRepository } = makeSut()
+        const getUserByIdRepositorySpy = import.meta.jest.spyOn(
+            getUserByIdRepository,
+            'execute',
+        )
+        const userId = faker.string.uuid()
+
+        await sut.execute(userId)
+
+        expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(userId)
+    })
 })
