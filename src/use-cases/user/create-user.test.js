@@ -80,4 +80,25 @@ describe('Create User Use Case', () => {
             new EmailAlreadyInUseError(user.email),
         )
     })
+
+    it('should call idGenerateAdapter to generate a random id', async () => {
+        const { sut, idGeneratorAdapter, createUserRepository } = makeSut()
+        const idGeneratorAdapterSpy = import.meta.jest.spyOn(
+            idGeneratorAdapter,
+            'execute',
+        )
+        const createUserRepositorySpy = import.meta.jest.spyOn(
+            createUserRepository,
+            'execute',
+        )
+
+        await sut.execute(user)
+
+        expect(idGeneratorAdapterSpy).toHaveBeenCalled()
+        expect(createUserRepositorySpy).toHaveBeenCalledWith({
+            ...user,
+            id: 'generated_id',
+            password: 'hashed_password',
+        })
+    })
 })
