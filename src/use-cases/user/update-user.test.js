@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { UpdateUserUseCase } from './update-user.js'
 import { user } from '../../tests/index.js'
+import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 describe('Update User Use Case', () => {
     class GetUserByEmailRepositoryStub {
@@ -82,5 +83,41 @@ describe('Update User Use Case', () => {
 
         expect(passwordHasherAdapterSpy).toHaveBeenCalledWith(password)
         expect(result).toEqual(user)
+    })
+
+    it('should throw EmailAlreadyInUseError if email is already in use', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserByEmailRepository, 'execute')
+            .mockResolvedValueOnce(user)
+
+        const result = sut.execute(faker.string.uuid(), {
+            email: user.email,
+        })
+
+        await expect(result).rejects.toThrow(
+            new EmailAlreadyInUseError(user.email),
+        )
+    })
+
+    it('should call UpdateUserRepository with correct params', async () => {
+        const { sut, updateUserRepository } = makeSut()
+        const updateUserRepositorySpy = import.meta.jest.spyOn(
+            updateUserRepository,
+            'execute',
+        )
+        const updateUserParams = {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            password: user.password,
+        }
+
+        await sut.execute(user.id, updateUserParams)
+
+        expect(updateUserRepositorySpy).toHaveBeenCalledWith(user.id, {
+            ...updateUserParams,
+            password: 'hashed_password',
+        })
     })
 })
