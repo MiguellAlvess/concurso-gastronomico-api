@@ -35,4 +35,15 @@ describe('Delete Restaurant Use Case', () => {
 
         expect(deleteRestaurantRepositorySpy).toHaveBeenCalledWith(restaurantId)
     })
+
+    it('should throw if DeleteRestaurantRepository throws', async () => {
+        const { sut, deleteRestaurantRepository } = makeSut()
+        import.meta.jest
+            .spyOn(deleteRestaurantRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(faker.string.uuid())
+
+        await expect(promise).rejects.toThrow()
+    })
 })
