@@ -122,4 +122,17 @@ describe('Update Restaurant Use Case', () => {
             },
         )
     })
+
+    it('should throw if UpdateRestaurantRepository throws', async () => {
+        const { sut, updateRestaurantRepository } = makeSut()
+        import.meta.jest
+            .spyOn(updateRestaurantRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = sut.execute(faker.string.uuid(), {
+            name: faker.company.name(),
+        })
+
+        await expect(result).rejects.toThrow(new Error())
+    })
 })
