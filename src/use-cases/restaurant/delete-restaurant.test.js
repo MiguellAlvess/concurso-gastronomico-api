@@ -22,4 +22,17 @@ describe('Delete Restaurant Use Case', () => {
 
         expect(deletedRestaurant).toEqual(restaurant)
     })
+
+    it('should call DeleteRestaurantRepository with correct params', async () => {
+        const { sut, deleteRestaurantRepository } = makeSut()
+        const deleteRestaurantRepositorySpy = import.meta.jest.spyOn(
+            deleteRestaurantRepository,
+            'execute',
+        )
+        const restaurantId = faker.string.uuid()
+
+        await sut.execute(restaurantId)
+
+        expect(deleteRestaurantRepositorySpy).toHaveBeenCalledWith(restaurantId)
+    })
 })
