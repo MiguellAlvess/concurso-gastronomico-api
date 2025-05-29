@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { GetRestaurantByIdUseCase } from './get-restaurant-by-id.js'
 import { restaurant } from '../../tests/index.js'
+import { RestaurantNotFoundError } from '../../errors/restaurant.js'
 
 describe('Get Restaurant By Id Use Case', () => {
     class GetRestaurantByIdRepositoryStub {
@@ -48,5 +49,19 @@ describe('Get Restaurant By Id Use Case', () => {
         const promise = sut.execute(faker.string.uuid())
 
         await expect(promise).rejects.toThrow()
+    })
+
+    it('should throw an RestaurantNotFoundError if GetRestaurantByIdRepository returns null', async () => {
+        const { sut, getRestaurantByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByIdRepository, 'execute')
+            .mockResolvedValueOnce(null)
+        const restaurantId = faker.string.uuid()
+
+        const promise = sut.execute(restaurantId)
+
+        await expect(promise).rejects.toThrow(
+            new RestaurantNotFoundError(restaurantId),
+        )
     })
 })
