@@ -1,6 +1,7 @@
 import { CreateRestaurantUseCase } from './create-restaurant.js'
 import { restaurant } from '../../tests/index.js'
 import { CnpjAlreadyInUseError } from '../../errors/index.js'
+import { it } from '@faker-js/faker'
 
 describe('Create Restaurant Use Case', () => {
     class GetRestaurantByCnpjRepositoryStub {
@@ -88,5 +89,32 @@ describe('Create Restaurant Use Case', () => {
         await expect(promise).rejects.toThrow(
             new CnpjAlreadyInUseError(restaurant.cnpj),
         )
+    })
+
+    it('should call IdGenerateAdapter to generate a random id', async () => {
+        const { sut, idGeneratorAdapter, createRestaurantRepository } =
+            makeSut()
+        const idGeneratorAdapterSpy = import.meta.jest.spyOn(
+            idGeneratorAdapter,
+            'execute',
+        )
+        const createRestaurantRepositorySpy = import.meta.jest.spyOn(
+            createRestaurantRepository,
+            'execute',
+        )
+
+        await sut.execute({
+            ...restaurant,
+            imageFilename: 'imagetest.png',
+        })
+
+        expect(idGeneratorAdapterSpy).toHaveBeenCalled()
+        expect(createRestaurantRepositorySpy).toHaveBeenCalledWith({
+            cnpj: restaurant.cnpj,
+            name: restaurant.name,
+            password: 'hashed_password',
+            id: 'generated_id',
+            image_url: `/uploads/imagetest.png`,
+        })
     })
 })
