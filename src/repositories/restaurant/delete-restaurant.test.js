@@ -37,4 +37,15 @@ describe('Delete Restaurant Repository', () => {
             },
         })
     })
+
+    it('should throw generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresDeleteRestaurantRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'delete')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createRestaurantParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
