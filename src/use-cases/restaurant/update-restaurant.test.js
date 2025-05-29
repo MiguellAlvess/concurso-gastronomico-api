@@ -64,4 +64,21 @@ describe('Update Restaurant Use Case', () => {
         expect(getRestaurantByCnpjRepositorySpy).toHaveBeenCalledWith(cnpj)
         expect(result).toEqual(restaurant)
     })
+
+    it('should update a restaurant successfully (with password)', async () => {
+        const { sut, passwordHasherAdapter } = makeSut()
+        const passwordHasherAdapterSpy = import.meta.jest.spyOn(
+            passwordHasherAdapter,
+            'execute',
+        )
+
+        const result = await sut.execute(faker.string.uuid(), {
+            password: faker.internet.password({
+                length: 7,
+            }),
+        })
+
+        expect(passwordHasherAdapterSpy).toHaveBeenCalled()
+        expect(result).toEqual(restaurant)
+    })
 })
