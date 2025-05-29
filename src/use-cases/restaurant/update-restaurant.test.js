@@ -152,4 +152,17 @@ describe('Update Restaurant Use Case', () => {
 
         await expect(result).rejects.toThrow(new Error())
     })
+
+    it('should throw if GetRestaurantByCnpjRepository throws', async () => {
+        const { sut, getRestaurantByCnpjRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByCnpjRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const result = sut.execute(faker.string.uuid(), {
+            cnpj: faker.string.uuid(),
+        })
+
+        await expect(result).rejects.toThrow(new Error())
+    })
 })
