@@ -16,4 +16,20 @@ describe('Get User By Id Repository', () => {
         expect(result.email).toBe(user.email)
         expect(result.password).toBe(user.password)
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.user.create({
+            data: user,
+        })
+        const sut = new PostgresGetUserByIdRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.user, 'findUnique')
+
+        await sut.execute(user.id)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: user.id,
+            },
+        })
+    })
 })
