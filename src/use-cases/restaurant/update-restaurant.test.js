@@ -97,4 +97,29 @@ describe('Update Restaurant Use Case', () => {
             new CnpjAlreadyInUseError(restaurant.cnpj),
         )
     })
+
+    it('should call UpdateRestaurantRepository with correct params', async () => {
+        const { sut, updateRestaurantRepository } = makeSut()
+        const updateRestaurantRepositorySpy = import.meta.jest.spyOn(
+            updateRestaurantRepository,
+            'execute',
+        )
+        const updateRestaurantParams = {
+            name: faker.company.name(),
+            password: faker.internet.password({
+                length: 7,
+            }),
+            cnpj: '35.424.884/0001-96',
+        }
+
+        await sut.execute(restaurant.id, updateRestaurantParams)
+
+        expect(updateRestaurantRepositorySpy).toHaveBeenCalledWith(
+            restaurant.id,
+            {
+                ...updateRestaurantParams,
+                password: 'hashed_password',
+            },
+        )
+    })
 })
