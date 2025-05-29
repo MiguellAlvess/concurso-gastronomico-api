@@ -1,5 +1,6 @@
-import { PostgresCreateRestaurantRepository } from './create-restaurant.js'
 import { faker } from '@faker-js/faker'
+import { PostgresCreateRestaurantRepository } from './create-restaurant.js'
+import { prisma } from '../../../prisma/prisma.js'
 
 describe('Create Restaurant Repository', () => {
     const createRestaurantParams = {
@@ -20,5 +21,16 @@ describe('Create Restaurant Repository', () => {
         expect(result.email).toBe(createRestaurantParams.email)
         expect(result.password).toBe(createRestaurantParams.password)
         expect(result.image_url).toBe(createRestaurantParams.image_url)
+    })
+
+    it('should call Prisma with correct params', async () => {
+        const sut = new PostgresCreateRestaurantRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.restaurant, 'create')
+
+        await sut.execute(createRestaurantParams)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            data: createRestaurantParams,
+        })
     })
 })
