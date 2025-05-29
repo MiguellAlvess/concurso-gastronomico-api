@@ -145,4 +145,18 @@ describe('Create Restaurant Use Case', () => {
             image_url: `/uploads/imagetest.png`,
         })
     })
+
+    it('should throw if CreateRestaurantRepository throws', async () => {
+        const { sut, createRestaurantRepository } = makeSut()
+        import.meta.jest
+            .spyOn(createRestaurantRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute({
+            ...restaurant,
+            imageFilename: 'imagetest.png',
+        })
+
+        await expect(promise).rejects.toThrow()
+    })
 })
