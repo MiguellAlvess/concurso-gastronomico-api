@@ -25,4 +25,15 @@ describe('Get Restaurant By Id Repository', () => {
         expect(result.password).toBe(createRestaurantParams.password)
         expect(result.image_url).toBe(createRestaurantParams.image_url)
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetRestaurantByIdRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'findUnique')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createRestaurantParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
