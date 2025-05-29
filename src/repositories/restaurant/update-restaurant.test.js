@@ -24,4 +24,21 @@ describe('Update Restaurant Repository', () => {
 
         expect(result).toStrictEqual(updateRestaurantParams)
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: updateRestaurantParams,
+        })
+        const sut = new PostgresUpdateRestaurantRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.restaurant, 'update')
+
+        await sut.execute(updateRestaurantParams.id, updateRestaurantParams)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: updateRestaurantParams.id,
+            },
+            data: updateRestaurantParams,
+        })
+    })
 })
