@@ -41,4 +41,17 @@ describe('Update Restaurant Repository', () => {
             data: updateRestaurantParams,
         })
     })
+
+    it('should throw generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresUpdateRestaurantRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'update')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(updateRestaurantParams.id, {
+            ...updateRestaurantParams,
+        })
+
+        await expect(promise).rejects.toThrow(new Error())
+    })
 })
