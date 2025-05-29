@@ -25,4 +25,23 @@ describe('Get Restaurant By Cnpj Repository', () => {
         expect(result.password).toBe(createRestaurantParams.password)
         expect(result.image_url).toBe(createRestaurantParams.image_url)
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        const sut = new PostgresGetRestaurantByCnpjRepository()
+        const prismaSpy = import.meta.jest.spyOn(
+            prisma.restaurant,
+            'findUnique',
+        )
+
+        await sut.execute(createRestaurantParams.cnpj)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                cnpj: createRestaurantParams.cnpj,
+            },
+        })
+    })
 })
