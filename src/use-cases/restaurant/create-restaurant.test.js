@@ -1,7 +1,6 @@
 import { CreateRestaurantUseCase } from './create-restaurant.js'
 import { restaurant } from '../../tests/index.js'
 import { CnpjAlreadyInUseError } from '../../errors/index.js'
-import { it } from '@faker-js/faker'
 
 describe('Create Restaurant Use Case', () => {
     class GetRestaurantByCnpjRepositoryStub {
@@ -109,6 +108,35 @@ describe('Create Restaurant Use Case', () => {
         })
 
         expect(idGeneratorAdapterSpy).toHaveBeenCalled()
+        expect(createRestaurantRepositorySpy).toHaveBeenCalledWith({
+            cnpj: restaurant.cnpj,
+            name: restaurant.name,
+            password: 'hashed_password',
+            id: 'generated_id',
+            image_url: `/uploads/imagetest.png`,
+        })
+    })
+
+    it('should call PasswordHasherAdapter to hash the password', async () => {
+        const { sut, passwordHasherAdapter, createRestaurantRepository } =
+            makeSut()
+        const passwordHasherAdapterSpy = import.meta.jest.spyOn(
+            passwordHasherAdapter,
+            'execute',
+        )
+        const createRestaurantRepositorySpy = import.meta.jest.spyOn(
+            createRestaurantRepository,
+            'execute',
+        )
+
+        await sut.execute({
+            ...restaurant,
+            imageFilename: 'imagetest.png',
+        })
+
+        expect(passwordHasherAdapterSpy).toHaveBeenCalledWith(
+            restaurant.password,
+        )
         expect(createRestaurantRepositorySpy).toHaveBeenCalledWith({
             cnpj: restaurant.cnpj,
             name: restaurant.name,
