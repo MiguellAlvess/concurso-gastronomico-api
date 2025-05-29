@@ -62,4 +62,15 @@ describe('Login Restaurant Use Case', () => {
 
         await expect(promise).rejects.toThrow(new RestaurantNotFoundError())
     })
+
+    it('should throw InvalidPasswordError if password is invalid', async () => {
+        const { sut, passwordComparatorAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(passwordComparatorAdapter, 'execute')
+            .mockReturnValueOnce(false)
+
+        const promise = sut.execute(restaurant.cnpj, restaurant.password)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
