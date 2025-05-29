@@ -48,4 +48,20 @@ describe('Update Restaurant Use Case', () => {
 
         expect(result).toEqual(restaurant)
     })
+
+    it('should update a restaurant successfully (with cnpj)', async () => {
+        const { sut, getRestaurantByCnpjRepository } = makeSut()
+        const getRestaurantByCnpjRepositorySpy = import.meta.jest.spyOn(
+            getRestaurantByCnpjRepository,
+            'execute',
+        )
+        const cnpj = faker.string.uuid()
+
+        const result = await sut.execute(faker.string.uuid(), {
+            cnpj,
+        })
+
+        expect(getRestaurantByCnpjRepositorySpy).toHaveBeenCalledWith(cnpj)
+        expect(result).toEqual(restaurant)
+    })
 })
