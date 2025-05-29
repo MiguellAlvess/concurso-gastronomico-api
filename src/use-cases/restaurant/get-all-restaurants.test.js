@@ -22,4 +22,15 @@ describe('Get All Restaurants Use Case', () => {
 
         expect(allRestaurants).toBeTruthy()
     })
+
+    it('should throw if GetAllRestaurantsRepository throws', async () => {
+        const { sut, getAllRestaurantsRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getAllRestaurantsRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute()
+
+        await expect(promise).rejects.toThrow()
+    })
 })
