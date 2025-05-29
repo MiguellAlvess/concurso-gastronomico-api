@@ -44,4 +44,15 @@ describe('Get Restaurant By Cnpj Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetRestaurantByCnpjRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'findUnique')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createRestaurantParams.cnpj)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
