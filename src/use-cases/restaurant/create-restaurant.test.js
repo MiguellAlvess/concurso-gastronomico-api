@@ -1,5 +1,6 @@
 import { CreateRestaurantUseCase } from './create-restaurant.js'
 import { restaurant } from '../../tests/index.js'
+import { CnpjAlreadyInUseError } from '../../errors/index.js'
 
 describe('Create Restaurant Use Case', () => {
     class GetRestaurantByCnpjRepositoryStub {
@@ -71,5 +72,21 @@ describe('Create Restaurant Use Case', () => {
         expect(createdRestaurant).toBeTruthy()
         expect(createdRestaurant.tokens.accessToken).toBeDefined()
         expect(createdRestaurant.tokens.refreshToken).toBeDefined()
+    })
+
+    it('should throw an CnpjAlreadyInUseError if GetRestaurantByCnpjRepository returns a restaurant', async () => {
+        const { sut, getRestaurantByCnpjRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByCnpjRepository, 'execute')
+            .mockResolvedValueOnce(restaurant)
+
+        const promise = sut.execute({
+            ...restaurant,
+            imageFilename: 'imagetest.png',
+        })
+
+        await expect(promise).rejects.toThrow(
+            new CnpjAlreadyInUseError(restaurant.cnpj),
+        )
     })
 })
