@@ -207,4 +207,18 @@ describe('Create Restaurant Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if GetRestaurantByCnpjRepository throws', async () => {
+        const { sut, getRestaurantByCnpjRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByCnpjRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute({
+            ...restaurant,
+            imageFilename: 'imagetest.png',
+        })
+
+        await expect(promise).rejects.toThrow()
+    })
 })
