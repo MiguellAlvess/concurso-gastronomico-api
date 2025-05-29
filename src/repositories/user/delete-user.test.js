@@ -29,4 +29,15 @@ describe('Delete User Repository', () => {
             },
         })
     })
+
+    it('should throw generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresDeleteUserRepository()
+        import.meta.jest
+            .spyOn(prisma.user, 'delete')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
