@@ -38,4 +38,15 @@ describe('Update User Repository', () => {
             data: updateUserParams,
         })
     })
+
+    it('should throw generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresUpdateUserRepository()
+        import.meta.jest
+            .spyOn(prisma.user, 'update')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user.id, updateUserParams)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
