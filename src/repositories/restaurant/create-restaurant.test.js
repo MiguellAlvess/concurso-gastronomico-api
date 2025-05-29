@@ -33,4 +33,17 @@ describe('Create Restaurant Repository', () => {
             data: createRestaurantParams,
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresCreateRestaurantRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'create')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const promise = sut.execute(createRestaurantParams)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
