@@ -1,6 +1,7 @@
 import { UpdateRestaurantUseCase } from './update-restaurant.js'
 import { restaurant } from '../../tests/index.js'
 import { faker } from '@faker-js/faker'
+import { CnpjAlreadyInUseError } from '../../errors/index.js'
 
 describe('Update Restaurant Use Case', () => {
     class GetRestaurantByCnpjRepositoryStub {
@@ -80,5 +81,20 @@ describe('Update Restaurant Use Case', () => {
 
         expect(passwordHasherAdapterSpy).toHaveBeenCalled()
         expect(result).toEqual(restaurant)
+    })
+
+    it('should throw CnpjIsAlreadyInUseError if cnpj is already in use', async () => {
+        const { sut, getRestaurantByCnpjRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByCnpjRepository, 'execute')
+            .mockResolvedValueOnce(restaurant)
+
+        const result = sut.execute(faker.string.uuid(), {
+            cnpj: restaurant.cnpj,
+        })
+
+        await expect(result).rejects.toThrow(
+            new CnpjAlreadyInUseError(restaurant.cnpj),
+        )
     })
 })
