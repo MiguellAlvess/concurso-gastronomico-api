@@ -1,8 +1,9 @@
+import { UnauthorizedError } from '../../errors/shared-errors.js'
 import { RefreshTokenRestaurantUseCase } from './refresh-token.js'
 
 describe('Refresh Token Restaurant Use Case', () => {
     class TokensGeneratorRestaurantAdapterStub {
-        async execute() {
+        execute() {
             return {
                 accessToken: 'any_acess_token',
                 refreshToken: 'any_refresh_token',
@@ -11,7 +12,7 @@ describe('Refresh Token Restaurant Use Case', () => {
     }
 
     class TokenVerifierAdapterStub {
-        async execute() {
+        execute() {
             return true
         }
     }
@@ -41,5 +42,18 @@ describe('Refresh Token Restaurant Use Case', () => {
             accessToken: 'any_acess_token',
             refreshToken: 'any_refresh_token',
         })
+    })
+
+    it('should throw UnauthorizedError if TokenVerifierAdapter throws', async () => {
+        const { sut, tokenVerifierAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(tokenVerifierAdapter, 'execute')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const promise = sut.execute('any_refresh_token')
+
+        await expect(promise).rejects.toThrow(new UnauthorizedError())
     })
 })
