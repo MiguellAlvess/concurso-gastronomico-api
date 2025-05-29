@@ -191,4 +191,20 @@ describe('Create Restaurant Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if TokensGeneratorAdapter throws', async () => {
+        const { sut, tokensGeneratorRestaurantAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(tokensGeneratorRestaurantAdapter, 'execute')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const promise = sut.execute({
+            ...restaurant,
+            imageFilename: 'imagetest.png',
+        })
+
+        await expect(promise).rejects.toThrow()
+    })
 })
