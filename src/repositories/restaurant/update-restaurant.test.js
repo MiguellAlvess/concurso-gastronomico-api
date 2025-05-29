@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { PostgresUpdateRestaurantRepository } from './update-restaurant.js'
 import { prisma } from '../../../prisma/prisma.js'
+import { RestaurantNotFoundError } from '../../errors/index.js'
 
 describe('Update Restaurant Repository', () => {
     const updateRestaurantParams = {
@@ -53,5 +54,23 @@ describe('Update Restaurant Repository', () => {
         })
 
         await expect(promise).rejects.toThrow(new Error())
+    })
+
+    it('should throw RestaurantNotFoundError if Prisma throws P2025 error', async () => {
+        const sut = new PostgresUpdateRestaurantRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'update')
+            .mockRejectedValueOnce({
+                name: 'PrismaClientKnownRequestError',
+                code: 'P2025',
+            })
+
+        const promise = sut.execute(updateRestaurantParams.id, {
+            ...updateRestaurantParams,
+        })
+
+        await expect(promise).rejects.toThrow(
+            new RestaurantNotFoundError(updateRestaurantParams.id),
+        )
     })
 })
