@@ -21,4 +21,20 @@ describe('Delete Restaurant Repository', () => {
 
         expect(result).toStrictEqual(createRestaurantParams)
     })
+
+    it('should call prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        const sut = new PostgresDeleteRestaurantRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.restaurant, 'delete')
+
+        await sut.execute(createRestaurantParams.id)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: createRestaurantParams.id,
+            },
+        })
+    })
 })
