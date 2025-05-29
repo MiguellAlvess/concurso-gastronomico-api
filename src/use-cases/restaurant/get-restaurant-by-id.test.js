@@ -38,4 +38,15 @@ describe('Get Restaurant By Id Use Case', () => {
             restaurantId,
         )
     })
+
+    it('should throw if GetRestaurantByIdRepository throws', async () => {
+        const { sut, getRestaurantByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(faker.string.uuid())
+
+        await expect(promise).rejects.toThrow()
+    })
 })
