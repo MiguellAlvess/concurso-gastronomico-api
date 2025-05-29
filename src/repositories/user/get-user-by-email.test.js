@@ -32,4 +32,15 @@ describe('Get User By Email Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetUserByEmailRepository()
+        import.meta.jest
+            .spyOn(prisma.user, 'findUnique')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user.email)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
