@@ -135,4 +135,21 @@ describe('Update Restaurant Use Case', () => {
 
         await expect(result).rejects.toThrow(new Error())
     })
+
+    it('should throw if PasswordHasherAdapter throws', async () => {
+        const { sut, passwordHasherAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(passwordHasherAdapter, 'execute')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const result = sut.execute(faker.string.uuid(), {
+            password: faker.internet.password({
+                length: 7,
+            }),
+        })
+
+        await expect(result).rejects.toThrow(new Error())
+    })
 })
