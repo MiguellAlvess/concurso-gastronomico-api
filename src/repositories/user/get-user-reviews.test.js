@@ -29,4 +29,15 @@ describe('Get User Reviews Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetUserReviewsRepository()
+        import.meta.jest
+            .spyOn(prisma.review, 'findMany')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
