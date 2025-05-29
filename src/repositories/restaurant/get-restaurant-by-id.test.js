@@ -26,6 +26,25 @@ describe('Get Restaurant By Id Repository', () => {
         expect(result.image_url).toBe(createRestaurantParams.image_url)
     })
 
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        const sut = new PostgresGetRestaurantByIdRepository()
+        const prismaSpy = import.meta.jest.spyOn(
+            prisma.restaurant,
+            'findUnique',
+        )
+
+        await sut.execute(createRestaurantParams.id)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: createRestaurantParams.id,
+            },
+        })
+    })
+
     it('should throw if Prisma throws', async () => {
         const sut = new PostgresGetRestaurantByIdRepository()
         import.meta.jest
