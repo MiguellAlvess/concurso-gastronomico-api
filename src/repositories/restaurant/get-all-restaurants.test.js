@@ -23,4 +23,15 @@ describe('Get All Restaurants Repository', () => {
         expect(result[0].name).toBe(createRestaurantParams.name)
         expect(result[0].image_url).toBe(createRestaurantParams.image_url)
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetAllRestaurantsRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'findMany')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute()
+
+        await expect(promise).rejects.toThrow()
+    })
 })
