@@ -13,4 +13,20 @@ describe('Get User Reviews Repository', () => {
 
         expect(result).toStrictEqual([])
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.user.create({
+            data: user,
+        })
+        const sut = new PostgresGetUserReviewsRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.review, 'findMany')
+
+        await sut.execute(user.id)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                user_id: user.id,
+            },
+        })
+    })
 })
