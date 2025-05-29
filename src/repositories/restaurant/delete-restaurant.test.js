@@ -48,4 +48,18 @@ describe('Delete Restaurant Repository', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw RestaurantNotFoundError if Prisma throws P2025 error', async () => {
+        const sut = new PostgresDeleteRestaurantRepository()
+        import.meta.jest
+            .spyOn(prisma.restaurant, 'delete')
+            .mockRejectedValueOnce({
+                name: 'PrismaClientKnownRequestError',
+                code: 'P2025',
+            })
+
+        const promise = sut.execute(createRestaurantParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
