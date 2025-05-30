@@ -34,4 +34,15 @@ describe('Create Dish Repository', () => {
         expect(result.image_url).toBe(createDishParams.image_url)
         expect(result.restaurant_id).toBe(createDishParams.restaurant_id)
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresCreateDishRepository(createDishParams)
+        import.meta.jest
+            .spyOn(prisma.dish, 'create')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createDishParams)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
