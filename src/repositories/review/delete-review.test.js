@@ -15,4 +15,16 @@ describe('Delete Review Repository', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw ReviewNotFoundError if Prisma throws P2025', async () => {
+        const sut = new PostgresDeleteReviewRepository()
+        import.meta.jest.spyOn(prisma.review, 'delete').mockRejectedValueOnce({
+            name: 'PrismaClientKnownRequestError',
+            code: 'P2025',
+        })
+
+        const promise = sut.execute(review.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
