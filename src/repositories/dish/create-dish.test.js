@@ -35,6 +35,20 @@ describe('Create Dish Repository', () => {
         expect(result.restaurant_id).toBe(createDishParams.restaurant_id)
     })
 
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        const sut = new PostgresCreateDishRepository(createDishParams)
+        const prismaSpy = import.meta.jest.spyOn(prisma.dish, 'create')
+
+        await sut.execute(createDishParams)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            data: createDishParams,
+        })
+    })
+
     it('should throw if Prisma throws', async () => {
         const sut = new PostgresCreateDishRepository(createDishParams)
         import.meta.jest
