@@ -15,4 +15,17 @@ describe('Get Review By Id Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetReviewByIdRepository()
+        import.meta.jest
+            .spyOn(prisma.review, 'findUnique')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const promise = sut.execute(review.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
