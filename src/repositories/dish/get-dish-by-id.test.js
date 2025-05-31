@@ -51,4 +51,15 @@ describe('Get Dish By Id Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetDishByIdRepository()
+        import.meta.jest
+            .spyOn(prisma.dish, 'findUnique')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createDishParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
