@@ -67,4 +67,15 @@ describe('Update Dish Repository', () => {
             data: updateDishParams,
         })
     })
+
+    it('should throw generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresUpdateDishRepository()
+        import.meta.jest
+            .spyOn(prisma.dish, 'update')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createDishParams.id, updateDishParams)
+
+        await expect(promise).rejects.toThrow(new Error())
+    })
 })
