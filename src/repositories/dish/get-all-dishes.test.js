@@ -36,4 +36,43 @@ describe('Get All Dishes Repository', () => {
         expect(result[0].details).toBe(createDishParams.details)
         expect(result[0].image_url).toBe(createDishParams.image_url)
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        await prisma.dish.create({
+            data: createDishParams,
+        })
+        const sut = new PostgresGetAllDishesRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.dish, 'findMany')
+
+        await sut.execute()
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            include: {
+                restaurant: {
+                    select: {
+                        id: true,
+                        name: true,
+                        image_url: true,
+                    },
+                },
+                reviews: {
+                    select: {
+                        id: true,
+                        rating: true,
+                        comment: true,
+                        user: {
+                            select: {
+                                id: true,
+                                first_name: true,
+                                last_name: true,
+                            },
+                        },
+                    },
+                },
+            },
+        })
+    })
 })
