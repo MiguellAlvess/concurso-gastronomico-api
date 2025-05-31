@@ -55,4 +55,15 @@ describe('Delete Dish Repository', () => {
             },
         })
     })
+
+    it('should throw generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresDeleteDishRepository(createDishParams.id)
+        import.meta.jest
+            .spyOn(prisma.dish, 'delete')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createDishParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
