@@ -47,4 +47,24 @@ describe('Update Dish Repository', () => {
             price: updateDishParams.price,
         })
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        await prisma.dish.create({
+            data: createDishParams,
+        })
+        const sut = new PostgresUpdateDishRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.dish, 'update')
+
+        await sut.execute(createDishParams.id, updateDishParams)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: createDishParams.id,
+            },
+            data: updateDishParams,
+        })
+    })
 })
