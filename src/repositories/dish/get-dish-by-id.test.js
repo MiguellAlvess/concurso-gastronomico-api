@@ -32,4 +32,23 @@ describe('Get Dish By Id Repository', () => {
 
         expect(result.id).toBe(createDishParams.id)
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        await prisma.dish.create({
+            data: createDishParams,
+        })
+        const sut = new PostgresGetDishByIdRepository()
+        const prismaSpy = import.meta.jest.spyOn(prisma.dish, 'findUnique')
+
+        await sut.execute(createDishParams.id)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: createDishParams.id,
+            },
+        })
+    })
 })
