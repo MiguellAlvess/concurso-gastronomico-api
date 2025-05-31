@@ -75,4 +75,15 @@ describe('Get All Dishes Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetAllDishesRepository()
+        import.meta.jest
+            .spyOn(prisma.dish, 'findMany')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute()
+
+        await expect(promise).rejects.toThrow()
+    })
 })
