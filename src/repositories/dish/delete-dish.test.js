@@ -36,4 +36,23 @@ describe('Delete Dish Repository', () => {
             price: result.price.toString(),
         }).toStrictEqual(createDishParams)
     })
+
+    it('should call Prisma with correct params', async () => {
+        await prisma.restaurant.create({
+            data: createRestaurantParams,
+        })
+        await prisma.dish.create({
+            data: createDishParams,
+        })
+        const sut = new PostgresDeleteDishRepository(createDishParams.id)
+        const prismaSpy = import.meta.jest.spyOn(prisma.dish, 'delete')
+
+        await sut.execute(createDishParams.id)
+
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: createDishParams.id,
+            },
+        })
+    })
 })
