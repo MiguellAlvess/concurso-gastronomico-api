@@ -66,4 +66,16 @@ describe('Delete Dish Repository', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw DishNotFoundError if Prisma throws P2025 error', async () => {
+        const sut = new PostgresDeleteDishRepository(createDishParams.id)
+        import.meta.jest.spyOn(prisma.dish, 'delete').mockRejectedValueOnce({
+            name: 'PrismaClientKnownRequestError',
+            code: 'P2025',
+        })
+
+        const promise = sut.execute(createDishParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
