@@ -56,4 +56,17 @@ describe('Get Dish Reviews Repository', () => {
             },
         })
     })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresGetDishesByRestaurantIdRepository(
+            createRestaurantParams.id,
+        )
+        import.meta.jest
+            .spyOn(prisma.dish, 'findMany')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(createRestaurantParams.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
