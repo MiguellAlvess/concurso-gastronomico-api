@@ -227,4 +227,31 @@ describe('Restaurants Routes E2E Tests', () => {
 
         expect(response.statusCode).toBe(400)
     })
+
+    it('PATCH /api/restaurants/me should return 400 when the provided cnpj is invalid', async () => {
+        const { body: createdRestaurant } = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        const updateRestaurantParams = {
+            cnpj: 'invalid-cnpj',
+        }
+
+        const response = await supertest(app)
+            .patch('/api/restaurants/me')
+            .set(
+                'Authorization',
+                `Bearer ${createdRestaurant.tokens.accessToken}`,
+            )
+            .send(updateRestaurantParams)
+
+        expect(response.statusCode).toBe(400)
+    })
 })
