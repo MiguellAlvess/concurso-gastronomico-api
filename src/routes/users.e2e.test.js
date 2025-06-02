@@ -117,6 +117,27 @@ describe('User Routes E2E Tests', () => {
         expect(response.statusCode).toBe(400)
     })
 
+    it('PATCH /api/users/me should return 400 when the password provided is invalid', async () => {
+        const { body: createdUser } = await supertest(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
+
+        const updateUserParams = {
+            first_name: faker.person.firstName(),
+            password: faker.internet.password({ length: 3 }),
+        }
+
+        const response = await supertest(app)
+            .patch('/api/users/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send(updateUserParams)
+
+        expect(response.statusCode).toBe(400)
+    })
+
     it('POST /api/users/auth/login should return 200 and tokens when user credentials are valid', async () => {
         const { body: createdUser } = await supertest(app)
             .post('/api/users')
