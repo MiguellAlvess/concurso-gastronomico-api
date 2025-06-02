@@ -140,8 +140,8 @@ describe('Restaurants Routes E2E Tests', () => {
             })
 
         expect(response.statusCode).toBe(200)
-        expect(response.body.tokens.accessToken).toBeDefined()
-        expect(response.body.tokens.refreshToken).toBeDefined()
+        expect(response.body.accessToken).toBeDefined()
+        expect(response.body.refreshToken).toBeDefined()
     })
 
     it('POST /api/restaurants should return 409 when the provided cnpj is already in use', async () => {
