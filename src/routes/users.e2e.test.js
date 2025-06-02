@@ -57,4 +57,20 @@ describe('User Routes E2E Tests', () => {
         expect(response.body.email).toBe(updateUserParams.email)
         expect(response.body.password).not.toBe(updateUserParams.password)
     })
+
+    it('DELETE /api/users/me should return 200 when user authenticated is deleted', async () => {
+        const { body: createdUser } = await supertest(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
+
+        const response = await supertest(app)
+            .delete('/api/users/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body.id).toBe(createdUser.id)
+    })
 })
