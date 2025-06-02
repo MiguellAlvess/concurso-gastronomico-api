@@ -14,7 +14,8 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const app = express()
+export const app = express()
+
 app.use(cors())
 
 app.use(express.json())
@@ -30,5 +31,3 @@ const swaggerDocument = JSON.parse(
 )
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
-export { app }
