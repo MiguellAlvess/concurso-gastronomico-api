@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 export class TokensGeneratorRestaurantAdapter {
     execute(restaurantId) {
         return {
-            acessToken: jwt.sign(
+            accessToken: jwt.sign(
                 { restaurantId },
                 process.env.JWT_ACESS_TOKEN_SECRET,
                 {

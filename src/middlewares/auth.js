@@ -2,14 +2,14 @@ import jwt from 'jsonwebtoken'
 
 export const auth = (req, res, next) => {
     try {
-        const acessToken = req.headers?.authorization?.split('Bearer ')[1]
+        const accessToken = req.headers?.authorization?.split('Bearer ')[1]
 
-        if (!acessToken) {
+        if (!accessToken) {
             return res.status(401).send({ message: 'Unauthorized' })
         }
 
         const decodedToken = jwt.verify(
-            acessToken,
+            accessToken,
             process.env.JWT_ACESS_TOKEN_SECRET,
         )
 

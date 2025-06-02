@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 export class TokensGeneratorUserAdapter {
     execute(userId) {
         return {
-            acessToken: jwt.sign(
+            accessToken: jwt.sign(
                 { userId },
                 process.env.JWT_ACESS_TOKEN_SECRET,
                 {
