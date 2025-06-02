@@ -184,4 +184,19 @@ describe('Restaurants Routes E2E Tests', () => {
 
         expect(response.statusCode).toBe(400)
     })
+
+    it('POST /api/restaurants should return 400 when the provided password is invalid', async () => {
+        const response = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', faker.internet.password({ length: 3 }))
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        expect(response.statusCode).toBe(400)
+    })
 })
