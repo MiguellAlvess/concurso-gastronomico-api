@@ -120,4 +120,27 @@ describe('Restaurants Routes E2E Tests', () => {
         expect(response.body.tokens.accessToken).toBeDefined()
         expect(response.body.tokens.refreshToken).toBeDefined()
     })
+
+    it('POST /api/restaurants/auth/refresh-token should return 200 and new tokens when refresh token is valid', async () => {
+        const { body: createdRestaurant } = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        const response = await supertest(app)
+            .post('/api/restaurants/auth/refresh-token')
+            .send({
+                refreshToken: createdRestaurant.tokens.refreshToken,
+            })
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body.tokens.accessToken).toBeDefined()
+        expect(response.body.tokens.refreshToken).toBeDefined()
+    })
 })
