@@ -143,4 +143,30 @@ describe('Restaurants Routes E2E Tests', () => {
         expect(response.body.tokens.accessToken).toBeDefined()
         expect(response.body.tokens.refreshToken).toBeDefined()
     })
+
+    it('POST /api/restaurants should return 409 when the provided cnpj is already in use', async () => {
+        const { body: createdRestaurant } = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        const response = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', faker.company.name())
+            .field('cnpj', createdRestaurant.cnpj)
+            .field('password', faker.internet.password())
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        expect(response.statusCode).toBe(409)
+    })
 })
