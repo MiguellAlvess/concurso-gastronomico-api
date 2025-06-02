@@ -169,4 +169,19 @@ describe('Restaurants Routes E2E Tests', () => {
 
         expect(response.statusCode).toBe(409)
     })
+
+    it('POST /api/restaurants should return 400 when the provided cnpj is invalid', async () => {
+        const response = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', 'invalid-cnpj')
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        expect(response.statusCode).toBe(400)
+    })
 })
