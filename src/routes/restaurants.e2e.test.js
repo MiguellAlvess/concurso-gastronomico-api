@@ -73,4 +73,27 @@ describe('Restaurants Routes E2E Tests', () => {
         expect(response.body.cnpj).toBe(updateRestaurantParams.cnpj)
         expect(response.body.password).not.toBe(updateRestaurantParams.password)
     })
+
+    it('DELETE /api/restaurants/me should return 200 when restaurant authenticated is deleted', async () => {
+        const { body: createdRestaurant } = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        const response = await supertest(app)
+            .delete('/api/restaurants/me')
+            .set(
+                'Authorization',
+                `Bearer ${createdRestaurant.tokens.accessToken}`,
+            )
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body.id).toBe(createdRestaurant.id)
+    })
 })
