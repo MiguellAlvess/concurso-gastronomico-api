@@ -96,4 +96,28 @@ describe('Restaurants Routes E2E Tests', () => {
         expect(response.statusCode).toBe(200)
         expect(response.body.id).toBe(createdRestaurant.id)
     })
+
+    it('POST /api/restaurants/auth/login should return 200 and tokens when user credentials are valid', async () => {
+        const { body: createdRestaurant } = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        const response = await supertest(app)
+            .post('/api/restaurants/auth/login')
+            .send({
+                cnpj: createdRestaurant.cnpj,
+                password: restaurant.password,
+            })
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body.tokens.accessToken).toBeDefined()
+        expect(response.body.tokens.refreshToken).toBeDefined()
+    })
 })
