@@ -158,6 +158,34 @@ describe('User Routes E2E Tests', () => {
         expect(response.statusCode).toBe(400)
     })
 
+    it('PATCH /api/users/me should return 400 when the provided email is already in use', async () => {
+        const { body: createdUser } = await supertest(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
+
+        const { body: createdUser2 } = await supertest(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+                email: 'email2@example.com',
+            })
+
+        const updateUserParams = {
+            email: createdUser2.email,
+        }
+
+        const response = await supertest(app)
+            .patch('/api/users/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send(updateUserParams)
+
+        expect(response.statusCode).toBe(409)
+    })
+
     it('POST /api/users/auth/login should return 200 and tokens when user credentials are valid', async () => {
         const { body: createdUser } = await supertest(app)
             .post('/api/users')
