@@ -1,6 +1,7 @@
 import supertest from 'supertest'
 import { app } from '../app.js'
 import { restaurant } from '../tests/index.js'
+import { faker } from '@faker-js/faker'
 
 describe('Restaurants Routes E2E Tests', () => {
     it('POST /api/restaurants should return 201 when restaurant is created', async () => {
@@ -39,5 +40,37 @@ describe('Restaurants Routes E2E Tests', () => {
 
         expect(response.statusCode).toBe(200)
         expect(response.body.id).toBe(createdRestaurant.id)
+    })
+
+    it('PATCH /api/restaurants/me should return 200 when restaurant authenticated is updated', async () => {
+        const { body: createdRestaurant } = await supertest(app)
+            .post('/api/restaurants')
+            .field('name', restaurant.name)
+            .field('cnpj', restaurant.cnpj)
+            .field('password', restaurant.password)
+            .attach(
+                'image',
+                Buffer.from('fake-image-restaurant'),
+                'imagetest.png',
+            )
+
+        const updateRestaurantParams = {
+            name: faker.company.name(),
+            cnpj: '40.947.067/0001-52',
+            password: faker.internet.password(),
+        }
+
+        const response = await supertest(app)
+            .patch('/api/restaurants/me')
+            .set(
+                'Authorization',
+                `Bearer ${createdRestaurant.tokens.accessToken}`,
+            )
+            .send(updateRestaurantParams)
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body.name).toBe(updateRestaurantParams.name)
+        expect(response.body.cnpj).toBe(updateRestaurantParams.cnpj)
+        expect(response.body.password).not.toBe(updateRestaurantParams.password)
     })
 })
