@@ -73,4 +73,23 @@ describe('User Routes E2E Tests', () => {
         expect(response.statusCode).toBe(200)
         expect(response.body.id).toBe(createdUser.id)
     })
+
+    it('POST /api/users should return 409 when the email provided is already in use', async () => {
+        const { body: createdUser } = await supertest(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
+
+        const response = await supertest(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+                email: createdUser.email,
+            })
+
+        expect(response.statusCode).toBe(409)
+    })
 })
