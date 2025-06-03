@@ -66,4 +66,15 @@ describe('Get Dishes By Restaurant Id Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if GetRestaurantByIdRepository throws', async () => {
+        const { sut, getRestaurantByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(faker.string.uuid())
+
+        await expect(promise).rejects.toThrow()
+    })
 })
