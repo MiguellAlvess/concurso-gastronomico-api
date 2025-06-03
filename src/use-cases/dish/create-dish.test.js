@@ -69,4 +69,18 @@ describe('Create Dish Use Case', () => {
             id: 'generated-id',
         })
     })
+
+    it('should throw if GetRestaurantByIdRepository throws', async () => {
+        const { sut, getRestaurantByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getRestaurantByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute({
+            ...dish,
+            imageFilename: 'imagetest.png',
+        })
+
+        await expect(promise).rejects.toThrow()
+    })
 })
