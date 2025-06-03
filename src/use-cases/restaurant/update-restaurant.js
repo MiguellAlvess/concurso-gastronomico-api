@@ -30,7 +30,7 @@ export class UpdateRestaurantUseCase {
         }
 
         if (updateRestaurantParams.imageFilename) {
-            restaurant.image_url = updateRestaurantParams.imageFilename
+            restaurant.image_url = `/uploads/${updateRestaurantParams.imageFilename}`
             delete restaurant.imageFilename
         }
 
