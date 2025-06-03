@@ -98,4 +98,15 @@ describe('Create Review Use Case', () => {
             id: 'generated_id',
         })
     })
+
+    it('should throw if GetUserByIdRepository throws', async () => {
+        const { sut, getUserByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getUserByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(review)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
