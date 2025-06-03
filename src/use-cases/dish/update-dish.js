@@ -9,12 +9,12 @@ export class UpdateDishUseCase {
     async execute(dishId, updateDishParams) {
         const dish = await this.getDishByIdRepository.execute(dishId)
 
-        if (dish.restaurant_id !== updateDishParams.restaurant_id) {
-            throw new ForbiddenError()
-        }
-
         if (!dish) {
             throw new DishNotFoundError(dishId)
+        }
+
+        if (dish.restaurant_id !== updateDishParams.restaurant_id) {
+            throw new ForbiddenError()
         }
 
         if (updateDishParams.imageFilename) {
