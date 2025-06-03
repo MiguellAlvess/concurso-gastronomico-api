@@ -257,7 +257,7 @@
                     "200": {
                         "description": "Restaurants found successfully",
                         "schema": {
-                            "$ref": "#/definitions/Restaurants"
+                            "$ref": "#/definitions/Restaurant"
                         }
                     },
                     "500": {
