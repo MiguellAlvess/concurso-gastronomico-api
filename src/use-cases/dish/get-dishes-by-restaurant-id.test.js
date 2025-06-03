@@ -40,4 +40,19 @@ describe('Get Dishes By Restaurant Id Use Case', () => {
 
         expect(getDishes).toBeTruthy()
     })
+
+    it('should call GetDishesByRestaurantIdRepository with correct params', async () => {
+        const { sut, getDishesByRestaurantIdRepository } = makeSut()
+        const getDishesByRestaurantIdRepositorySpy = import.meta.jest.spyOn(
+            getDishesByRestaurantIdRepository,
+            'execute',
+        )
+        const restaurantId = faker.string.uuid()
+
+        await sut.execute(restaurantId)
+
+        expect(getDishesByRestaurantIdRepositorySpy).toHaveBeenCalledWith(
+            restaurantId,
+        )
+    })
 })
