@@ -120,4 +120,15 @@ describe('Create Review Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if CheckUserReviewRepository throws', async () => {
+        const { sut, checkUserReviewRepository } = makeSut()
+        import.meta.jest
+            .spyOn(checkUserReviewRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(review)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
