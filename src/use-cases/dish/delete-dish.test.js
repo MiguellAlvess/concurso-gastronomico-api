@@ -32,4 +32,16 @@ describe('Delete Dish Use Case', () => {
 
         expect(deletedDish).toBeTruthy()
     })
+
+    it('should call DeleteDishRepository with correct params', async () => {
+        const { sut, deleteDishRepository } = makeSut()
+        const deleteDishRepositorySpy = import.meta.jest.spyOn(
+            deleteDishRepository,
+            'execute',
+        )
+
+        await sut.execute(dish.id, dish.restaurant_id)
+
+        expect(deleteDishRepositorySpy).toHaveBeenCalledWith(dish.id)
+    })
 })
