@@ -63,4 +63,24 @@ describe('Create Review Use Case', () => {
 
         expect(createdReview).toBeTruthy()
     })
+
+    it('should call IdGeneratorAdapter to generate a random id', async () => {
+        const { sut, idGeneratorAdapter, createReviewRepository } = makeSut()
+        const idGeneratorAdapterSpy = import.meta.jest.spyOn(
+            idGeneratorAdapter,
+            'execute',
+        )
+        const createReviewRepositorySpy = import.meta.jest.spyOn(
+            createReviewRepository,
+            'execute',
+        )
+
+        await sut.execute(review)
+
+        expect(idGeneratorAdapterSpy).toHaveBeenCalled()
+        expect(createReviewRepositorySpy).toHaveBeenCalledWith({
+            ...review,
+            id: 'generated_id',
+        })
+    })
 })
