@@ -33,4 +33,15 @@ describe('Get Dish By Id Use Case', () => {
 
         expect(getDishByIdRepositorySpy).toHaveBeenCalledWith(dish.id)
     })
+
+    it('should throw if GetDishByIdRepository throws', async () => {
+        const { sut, getDishByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getDishByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(dish.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
