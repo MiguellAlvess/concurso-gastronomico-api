@@ -21,4 +21,15 @@ describe('Get All Dishes Use Case', () => {
 
         expect(allDishes).toBeTruthy()
     })
+
+    it('should throw if GetAllDishesRepository throws', async () => {
+        const { sut, getAllDishesRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getAllDishesRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute()
+
+        await expect(promise).rejects.toThrow()
+    })
 })
