@@ -44,4 +44,15 @@ describe('Delete Dish Use Case', () => {
 
         expect(deleteDishRepositorySpy).toHaveBeenCalledWith(dish.id)
     })
+
+    it('should throw if DeleteDishRepository throws', async () => {
+        const { sut, deleteDishRepository } = makeSut()
+        import.meta.jest
+            .spyOn(deleteDishRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(dish.id, dish.restaurant_id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
