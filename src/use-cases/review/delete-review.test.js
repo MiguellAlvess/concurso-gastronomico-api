@@ -58,4 +58,15 @@ describe('Delete Review Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if DeleteReviewRepository throws', async () => {
+        const { sut, deleteReviewRepository } = makeSut()
+        import.meta.jest
+            .spyOn(deleteReviewRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(review.id, review.user_id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
