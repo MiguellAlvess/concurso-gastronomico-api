@@ -37,4 +37,22 @@ describe('Update Dish Use Case', () => {
             image_url: 'imagetest.png',
         })
     })
+
+    it('should call UpdateDishRepository with correct params', async () => {
+        const { sut, updateDishRepository } = makeSut()
+        const updateDishRepositorySpy = import.meta.jest.spyOn(
+            updateDishRepository,
+            'execute',
+        )
+
+        await sut.execute(dish.id, {
+            ...dish,
+            imageFilename: 'imagetest.png',
+        })
+
+        expect(updateDishRepositorySpy).toHaveBeenCalledWith(dish.id, {
+            ...dish,
+            image_url: 'imagetest.png',
+        })
+    })
 })
