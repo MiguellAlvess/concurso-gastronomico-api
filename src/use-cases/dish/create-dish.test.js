@@ -30,7 +30,12 @@ describe('Create Dish Use Case', () => {
             idGeneratorAdapter,
         )
 
-        return { sut, createDishRepository, getRestaurantByIdRepository }
+        return {
+            sut,
+            createDishRepository,
+            getRestaurantByIdRepository,
+            idGeneratorAdapter,
+        }
     }
 
     it('should successfully create a dish', async () => {
@@ -39,5 +44,29 @@ describe('Create Dish Use Case', () => {
         const createdDish = await sut.execute(dish)
 
         expect(createdDish).toBeTruthy()
+    })
+
+    it('should call IdGeneratorAdapter to generate a random id', async () => {
+        const { sut, idGeneratorAdapter, createDishRepository } = makeSut()
+        const idGeneratorAdapterSpy = import.meta.jest.spyOn(
+            idGeneratorAdapter,
+            'execute',
+        )
+        const createDishRepositorySpy = import.meta.jest.spyOn(
+            createDishRepository,
+            'execute',
+        )
+
+        await sut.execute({
+            ...dish,
+            imageFilename: 'imagetest.png',
+        })
+
+        expect(idGeneratorAdapterSpy).toHaveBeenCalled()
+        expect(createDishRepositorySpy).toHaveBeenCalledWith({
+            ...dish,
+            image_url: 'imagetest.png',
+            id: 'generated-id',
+        })
     })
 })
