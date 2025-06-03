@@ -54,4 +54,15 @@ describe('Get Dish Reviews Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if GetDishByIdRepository throws', async () => {
+        const { sut, getDishByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getDishByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(dish.id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
