@@ -83,4 +83,19 @@ describe('Create Review Use Case', () => {
             id: 'generated_id',
         })
     })
+
+    it('should call CreateReviewRepository with correct params', async () => {
+        const { sut, createReviewRepository } = makeSut()
+        const createReviewRepositorySpy = import.meta.jest.spyOn(
+            createReviewRepository,
+            'execute',
+        )
+
+        await sut.execute(review)
+
+        expect(createReviewRepositorySpy).toHaveBeenCalledWith({
+            ...review,
+            id: 'generated_id',
+        })
+    })
 })
