@@ -131,4 +131,15 @@ describe('Create Review Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if CreateReviewRepository throws', async () => {
+        const { sut, createReviewRepository } = makeSut()
+        import.meta.jest
+            .spyOn(createReviewRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(review)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
