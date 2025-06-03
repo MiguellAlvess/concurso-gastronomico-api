@@ -83,4 +83,18 @@ describe('Create Dish Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if CreateDishRepository throws', async () => {
+        const { sut, createDishRepository } = makeSut()
+        import.meta.jest
+            .spyOn(createDishRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute({
+            ...dish,
+            imageFilename: 'imagetest.png',
+        })
+
+        await expect(promise).rejects.toThrow()
+    })
 })
