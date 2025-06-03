@@ -47,4 +47,15 @@ describe('Delete Review Use Case', () => {
 
         expect(deleteReviewRepositorySpy).toHaveBeenCalledWith(review.id)
     })
+
+    it('should throw if GetReviewByIdRepository throws', async () => {
+        const { sut, getReviewByIdRepository } = makeSut()
+        import.meta.jest
+            .spyOn(getReviewByIdRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(review.id, review.user_id)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
