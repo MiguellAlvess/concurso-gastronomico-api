@@ -35,4 +35,16 @@ describe('Delete Review Use Case', () => {
 
         expect(response).toBeTruthy()
     })
+
+    it('should call DeleteReviewRepository with correct params', async () => {
+        const { sut, deleteReviewRepository } = makeSut()
+        const deleteReviewRepositorySpy = import.meta.jest.spyOn(
+            deleteReviewRepository,
+            'execute',
+        )
+
+        await sut.execute(review.id, review.user_id)
+
+        expect(deleteReviewRepositorySpy).toHaveBeenCalledWith(review.id)
+    })
 })
