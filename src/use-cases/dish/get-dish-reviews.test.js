@@ -31,4 +31,16 @@ describe('Get Dish Reviews Use Case', () => {
 
         expect(getDishReviews).toBeTruthy()
     })
+
+    it('should call GetDishReviewsRepository with correct params', async () => {
+        const { sut, getDishReviewsRepository } = makeSut()
+        const getDishReviewsRepositorySpy = import.meta.jest.spyOn(
+            getDishReviewsRepository,
+            'execute',
+        )
+
+        await sut.execute(dish.id)
+
+        expect(getDishReviewsRepositorySpy).toHaveBeenCalledWith(dish.id)
+    })
 })
