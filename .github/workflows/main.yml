@@ -50,8 +50,6 @@ jobs:
               uses: SpicyPizza/create-envfile@v2.0
               with:
                   envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-                  envkey_JWT_ACESS_TOKEN_SECRET: ${{ secrets.JWT_ACESS_TOKEN_SECRET }}
-                  envkey_JWT_REFRESH_TOKEN_SECRET: ${{ secrets.JWT_REFRESH_TOKEN_SECRET }}
 
             - name: Install dependencies
               run: npm ci --include=dev
