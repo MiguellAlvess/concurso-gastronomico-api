@@ -142,4 +142,17 @@ describe('Create Review Use Case', () => {
 
         await expect(promise).rejects.toThrow()
     })
+
+    it('should throw if IdGeneratorAdapter throws', async () => {
+        const { sut, idGeneratorAdapter } = makeSut()
+        import.meta.jest
+            .spyOn(idGeneratorAdapter, 'execute')
+            .mockImplementationOnce(() => {
+                throw new Error()
+            })
+
+        const promise = sut.execute(review)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
