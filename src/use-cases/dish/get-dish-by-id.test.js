@@ -21,4 +21,16 @@ describe('Get Dish By Id Use Case', () => {
 
         expect(getDish).toEqual(dish)
     })
+
+    it('should call GetDishByIdRepository with correct params', async () => {
+        const { sut, getDishByIdRepository } = makeSut()
+        const getDishByIdRepositorySpy = import.meta.jest.spyOn(
+            getDishByIdRepository,
+            'execute',
+        )
+
+        await sut.execute(dish.id)
+
+        expect(getDishByIdRepositorySpy).toHaveBeenCalledWith(dish.id)
+    })
 })
