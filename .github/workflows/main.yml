@@ -18,7 +18,7 @@ jobs:
             - name: Create .env.test file
               run: |
                   echo "DATABASE_URL=postgresql://root:password@localhost:5433/concurso-gastronomico" >> .env.test
-                  echo "JWT_ACESS_TOKEN_SECRET=secret" >> .env.test
+                  echo "JWT_ACCESS_TOKEN_SECRET=secret" >> .env.test
                   echo "JWT_REFRESH_TOKEN_SECRET=secret2" >> .env.test
 
             - name: Install dependencies
