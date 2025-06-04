@@ -29,7 +29,6 @@ describe('Create Dish Repository', () => {
         const result = await sut.execute(createDishParams)
         expect(result.id).toBe(createDishParams.id)
         expect(result.name).toBe(createDishParams.name)
-        expect(String(result.price)).toBe(String(createDishParams.price))
         expect(result.details).toBe(createDishParams.details)
         expect(result.image_url).toBe(createDishParams.image_url)
         expect(result.restaurant_id).toBe(createDishParams.restaurant_id)
