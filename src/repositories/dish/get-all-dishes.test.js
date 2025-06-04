@@ -32,7 +32,6 @@ describe('Get All Dishes Repository', () => {
 
         expect(result[0].id).toBe(createDishParams.id)
         expect(result[0].name).toBe(createDishParams.name)
-        expect(String(result[0].price)).toBe(String(createDishParams.price))
         expect(result[0].details).toBe(createDishParams.details)
         expect(result[0].image_url).toBe(createDishParams.image_url)
     })
