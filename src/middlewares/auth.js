@@ -10,7 +10,7 @@ export const auth = (req, res, next) => {
 
         const decodedToken = jwt.verify(
             accessToken,
-            process.env.JWT_ACESS_TOKEN_SECRET,
+            process.env.JWT_ACCESS_TOKEN_SECRET,
         )
 
         if (!decodedToken) {

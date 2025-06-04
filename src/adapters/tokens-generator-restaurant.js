@@ -5,7 +5,7 @@ export class TokensGeneratorRestaurantAdapter {
         return {
             accessToken: jwt.sign(
                 { restaurantId },
-                process.env.JWT_ACESS_TOKEN_SECRET,
+                process.env.JWT_ACCESS_TOKEN_SECRET,
                 {
                     expiresIn: '15m',
                 },
