@@ -16,12 +16,14 @@ jobs:
               with:
                   node-version: '20'
 
-            - name: Make envfile
+            - name: Make envfile for test
               uses: SpicyPizza/create-envfile@v2.0
               with:
+                  envkey_PORT: 8081
                   envkey_DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
-                  envkey_JWT_ACCESS_TOKEN_SECRET_TEST: ${{ secrets.JWT_ACCESS_TOKEN_SECRET_TEST }}
-                  envkey_JWT_REFRESH_TOKEN_SECRET_TEST: ${{ secrets.JWT_REFRESH_TOKEN_SECRET_TEST }}
+                  envkey_JWT_ACCESS_TOKEN_SECRET: ${{ secrets.JWT_ACCESS_TOKEN_SECRET_TEST }}
+                  envkey_JWT_REFRESH_TOKEN_SECRET: ${{ secrets.JWT_REFRESH_TOKEN_SECRET_TEST }}
+                  file_name: .env.test
 
             - name: Install dependencies
               run: npm ci --include=dev
