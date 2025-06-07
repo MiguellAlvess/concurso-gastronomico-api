@@ -3,10 +3,10 @@ import { validateCNPJ } from '../controllers/helpers/index.js'
 
 export const createRestaurantSchema = z.object({
     cnpj: z
-        .string({ required_error: 'CNPJ é obrigatório' })
+        .string({ required_error: 'CNPJ is required' })
         .trim()
         .refine((cnpj) => validateCNPJ(cnpj), {
-            message: 'CNPJ invalid',
+            message: 'CNPJ is invalid',
         }),
     name: z
         .string({
@@ -31,10 +31,10 @@ export const updateRestaurantSchema = createRestaurantSchema.partial()
 
 export const loginRestaurantSchema = z.object({
     cnpj: z
-        .string({ required_error: 'CNPJ é obrigatório' })
+        .string({ required_error: 'CNPJ is required' })
         .trim()
         .refine((cnpj) => validateCNPJ(cnpj), {
-            message: 'CNPJ invalid',
+            message: 'CNPJ is invalid',
         }),
     password: z
         .string({
