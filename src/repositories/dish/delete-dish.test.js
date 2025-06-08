@@ -15,7 +15,7 @@ describe('Delete Dish Repository', () => {
         id: faker.string.uuid(),
         name: faker.commerce.productName(),
         details: faker.commerce.productDescription().slice(0, 255),
-        price: String(faker.finance.amount()),
+        price: '50',
         restaurant_id: createRestaurantParams.id,
         image_url: 'imagetest.png',
     }
