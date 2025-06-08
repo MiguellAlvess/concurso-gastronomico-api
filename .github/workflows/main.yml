@@ -6,6 +6,7 @@ on:
 jobs:
     check:
         runs-on: ubuntu-latest
+        environment: development
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
@@ -15,11 +16,12 @@ jobs:
               with:
                   node-version: '20'
 
-            - name: Create .env.test file
-              run: |
-                  echo "DATABASE_URL=postgresql://root:password@localhost:5433/concurso-gastronomico" >> .env.test
-                  echo "JWT_ACESS_TOKEN_SECRET=secret" >> .env.test
-                  echo "JWT_REFRESH_TOKEN_SECRET=secret2" >> .env.test
+            - name: Make envfile
+              uses: SpicyPizza/create-envfile@v2.0
+              with:
+                  envkey_DATABASE_URL_TEST: ${{ secrets.DATABASE_URL_TEST }}
+                  envkey_JWT_ACCESS_TOKEN_SECRET_TEST: ${{ secrets.JWT_ACCESS_TOKEN_SECRET_TEST }}
+                  envkey_JWT_REFRESH_TOKEN_SECRET_TEST: ${{ secrets.JWT_REFRESH_TOKEN_SECRET_TEST }}
 
             - name: Install dependencies
               run: npm ci --include=dev
