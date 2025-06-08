@@ -6,7 +6,7 @@ import {
     invalidIdResponse,
     checkIfIdIsValid,
 } from '../helpers/index.js'
-import { DishNotFoundError } from '../../errors/dish.js'
+import { DishNotFoundError } from '../../errors/index.js'
 
 export class GetDishReviewsController {
     constructor(getDishReviewsUseCase) {
