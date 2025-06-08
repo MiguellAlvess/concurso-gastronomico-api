@@ -6,7 +6,7 @@ export const createRestaurantSchema = z.object({
         .string({ required_error: 'CNPJ is required' })
         .trim()
         .refine((cnpj) => validateCNPJ(cnpj), {
-            message: 'CNPJ is invalid',
+            message: 'CNPJ is invalid!',
         }),
     name: z
         .string({
